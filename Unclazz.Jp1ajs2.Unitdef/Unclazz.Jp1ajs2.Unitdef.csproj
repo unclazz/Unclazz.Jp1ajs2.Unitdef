@@ -44,8 +44,12 @@
     <Compile Include="FullQualifiedName.cs" />
     <Compile Include="IAttributes.cs" />
     <Compile Include="IFullQualifiedName.cs" />
+    <Compile Include="IListUnitQuery.cs" />
     <Compile Include="IParameter.cs" />
+    <Compile Include="IParameterQuery.cs" />
     <Compile Include="IParameterValue.cs" />
+    <Compile Include="IQuery.cs" />
+    <Compile Include="ITuple.cs" />
     <Compile Include="IUnit.cs" />
     <Compile Include="IUnitType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

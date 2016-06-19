@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
 [assembly: AssemblyTitle("Unclazz.Jp1ajs2.Unitdef")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Unofficial API for JP1/AJS2 unit definition.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("unclazz.org")]
 [assembly: AssemblyProduct("Unclazz.Jp1ajs2.Unitdef")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
