@@ -19,6 +19,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         /// <param name="target">問い合わせ対象のオブジェクト</param>
         /// <returns>問い合わせ結果のオブジェクト</returns>
-        TResult queryFrom(T target);
+        TResult QueryFrom(T target);
     }
 }
