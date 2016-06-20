@@ -8,7 +8,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 {
     public interface IAttributes
     {
-        string Name { get; }
+        string UnitName { get; }
         string Jp1UserName { get; }
         string ResourceGroupName { get; }
         string PermissionMode { get; }
