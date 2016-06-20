@@ -25,7 +25,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="i">パラメータ値の位置</param>
         /// <returns>パラメータの値</returns>
         /// <exception cref="ArgumentOutOfRangeException">範囲外の位置が指定された場合</exception>
-        string this[int i] { get; }
+        IParameterValue this[int i] { get; }
         /// <summary>
         /// パラメータ値のリスト
         /// </summary>
