@@ -18,11 +18,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <summary>
         /// タプル（種別がタプルでない場合<code>null</code>）
         /// </summary>
-        ITuple Tuple { get; }
+        ITuple TupleValue { get; }
         /// <summary>
         /// 文字列（二重引用符で囲われた文字列の場合、引用符は取り除かれエスケープも解除される）
         /// </summary>
-        string String { get; }
+        string StringValue { get; }
     }
 
     /// <summary>
