@@ -9,65 +9,73 @@ namespace Unclazz.Jp1ajs2.Unitdef
     /// <summary>
     /// <code>IFullQualifiedName</code>のデフォルト実装です。
     /// </summary>
-    public class FullQualifiedName : IFullQualifiedName
+    public sealed class FullQualifiedName : IFullQualifiedName
     {
-        private IList<string> fragments;
-        private string name = null;
-
-        FullQualifiedName(IList<string> fragments)
+        /// <summary>
+        /// 指定された文字列を元にルートとなる完全名を生成して返します。
+        /// </summary>
+        /// <param name="root">ルートのユニット名</param>
+        /// <returns>完全名インスタンス</returns>
+        public static IFullQualifiedName FromRoot(string root)
         {
-            UnitdefUtil.ArgumentMustNotBeEmpty<string>(fragments, "fragments");
-            this.fragments = fragments;
+            return new FullQualifiedName(null, root);
         }
 
-        IList<string> IFullQualifiedName.Fragments
+        private readonly string[] fragments;
+        private string stringValue = null;
+        public IFullQualifiedName SuperUnitName { get; }
+
+        private FullQualifiedName(FullQualifiedName superUnitName, string newFragment)
+        {
+            UnitdefUtil.ArgumentMustNotBeEmpty(newFragment, "fragment of full qualified name");
+            SuperUnitName = superUnitName;
+            if (SuperUnitName == null)
+            {
+                fragments = new string[] { newFragment };
+            }
+            else
+            {
+                fragments = new string[superUnitName.fragments.Length + 1];
+                superUnitName.fragments.CopyTo(fragments, 0);
+                fragments[superUnitName.fragments.Length] = newFragment;
+            }
+        }
+
+        public IList<string> Fragments
         {
             get
             {
-                if (!fragments.IsReadOnly)
-                {
-                    fragments = new List<string>(fragments).AsReadOnly();
-                }
-                return fragments;
+                return new List<string>(fragments);
             }
         }
 
-        string IFullQualifiedName.UnitName
+        public IFullQualifiedName GetSubUnitName(string name)
         {
-            get
-            {
-                if (name == null)
-                {
-                    name = fragments.Last();
-                }
-                return name;
-            }
+            return new FullQualifiedName(this, name);
         }
 
-        IFullQualifiedName IFullQualifiedName.GetSubUnitName(string name)
+        public override string ToString()
         {
-            List<string> newFragments = new List<string>(fragments);
-            newFragments.Add(name);
-            return new FullQualifiedName(newFragments);
+            if (stringValue == null)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (string f in fragments)
+                {
+                    sb.Append("/").Append(f);
+                }
+                stringValue = sb.ToString();
+            }
+            return stringValue;
         }
 
-        IFullQualifiedName IFullQualifiedName.GetSuperUnitName()
+        public override bool Equals(object obj)
         {
-            if (fragments.Count == 1)
+            IFullQualifiedName that = obj as IFullQualifiedName;
+            if (that == null)
             {
-                return null;
+                return false;
             }
-            List<string> newFragments = new List<string>();
-            int len = fragments.Count - 1;
-            foreach (var item in fragments)
-            {
-                if (newFragments.Count == len)
-                {
-                    break;
-                }
-                newFragments.Add(item);
-            }
-            return new FullQualifiedName(newFragments);
+            return this.fragments.Equals(that.Fragments.ToArray<string>());
         }
     }
 }

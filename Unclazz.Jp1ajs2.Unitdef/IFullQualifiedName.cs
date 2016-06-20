@@ -16,14 +16,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         IList<string> Fragments { get; }
         /// <summary>
-        /// 完全名の末尾のユニット名にあたるフラグメントを返します。
-        /// </summary>
-        string UnitName { get; }
-        /// <summary>
         /// 上位ユニットの完全名を返します。
         /// </summary>
         /// <returns>上位ユニットの完全名（ルート・ユニットの場合<code>null</code>）</returns>
-        IFullQualifiedName GetSuperUnitName();
+        IFullQualifiedName SuperUnitName { get; }
         /// <summary>
         /// 下位ユニットの完全名を返します。
         /// </summary>
