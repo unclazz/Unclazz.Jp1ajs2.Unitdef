@@ -75,7 +75,12 @@ namespace Unclazz.Jp1ajs2.Unitdef
             {
                 return false;
             }
-            return this.fragments.Equals(that.Fragments.ToArray<string>());
+            return this.ToString().Equals(that.ToString());
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ToString().GetHashCode();
         }
     }
 }
