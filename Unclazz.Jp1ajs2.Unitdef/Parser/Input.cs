@@ -100,6 +100,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             LineNumber = 0;
             Current = Null;
             reader = r;
+            GoNext();
         }
 
         /// <summary>

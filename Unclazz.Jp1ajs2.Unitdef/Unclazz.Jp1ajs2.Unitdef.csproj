@@ -46,12 +46,12 @@
     <Compile Include="FullQualifiedName.cs" />
     <Compile Include="IAttributes.cs" />
     <Compile Include="IFullQualifiedName.cs" />
-    <Compile Include="IListUnitQuery.cs" />
+    <Compile Include="Query\IListUnitQuery.cs" />
     <Compile Include="Parser\Input.cs" />
     <Compile Include="IParameter.cs" />
-    <Compile Include="IParameterQuery.cs" />
+    <Compile Include="Query\IParameterQuery.cs" />
     <Compile Include="IParameterValue.cs" />
-    <Compile Include="IQuery.cs" />
+    <Compile Include="Query\IQuery.cs" />
     <Compile Include="ITuple.cs" />
     <Compile Include="IUnit.cs" />
     <Compile Include="IUnitType.cs" />
@@ -63,7 +63,7 @@
     <Compile Include="TupleParameterValue.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitdefUtil.cs" />
-    <Compile Include="IUnitQuery.cs" />
+    <Compile Include="Query\IUnitQuery.cs" />
     <Compile Include="UnitType.cs" />
   </ItemGroup>
   <ItemGroup />
