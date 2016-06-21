@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Unclazz.Jp1ajs2.Unitdef
 {
     /// <summary>
@@ -14,7 +9,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <summary>
         /// ユニット属性パラメータのインスタンスを返します。
         /// 引数のうちユニット名以外はオプションです。
-        /// いずれの引数にも<code>null</code>をあえて設定することは許されません。
         /// </summary>
         /// <param name="unitName">ユニット名</param>
         /// <param name="permissionMode">許可モード</param>
@@ -24,6 +18,9 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public static IAttributes OfValues(string unitName, string permissionMode = "",
             string jp1UserName = "", string resourceGroupName = "")
         {
+            if (permissionMode == null) permissionMode = string.Empty;
+            if (jp1UserName == null) jp1UserName = string.Empty;
+            if (resourceGroupName == null) resourceGroupName = string.Empty; 
             return new Attributes(unitName, permissionMode, jp1UserName, resourceGroupName);
         }
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Unclazz.Jp1ajs2.Unitdef.Parser;
+using Unclazz.Jp1ajs2.Unitdef.Query;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
@@ -88,6 +88,20 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 UnitdefUtil.ArgumentMustNotBeNull(fqn, "full qualified name");
                 return new Unit(fqn, attributes, ty, cm, parameters, subUnits);
             }
+        }
+
+        private static readonly UnitParser parser = UnitParser.Instance;
+        public static IList<IUnit> FromString(string s)
+        {
+            return parser.Parse(Input.FromString(s));
+        }
+        public static IList<IUnit> FromFile(string path)
+        {
+            return parser.Parse(Input.FromFile(path));
+        }
+        public static IList<IUnit> FromFile(string path, Encoding enc)
+        {
+            return parser.Parse(Input.FromFile(path, enc));
         }
 
         private Unit(IFullQualifiedName fqn, IAttributes attributes, IParameter ty, IParameter cm, 

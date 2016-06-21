@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Unclazz.Jp1ajs2.Unitdef.Query;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
@@ -17,7 +14,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public sealed class Builder
         {
             private string name = null;
-            private List<IParameterValue> values;
+            private List<IParameterValue> values = new List<IParameterValue>();
             /// <summary>
             /// パラメータ名を設定します。
             /// </summary>

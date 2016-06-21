@@ -41,10 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes.cs" />
+    <Compile Include="Parser\ParseException.cs" />
+    <Compile Include="Parser\UnitParser.cs" />
     <Compile Include="FullQualifiedName.cs" />
     <Compile Include="IAttributes.cs" />
     <Compile Include="IFullQualifiedName.cs" />
     <Compile Include="IListUnitQuery.cs" />
+    <Compile Include="Parser\Input.cs" />
     <Compile Include="IParameter.cs" />
     <Compile Include="IParameterQuery.cs" />
     <Compile Include="IParameterValue.cs" />
@@ -63,6 +66,7 @@
     <Compile Include="IUnitQuery.cs" />
     <Compile Include="UnitType.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
