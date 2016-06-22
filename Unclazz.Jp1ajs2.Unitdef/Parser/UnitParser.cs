@@ -44,6 +44,10 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             {
                 throw new ParseException(input, "Unexpected error has occurred.", e);
             }
+            finally
+            {
+                input.Dispose();
+            }
         }
         private IUnit ParseUnit(Input input, IFullQualifiedName parent)
         {

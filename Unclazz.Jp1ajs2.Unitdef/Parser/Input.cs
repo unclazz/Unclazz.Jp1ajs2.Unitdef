@@ -9,7 +9,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
     /// 文字列やファイル入力ストリームをラップします。
     /// EOFに到達するか処理中にIOエラーが発生した場合は自動でリソースを解放します。
     /// </summary>
-    public sealed class Input
+    public sealed class Input : IDisposable
     {
         /// <summary>
         /// 文字列から入力オブジェクトのインスタンスを生成します。
@@ -154,7 +154,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
 
         private void loadLine ()
         {
-            using (reader)
+            try
             {
                 // 現在位置を初期化
                 position = 0;
@@ -211,12 +211,22 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
                     }
                 } // End of while loop.
             }
+            catch (IOException e)
+            {
+                reader.Dispose();
+                throw new ParseException(this, "IO error.", e);
+            }
         }
 
         public override string ToString()
         {
             return string.Format("Input(Source={0},LineNumber={1},ColumnNumer={2})",
                 reader, LineNumber, ColumnNumber);
+        }
+
+        public void Dispose()
+        {
+            reader.Dispose();
         }
     }
 }
