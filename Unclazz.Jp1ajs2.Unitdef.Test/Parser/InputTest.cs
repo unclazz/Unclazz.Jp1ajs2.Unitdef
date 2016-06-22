@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,79 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
     [TestFixture]
     public class InputTest
     {
+        private string GetTestProjectDirectory()
+        {
+            string binDebug = NUnit.Framework.TestContext
+                .CurrentContext.TestDirectory;
+            return System.IO.Directory.GetParent(binDebug).Parent.FullName ;
+        }
+
+        private string JoinPathSegments(string s0, string s1)
+        {
+            return System.IO.Path.Combine(s0, s1);
+        }
+
+        [Test]
+        public void FromFile_WhenValidPathSpecified_ReturnsInstance()
+        {
+            // Arrange
+            Input i = Input.FromFile(JoinPathSegments
+                (GetTestProjectDirectory(), "InputTest.txt"));
+
+            // Act
+            StringBuilder sb = new StringBuilder();
+            using (i)
+            {
+                while (!i.EndOfFile)
+                {
+                    sb.Append(i.Current);
+                    i.GoNext();
+                }
+            }
+
+            // Assert
+            Assert.AreEqual("abc\r\nあいうえお\r\nghi", sb.ToString());
+        }
+
+        [Test]
+        public void FromFile_WhenInvalidPathSpecified_ThrowsException()
+        {
+            // Arrange
+            string invalidPath = JoinPathSegments
+                (GetTestProjectDirectory(), "InputTest2.txt");
+
+            // Act
+
+            // Assert
+            Assert.Throws(new FileNotFoundException().GetType(), () => {
+                Input.FromFile(invalidPath);
+            });
+        }
+
+        [Test]
+        public void FromFile_WhenInvalidEncodingSpecified_ThrowsException()
+        {
+            // Arrange
+            string validPath = JoinPathSegments
+                (GetTestProjectDirectory(), "InputTest.txt");
+            Encoding invalidEncoding = Encoding.GetEncoding("Shift_JIS");
+            Input i = Input.FromFile(validPath, invalidEncoding);
+
+            // Act
+            StringBuilder sb = new StringBuilder();
+            using (i)
+            {
+                while (!i.EndOfFile)
+                {
+                    sb.Append(i.Current);
+                    i.GoNext();
+                }
+            }
+
+            // Assert
+            Assert.AreNotEqual("abc\r\nあいうえお\r\nghi", sb.ToString());
+        }
+
         [Test]
         public void LineNumber_Always_ReturnsCurrentLineNumber()
         {
