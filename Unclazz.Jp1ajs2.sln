@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unclazz.Jp1ajs2.Sample", "Unclazz.Jp1ajs2.Sample\Unclazz.Jp1ajs2.Sample.csproj", "{CBB9BE53-B064-4CE4-AEF5-6773BB1D2F46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unclazz.Jp1ajs2.Unitdef.Sample", "Unclazz.Jp1ajs2.Unitdef.Sample\Unclazz.Jp1ajs2.Unitdef.Sample.csproj", "{CBB9BE53-B064-4CE4-AEF5-6773BB1D2F46}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unclazz.Jp1ajs2.Unitdef", "Unclazz.Jp1ajs2.Unitdef\Unclazz.Jp1ajs2.Unitdef.csproj", "{82DEE39F-DB35-48F8-92DE-31187B5D8C4A}"
 EndProject

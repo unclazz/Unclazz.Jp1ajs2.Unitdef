@@ -7,8 +7,8 @@
     <ProjectGuid>{CBB9BE53-B064-4CE4-AEF5-6773BB1D2F46}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Unclazz.Jp1ajs2.Sample</RootNamespace>
-    <AssemblyName>Unclazz.Jp1ajs2.Sample</AssemblyName>
+    <RootNamespace>Unclazz.Jp1ajs2.Unitdef.Sample</RootNamespace>
+    <AssemblyName>Unclazz.Jp1ajs2.Unitdef.Sample</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,6 +32,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
