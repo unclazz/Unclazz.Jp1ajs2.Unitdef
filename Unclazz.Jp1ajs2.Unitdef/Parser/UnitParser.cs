@@ -13,7 +13,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
         /// パーサーのインスタンス
         /// </summary>
         public static readonly UnitParser Instance = new UnitParser();
-        private static readonly char SP = ' ';
+        private static readonly char WhiteSpace = ' ';
         private static readonly string BlockCommentStart = "/*";
         private static readonly string BlockCommentEnd = "*/";
 
@@ -144,7 +144,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
         {
             SkipComment(input);
             while (!input.EndOfFile) {
-                if (input.Current <= SP) {
+                if (input.Current <= WhiteSpace) {
                     input.GoNext();
                 } else {
                     string rest = input.RestOfLine;
@@ -167,7 +167,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             }
             return;
         }
-        public void SkipComment(Input input)
+        private void SkipComment(Input input)
         {
             string rest = input.RestOfLine;
             if (rest.StartsWith(BlockCommentStart))
