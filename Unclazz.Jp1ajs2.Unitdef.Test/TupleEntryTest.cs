@@ -79,5 +79,25 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
                 ITupleEntry e0 = TupleEntry.OfValue(null);
             });
         }
+
+        [Test]
+        public void Equals_When2InstanceRepresentSameValue_ReturnsTrue()
+        {
+            // Arrange
+            ITupleEntry e0 = TupleEntry.OfPair("a", "b");
+            ITupleEntry e1 = TupleEntry.OfPair("a", "c");
+            ITupleEntry e2 = TupleEntry.OfPair("a", "b");
+            ITupleEntry e3 = TupleEntry.OfPair(null, "b");
+            ITupleEntry e4 = TupleEntry.OfValue("b");
+
+            // Act
+
+            // Assert
+            Assert.AreEqual(false, e0.Equals(null));
+            Assert.AreEqual(false, e0.Equals(e1));
+            Assert.AreEqual(true, e0.Equals(e2));
+            Assert.AreEqual(false, e0.Equals(e3));
+            Assert.AreEqual(true, e4.Equals(e3));
+        }
     }
 }
