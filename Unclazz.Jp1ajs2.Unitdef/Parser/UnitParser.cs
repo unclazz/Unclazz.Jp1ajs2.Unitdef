@@ -328,11 +328,11 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
                 }
                 if (hasKey)
                 {
-                    entries.Add(TupleEntry.ofPair(sb0.ToString(), sb1.ToString()));
+                    entries.Add(TupleEntry.OfPair(sb0.ToString(), sb1.ToString()));
                 }
                 else
                 {
-                    entries.Add(TupleEntry.ofValue(sb0.ToString()));
+                    entries.Add(TupleEntry.OfValue(sb0.ToString()));
                 }
                 if (input.Current == ')') {
                     break;
