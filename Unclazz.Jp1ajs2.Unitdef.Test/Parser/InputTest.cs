@@ -56,7 +56,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             // Act
 
             // Assert
-            Assert.Throws(new FileNotFoundException().GetType(), () => {
+            Assert.Throws<FileNotFoundException>(() => {
                 Input.FromFile(invalidPath);
             });
         }

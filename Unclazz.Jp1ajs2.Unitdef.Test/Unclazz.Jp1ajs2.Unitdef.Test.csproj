@@ -38,6 +38,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FullQualifiedNameTest.cs" />
     <Compile Include="Parser\InputTest.cs" />
     <Compile Include="Parser\ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
