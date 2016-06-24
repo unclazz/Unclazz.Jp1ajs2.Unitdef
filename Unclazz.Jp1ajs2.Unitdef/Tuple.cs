@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
@@ -18,8 +17,17 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <returns>タプルのインスタンス</returns>
         public static ITuple FromCollection(ICollection<ITupleEntry> col)
         {
-            return new Tuple(col);
+            if (col.Count == 0)
+            {
+                return Empty;
+            }
+            else
+            {
+                return new Tuple(col);
+            }
         }
+
+        public static readonly ITuple Empty = new Tuple(new List<ITupleEntry>());
 
         private readonly IDictionary<string, string> dict = new Dictionary<string, string>();
         private readonly IList<ITupleEntry> list = new List<ITupleEntry>();
@@ -81,7 +89,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             get
             {
-                return new List<string>(dict.Values);
+                return list.Select<ITupleEntry,string>(e => e.Value).ToList<string>();
             }
         }
 
