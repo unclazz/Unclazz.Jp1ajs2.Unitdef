@@ -36,6 +36,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             foreach(ITupleEntry e in col)
             {
+                UnitdefUtil.ArgumentMustNotBeNull(e, "entry of tuple");
                 if (e.HasKey)
                 {
                     dict.Add(e.Key, e.Value);

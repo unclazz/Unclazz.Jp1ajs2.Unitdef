@@ -8,7 +8,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 {
     public sealed class TupleParameterValue : IParameterValue
     {
-        public static IParameterValue ofValue(ITuple tuple)
+        public static IParameterValue OfValue(ITuple tuple)
         {
             return new TupleParameterValue(tuple);
         }
@@ -43,6 +43,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         private TupleParameterValue(ITuple t)
         {
+            UnitdefUtil.ArgumentMustNotBeNull(t, "tuple");
             TupleValue = t;
             Type = ParameterValueType.Tuple;
         }

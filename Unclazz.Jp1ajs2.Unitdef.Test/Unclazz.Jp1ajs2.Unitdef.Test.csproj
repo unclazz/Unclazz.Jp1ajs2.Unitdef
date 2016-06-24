@@ -43,6 +43,7 @@
     <Compile Include="Parser\ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TupleEntryTest.cs" />
+    <Compile Include="TupleParameterValueTest.cs" />
     <Compile Include="TupleTest.cs" />
   </ItemGroup>
   <ItemGroup>

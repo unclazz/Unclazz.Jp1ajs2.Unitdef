@@ -87,7 +87,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             ITuple t3 = _2EntriesHaveKeyAnd2EntriesHaveNotKey();
 
             // Act
-            
+
             // Assert
             Assert.That(t0.Values.Count, Is.EqualTo(0));
             Assert.That(t1.Values.Count, Is.EqualTo(2));
@@ -97,6 +97,20 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             Assert.That(t2.Values.Contains("v1"), Is.True);
             Assert.That(t2.Values.Contains("v2"), Is.False);
             Assert.That(t3.Values.Contains("v2"), Is.True);
+        }
+
+        [Test]
+        public void FromCollection_WhenCollectionIncludesNullSpecified_ThrowsException()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                Tuple.FromCollection(new ITupleEntry[] { TupleEntry.OfValue("v0"), null }.ToList());
+            });
         }
     }
 }

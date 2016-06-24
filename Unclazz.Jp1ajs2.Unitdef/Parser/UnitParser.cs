@@ -261,13 +261,13 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             switch (input.Current) {
                 case '(':
         			    ITuple t = ParseTuple(input);
-                    return TupleParameterValue.ofValue(t);
+                    return TupleParameterValue.OfValue(t);
         		    case '"':
 			        string q = ParseQuotedString(input);
-                    return QuotedStringParameterValue.ofValue(q);
+                    return QuotedStringParameterValue.OfValue(q);
                 default:
 			        string s = ParseRawString(input);
-                    return RawStringParameterValue.ofValue(s);
+                    return RawStringParameterValue.OfValue(s);
             }
         }
         private string ParseRawString(Input input)

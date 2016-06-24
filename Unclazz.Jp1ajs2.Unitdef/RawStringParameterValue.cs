@@ -8,7 +8,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 {
     public sealed class RawStringParameterValue : IParameterValue
     {
-        public static IParameterValue ofValue(string value)
+        public static IParameterValue OfValue(string value)
         {
             return new RawStringParameterValue(value);
         }
@@ -19,6 +19,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         private RawStringParameterValue(string value)
         {
+            UnitdefUtil.ArgumentMustNotBeNull(value, "string value");
             StringValue = value;
             TupleValue = null;
             Type = ParameterValueType.RawString;
