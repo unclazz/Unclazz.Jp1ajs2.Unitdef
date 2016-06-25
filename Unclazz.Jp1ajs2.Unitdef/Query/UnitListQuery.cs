@@ -9,7 +9,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
     /// <summary>
     /// 下位ユニット（子ユニット、子孫ユニット）を問合せるためのクエリです。
     /// </summary>
-    public sealed class UnitListQuery : IQuery<IUnit, IList<IUnit>>
+    public sealed class UnitListQuery : IQuery<IUnit, IEnumerable<IUnit>>
     {
         private static readonly string TrueString = true.ToString();
         private readonly Func<IUnit, IEnumerable<IUnit>> func;
@@ -24,13 +24,13 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
             this.func = func;
             this.preds = null;
         }
-        public IList<IUnit> QueryFrom(IUnit target)
+        public IEnumerable<IUnit> QueryFrom(IUnit target)
         {
             // predsの参照をチェック
             if (preds == null)
             {
                 // nullなら何もせずリストを返す
-                return func.Invoke(target).ToList();
+                return func.Invoke(target);
             }
             else
             {
@@ -42,7 +42,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
                     return preds.GetInvocationList().All(d => {
                         return d.DynamicInvoke(u).ToString().Equals(TrueString);
                     });
-                }).ToList();
+                });
             }
         }
         /// <summary>
@@ -52,14 +52,8 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// <returns>クエリ</returns>
         public UnitListQuery And(Predicate<IUnit> pred)
         {
-            if (preds == null)
-            {
-                return new UnitListQuery(func, pred);
-            }
-            else
-            {
-                return new UnitListQuery(func, preds + pred);
-            }
+            UnitdefUtil.ArgumentMustNotBeNull(pred, "predicate");
+            return new UnitListQuery(func, pred == null ? pred : preds + pred);
         }
         /// <summary>
         /// 問合せのフィルタ条件にユニット種別の指定を追加した新しいクエリを返します。
@@ -177,9 +171,18 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         {
             return new UnitOneQuery(func, preds, false);
         }
+        /// <summary>
+        /// ユニット定義パラメータを問合せるクエリを返します。
+        /// </summary>
+        public ParameterListQuery TheirParameters
+        {
+            get {
+                return new ParameterListQuery(this);
+            }
+        }
     }
     /// <summary>
-    /// クエリ<see cref="UnitListQuery"/>の条件に合うユニットを1つだけ返すクエリです。
+    /// クエリ<see cref="UnitListQuery"/>の問合せ結果から1件だけ取り出すためのクエリです。
     /// </summary>
     public sealed class UnitOneQuery : IQuery<IUnit, IUnit>
     {
@@ -196,19 +199,14 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         public IUnit QueryFrom(IUnit target)
         {
             IUnit r = null;
-            // predsの参照をチェック
             if (preds == null)
             {
-                // nullなら何もせずリストを返す
                 r = func.Invoke(target).FirstOrDefault();
             }
             else
             {
-                // それ以外の場合はフィルタ済みのリストを返す
                 r = func.Invoke(target).Where((IUnit u) =>
                 {
-                    // predsに含まれるすべての「呼び出し」がtrueを返した時のみ
-                    // 当該要素を結果リストに含める
                     return preds.GetInvocationList().All(d =>
                     {
                         return d.DynamicInvoke(u).ToString().Equals(TrueString);
