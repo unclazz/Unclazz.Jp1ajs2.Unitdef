@@ -57,6 +57,7 @@
     <Compile Include="IUnitType.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\UnitListQuery.cs" />
     <Compile Include="QuotedStringParameterValue.cs" />
     <Compile Include="RawStringParameterValue.cs" />
     <Compile Include="Tuple.cs" />
