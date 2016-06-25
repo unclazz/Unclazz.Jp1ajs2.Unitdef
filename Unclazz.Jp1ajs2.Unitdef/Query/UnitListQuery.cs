@@ -160,7 +160,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// <returns>クエリ</returns>
         public IQuery<IUnit, IUnit> One(bool nullable)
         {
-            return new UnitOneQuery(func, preds, nullable);
+            return new OneQuery<IUnit>(func, preds, nullable);
         }
         /// <summary>
         /// 問合せ結果を1件だけ返すクエリを返します。
@@ -169,7 +169,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// <returns>クエリ</returns>
         public IQuery<IUnit, IUnit> One()
         {
-            return new UnitOneQuery(func, preds, false);
+            return new OneQuery<IUnit>(func, preds, false);
         }
         /// <summary>
         /// ユニット定義パラメータを問合せるクエリを返します。
@@ -179,45 +179,6 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
             get {
                 return new ParameterListQuery(this);
             }
-        }
-    }
-    /// <summary>
-    /// クエリ<see cref="UnitListQuery"/>の問合せ結果から1件だけ取り出すためのクエリです。
-    /// </summary>
-    public sealed class UnitOneQuery : IQuery<IUnit, IUnit>
-    {
-        private static readonly string TrueString = true.ToString();
-        private readonly Func<IUnit, IEnumerable<IUnit>> func;
-        private readonly Predicate<IUnit> preds;
-        private readonly bool nullable;
-        internal UnitOneQuery(Func<IUnit, IEnumerable<IUnit>> func, Predicate<IUnit> preds, bool nullable)
-        {
-            this.func = func;
-            this.preds = preds;
-            this.nullable = nullable;
-        }
-        public IUnit QueryFrom(IUnit target)
-        {
-            IUnit r = null;
-            if (preds == null)
-            {
-                r = func.Invoke(target).FirstOrDefault();
-            }
-            else
-            {
-                r = func.Invoke(target).Where((IUnit u) =>
-                {
-                    return preds.GetInvocationList().All(d =>
-                    {
-                        return d.DynamicInvoke(u).ToString().Equals(TrueString);
-                    });
-                }).FirstOrDefault();
-            }
-            if (r != null || nullable)
-            {
-                return r;
-            }
-            throw new InvalidOperationException("no unit element.");
         }
     }
 }
