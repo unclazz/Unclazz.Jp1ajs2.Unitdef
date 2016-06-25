@@ -91,17 +91,17 @@ namespace Unclazz.Jp1ajs2.Unitdef
         }
 
         private static readonly UnitParser parser = UnitParser.Instance;
-        public static IList<IUnit> FromString(string s)
+        public static IUnit FromString(string s)
         {
-            return parser.Parse(Input.FromString(s));
+            return parser.Parse(Input.FromString(s))[0];
         }
-        public static IList<IUnit> FromFile(string path)
+        public static IUnit FromFile(string path)
         {
-            return parser.Parse(Input.FromFile(path));
+            return parser.Parse(Input.FromFile(path))[0];
         }
-        public static IList<IUnit> FromFile(string path, Encoding enc)
+        public static IUnit FromFile(string path, Encoding enc)
         {
-            return parser.Parse(Input.FromFile(path, enc));
+            return parser.Parse(Input.FromFile(path, enc))[0];
         }
 
         private Unit(IFullQualifiedName fqn, IAttributes attributes, IParameter ty, IParameter cm, 
