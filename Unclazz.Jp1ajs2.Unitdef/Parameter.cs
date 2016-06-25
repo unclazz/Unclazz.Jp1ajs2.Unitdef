@@ -75,7 +75,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public string Name { get; }
         public IList<IParameterValue> Values { get; }
 
-        public TResult query<TResult>(IParameterQuery<TResult> q)
+        public TResult query<TResult>(IQuery<IParameter,TResult> q)
         {
             return q.QueryFrom(this);
         }
