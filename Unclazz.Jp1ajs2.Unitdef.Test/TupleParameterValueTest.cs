@@ -22,7 +22,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             // Act
 
             // Assert
-Assert.That(pv0.StringValue, Is.EqualTo("(v0,k1=v1)"));
+            Assert.That(pv0.StringValue, Is.EqualTo("(v0,k1=v1)"));
             Assert.That(pv1.StringValue, Is.EqualTo("()"));
         }
 
