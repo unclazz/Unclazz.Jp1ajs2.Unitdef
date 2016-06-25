@@ -47,7 +47,6 @@
     <Compile Include="IAttributes.cs" />
     <Compile Include="IFullQualifiedName.cs" />
     <Compile Include="Query\ParameterListQuery.cs" />
-    <Compile Include="Query\ParameterValueListQuery.cs" />
     <Compile Include="Query\Q.cs" />
     <Compile Include="Parser\Input.cs" />
     <Compile Include="IParameter.cs" />
