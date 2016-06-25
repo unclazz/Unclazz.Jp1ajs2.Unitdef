@@ -160,7 +160,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// <returns>クエリ</returns>
         public IQuery<IUnit, IUnit> One(bool nullable)
         {
-            return new OneQuery<IUnit>(func, preds, nullable);
+            return new OneQuery<IUnit>(QueryFrom, nullable);
         }
         /// <summary>
         /// 問合せ結果を1件だけ返すクエリを返します。
@@ -169,7 +169,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// <returns>クエリ</returns>
         public IQuery<IUnit, IUnit> One()
         {
-            return new OneQuery<IUnit>(func, preds, false);
+            return One(false);
         }
         /// <summary>
         /// ユニット定義パラメータを問合せるクエリを返します。

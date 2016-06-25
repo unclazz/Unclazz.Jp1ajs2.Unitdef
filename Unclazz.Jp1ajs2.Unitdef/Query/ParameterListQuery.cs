@@ -13,12 +13,12 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
     public sealed class ParameterListQuery : IQuery<IUnit, IEnumerable<IParameter>>
     {
         private static readonly string TrueString = true.ToString();
-        private readonly UnitListQuery unitListQuery;
+        private readonly IQuery<IUnit, IEnumerable<IUnit>> unitListQuery;
         private readonly Predicate<IParameter> preds;
-        internal ParameterListQuery(UnitListQuery ulq) : this(ulq, null)
+        internal ParameterListQuery(IQuery<IUnit, IEnumerable<IUnit>> ulq) : this(ulq, null)
         {
         }
-        internal ParameterListQuery(UnitListQuery ulq, Predicate<IParameter> preds)
+        internal ParameterListQuery(IQuery<IUnit, IEnumerable<IUnit>> ulq, Predicate<IParameter> preds)
         {
             this.unitListQuery = ulq;
             this.preds = preds;
@@ -128,6 +128,14 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         {
             return new NumberedValueConditionQuery(this,i);
         }
+        public IQuery<IUnit, IParameter> One(bool nullable)
+        {
+            return new OneQuery<IParameter>(this.QueryFrom, nullable);
+        }
+        public IQuery<IUnit, IParameter> One()
+        {
+            return One(false);
+        }
     }
     /// <summary>
     /// <see cref="ParameterListQuery"/>のフィルタ条件に
@@ -204,6 +212,14 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         public NumberedValueConditionQuery ValueContains(string s)
         {
             return And(v => v.StringValue.Contains(s));
+        }
+        public IQuery<IUnit, IParameter> One(bool nullable)
+        {
+            return new OneQuery<IParameter>(this.QueryFrom, nullable);
+        }
+        public IQuery<IUnit, IParameter> One()
+        {
+            return One(false);
         }
     }
 }

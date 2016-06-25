@@ -6,35 +6,29 @@ using System.Threading.Tasks;
 
 namespace Unclazz.Jp1ajs2.Unitdef.Query
 {
+    /// <summary>
+    /// <see cref="IEnumerable{T}"/>から1件だけ要素を取得して返すクエリです。
+    /// </summary>
+    /// <typeparam name="T">問合せ結果の型</typeparam>
     internal sealed class OneQuery<T> : IQuery<IUnit, T>
     {
         private static readonly string TrueString = true.ToString();
         private readonly Func<IUnit, IEnumerable<T>> func;
-        private readonly Predicate<T> preds;
         private readonly bool nullable;
-        internal OneQuery(Func<IUnit, IEnumerable<T>> func, Predicate<T> preds, bool nullable)
+        /// <summary>
+        /// コンストラクタです。
+        /// </summary>
+        /// <param name="func"></param>
+        /// <param name="preds"></param>
+        /// <param name="nullable"></param>
+        internal OneQuery(Func<IUnit, IEnumerable<T>> func, bool nullable)
         {
             this.func = func;
-            this.preds = preds;
             this.nullable = nullable;
         }
         public T QueryFrom(IUnit target)
         {
-            T r = default(T);
-            if (preds == null)
-            {
-                r = func.Invoke(target).FirstOrDefault();
-            }
-            else
-            {
-                r = func.Invoke(target).Where((T u) =>
-                {
-                    return preds.GetInvocationList().All(d =>
-                    {
-                        return d.DynamicInvoke(u).ToString().Equals(TrueString);
-                    });
-                }).FirstOrDefault<T>();
-            }
+            T r = func.Invoke(target).FirstOrDefault();
             if (r != null || nullable)
             {
                 return r;

@@ -19,7 +19,6 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
 
         private UnitParser()
         {
-
         }
 
         /// <summary>
