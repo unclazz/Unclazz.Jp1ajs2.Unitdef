@@ -22,6 +22,9 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// ユニット探索は幅優先で行われます。
         /// </summary>
         public static readonly UnitListQuery Descendants = new UnitListQuery(UnitdefUtil.GetDescendants);
-
+        /// <summary>
+        /// ユニット定義パラメータを問合せるクエリです。
+        /// </summary>
+        public static readonly ParameterListQuery Parameters = new ParameterListQuery(IdQuery<IUnit>.Instance);
     }
 }

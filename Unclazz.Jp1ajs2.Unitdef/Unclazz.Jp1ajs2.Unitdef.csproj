@@ -46,6 +46,7 @@
     <Compile Include="FullQualifiedName.cs" />
     <Compile Include="IAttributes.cs" />
     <Compile Include="IFullQualifiedName.cs" />
+    <Compile Include="Query\IdQuery.cs" />
     <Compile Include="Query\OneQuery.cs" />
     <Compile Include="Query\ParameterListQuery.cs" />
     <Compile Include="Query\Q.cs" />
