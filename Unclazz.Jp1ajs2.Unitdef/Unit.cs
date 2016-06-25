@@ -124,7 +124,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public IList<IUnit> SubUnits { get; }
         public IUnitType Type { get; }
 
-        public TResult Query<TResult>(IUnitQuery<TResult> q)
+        public TResult Query<TResult>(IQuery<IUnit,TResult> q)
         {
             return q.QueryFrom(this);
         }
