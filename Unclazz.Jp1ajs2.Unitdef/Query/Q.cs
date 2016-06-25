@@ -71,9 +71,6 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         public UnitListQuery TypeIs(IUnitType t)
         {
             return And(u => {
-                System.Console.WriteLine(u.FullQualifiedName);
-                System.Console.WriteLine(u.Type);
-                System.Console.WriteLine(u.Type.Equals(t));
                 return u.Type.Equals(t);
             });
         }
