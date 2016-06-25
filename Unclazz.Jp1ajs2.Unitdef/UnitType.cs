@@ -284,7 +284,12 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <returns>判断結果（参照が同一である場合<code>true</code>）</returns>
         public override bool Equals(object obj)
         {
-            return object.ReferenceEquals(this, obj);
+            if (object.ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            IUnitType that = obj as IUnitType;
+            return that != null && that.Name.Equals(this.Name);
         }
         public override int GetHashCode()
         {
