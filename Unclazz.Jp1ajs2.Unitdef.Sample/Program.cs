@@ -14,6 +14,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Sample
     {
         static void Main(string[] args)
         {
+            // 文字列もしくはファイルからユニット定義をパースする
             IUnit u = Unit.FromString(
                 "unit=XXXX0000,,,;\n" +
                 "{   ty=n;\n" +
