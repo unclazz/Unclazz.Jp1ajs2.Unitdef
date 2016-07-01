@@ -88,7 +88,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="s">パラメータ名部分文字列</param>
         /// <returns>クエリ</returns>
-        public ParameterListQuery NameContainsWith(string s)
+        public ParameterListQuery NameContains(string s)
         {
             return And(p => p.Name.Contains(s));
         }
