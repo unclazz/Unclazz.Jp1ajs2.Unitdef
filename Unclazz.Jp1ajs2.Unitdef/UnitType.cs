@@ -69,11 +69,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <summary>
         /// 判定ジョブ
         /// </summary>
-        public static readonly UnitType JudgementJob = new UnitType("jdj", "JudgementJob");
+        public static readonly UnitType JudgmentJob = new UnitType("jdj", "JudgmentJob");
         /// <summary>
         /// リカバリー判定ジョブ
         /// </summary>
-        public static readonly UnitType RecoveryJudgementJob = new UnitType("rjdj", "RecoveryJudgementJob");
+        public static readonly UnitType RecoveryJudgmentJob = new UnitType("rjdj", "RecoveryJudgmentJob");
         /// <summary>
         /// ORジョブ
         /// </summary>
@@ -181,11 +181,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <summary>
         /// JP1/Cm2状態通知ジョブ
         /// </summary>
-        public static readonly UnitType Jp1cm2SendSendJob = new UnitType("cmsj", "Jp1cm2SendSendJob");
+        public static readonly UnitType Jp1cm2StateSendJob = new UnitType("cmsj", "Jp1cm2StateSendJob");
         /// <summary>
         /// リカバリーJP1/Cm2状態通知ジョブ
         /// </summary>
-        public static readonly UnitType RecoveryJp1cm2SendSendJob = new UnitType("rcmsj", "RecoveryJp1cm2SendSendJob");
+        public static readonly UnitType RecoveryJp1cm2StateSendJob = new UnitType("rcmsj", "RecoveryJp1cm2StateSendJob");
         /// <summary>
         /// ローカル電源制御ジョブ
         /// </summary>
