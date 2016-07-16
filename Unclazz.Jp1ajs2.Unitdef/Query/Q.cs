@@ -23,6 +23,11 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         public static readonly UnitEnumerableQuery Descendants = new UnitEnumerableQuery(UnitdefUtil.GetDescendants);
         /// <summary>
+        /// 当該ユニットと直属・非直属の下位ユニット（子孫ユニット）を問い合わせるクエリです。
+        /// ユニット探索は幅優先で行われます。
+        /// </summary>
+        public static readonly UnitEnumerableQuery ItSelfAndDescendants = new UnitEnumerableQuery(UnitdefUtil.GetItSelfAndDescendants);
+        /// <summary>
         /// ユニット定義パラメータを問合せるクエリです。
         /// </summary>
         public static readonly ParameterEnumerableQuery Parameters = new ParameterEnumerableQuery(IdQuery<IUnit>.Instance);

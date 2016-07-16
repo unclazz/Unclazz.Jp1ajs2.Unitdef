@@ -39,6 +39,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Sample
             IParameter param0ScOfDescendantsTypeIsUnixJob = u.Query(Q
                 .Descendants.TypeIs(UnitType.UnixJob)
                 .TheirParameters.NameIs("sc").One(true));
+
         }
     }
 }
