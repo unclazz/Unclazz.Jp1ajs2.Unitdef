@@ -28,18 +28,17 @@ namespace Unclazz.Jp1ajs2.Unitdef.Sample
                 "}");
 
             // 直属の下位ユニットのうち名前が1000で終わるものすべて
-            IEnumerable<IUnit> childrenNameEndsWith1000 = u.Query(Q.Children.NameEndsWith("1000"));
+            IEnumerable<IUnit> childrenNameEndsWith1000 = u.Query(Q.Children().NameEndsWith("1000"));
             // ...そのうち1件だけ（存在しない場合は例外をスローする）
-            IUnit child0NameEndsWith1000 = u.Query(Q.Children.NameEndsWith("1001").One());
+            IUnit child0NameEndsWith1000 = u.Query(Q.Children().NameEndsWith("1000").One());
 
             // 直属・非直属の下位ユニットのうち種別がUNIXジョブであるもののscパラメータすべて
             IEnumerable<IParameter> paramsScOfDescendantsTypeIsUnixJob = u.Query(Q
-                .Descendants.TypeIs(UnitType.UnixJob).TheirParameters.NameIs("sc"));
+                .Descendants().TypeIs(UnitType.UnixJob).TheirParameters.NameIs("sc"));
             // ...そのうち1件だけ（存在しない場合はnullを返す）
             IParameter param0ScOfDescendantsTypeIsUnixJob = u.Query(Q
-                .Descendants.TypeIs(UnitType.UnixJob)
+                .Descendants().TypeIs(UnitType.UnixJob)
                 .TheirParameters.NameIs("sc").One(true));
-
         }
     }
 }

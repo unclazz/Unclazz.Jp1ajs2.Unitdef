@@ -13,23 +13,55 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
     /// </summary>
     public static class Q
     {
+        private static readonly UnitEnumerableQuery children = new UnitEnumerableQuery(u => u.SubUnits);
+        private static readonly UnitEnumerableQuery descendants = new UnitEnumerableQuery(UnitdefUtil.GetDescendants);
+        private static readonly UnitEnumerableQuery descendantsDepthFirst = new UnitEnumerableQuery(UnitdefUtil.GetDescendantsDepthFirst);
+        private static readonly UnitEnumerableQuery itSelfAndDescendants = new UnitEnumerableQuery(UnitdefUtil.GetItSelfAndDescendants);
+        private static readonly UnitEnumerableQuery itSelfAndDescendantsDepthFirst = new UnitEnumerableQuery(UnitdefUtil.GetItSelfAndDescendantsDepthFirst);
+
         /// <summary>
-        /// 直属の下位ユニット（子ユニット）を問い合わせるクエリです。
+        /// 直属の下位ユニット（子ユニット）を問い合わせるクエリを返します。
         /// </summary>
-        public static readonly UnitEnumerableQuery Children = new UnitEnumerableQuery(u => u.SubUnits);
+        /// <returns>クエリ</returns>
+        public static UnitEnumerableQuery Children()
+        {
+            return children;
+        }
         /// <summary>
-        /// 直属・非直属の下位ユニット（子孫ユニット）を問い合わせるクエリです。
+        /// 直属・非直属の下位ユニット（子孫ユニット）を問い合わせるクエリを返す。
         /// ユニット探索は幅優先で行われます。
         /// </summary>
-        public static readonly UnitEnumerableQuery Descendants = new UnitEnumerableQuery(UnitdefUtil.GetDescendants);
+        /// <returns>クエリ</returns>
+        public static UnitEnumerableQuery Descendants()
+        {
+            return descendants;
+        }
         /// <summary>
-        /// 当該ユニットと直属・非直属の下位ユニット（子孫ユニット）を問い合わせるクエリです。
+        /// 直属・非直属の下位ユニット（子孫ユニット）を問い合わせるクエリを返します。
+        /// </summary>
+        /// <param name="depthFirst"><code>true</code>の場合 ユニット探索は深さ優先で行われる</param>
+        /// <returns>クエリ</returns>
+        public static UnitEnumerableQuery Descendants(bool depthFirst)
+        {
+            return depthFirst ? descendantsDepthFirst : descendants;
+        }
+        /// <summary>
+        /// 当該ユニットと直属・非直属の下位ユニット（子孫ユニット）を問い合わせるクエリを返す。
         /// ユニット探索は幅優先で行われます。
         /// </summary>
-        public static readonly UnitEnumerableQuery ItSelfAndDescendants = new UnitEnumerableQuery(UnitdefUtil.GetItSelfAndDescendants);
+        /// <returns>クエリ</returns>
+        public static UnitEnumerableQuery ItSelfAndDescendants()
+        {
+            return itSelfAndDescendants;
+        }
         /// <summary>
-        /// ユニット定義パラメータを問合せるクエリです。
+        /// 当該ユニットと直属・非直属の下位ユニット（子孫ユニット）を問い合わせるクエリを返します。
         /// </summary>
-        public static readonly ParameterEnumerableQuery Parameters = new ParameterEnumerableQuery(IdQuery<IUnit>.Instance);
+        /// <param name="depthFirst"><code>true</code>の場合 ユニット探索は深さ優先で行われる</param>
+        /// <returns>クエリ</returns>
+        public static UnitEnumerableQuery ItSelfAndDescendants(bool depthFirst)
+        {
+            return depthFirst ? itSelfAndDescendantsDepthFirst : itSelfAndDescendants;
+        }
     }
 }
