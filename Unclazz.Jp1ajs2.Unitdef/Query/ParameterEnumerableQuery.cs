@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 namespace Unclazz.Jp1ajs2.Unitdef.Query
 {
     /// <summary>
-    /// <see cref="UnitListQuery"/>で絞り込んだユニットの
+    /// <see cref="UnitEnumerableQuery"/>で絞り込んだユニットの
     /// ユニット定義パラメータを問合せるためのクエリです。
     /// </summary>
-    public sealed class ParameterListQuery : IQuery<IUnit, IEnumerable<IParameter>>
+    public sealed class ParameterEnumerableQuery : IQuery<IUnit, IEnumerable<IParameter>>
     {
         private static readonly string TrueString = true.ToString();
         private readonly IQuery<IUnit, IEnumerable<IUnit>> unitListQuery;
         private readonly Predicate<IParameter> preds;
-        internal ParameterListQuery(IQuery<IUnit, IEnumerable<IUnit>> ulq) : this(ulq, null)
+        internal ParameterEnumerableQuery(IQuery<IUnit, IEnumerable<IUnit>> ulq) : this(ulq, null)
         {
         }
-        internal ParameterListQuery(IQuery<IUnit, IEnumerable<IUnit>> ulq, Predicate<IParameter> preds)
+        internal ParameterEnumerableQuery(IQuery<IUnit, IEnumerable<IUnit>> ulq, Predicate<IParameter> preds)
         {
             this.unitListQuery = ulq;
             this.preds = preds;
@@ -51,17 +51,17 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="pred">フィルタ条件を表す<see cref="Predicate{IParameter}"/></param>
         /// <returns>クエリ</returns>
-        public ParameterListQuery And(Predicate<IParameter> pred)
+        public ParameterEnumerableQuery And(Predicate<IParameter> pred)
         {
             UnitdefUtil.ArgumentMustNotBeNull(pred, "predicate");
-            return new ParameterListQuery(unitListQuery, preds == null ? pred : preds + pred);
+            return new ParameterEnumerableQuery(unitListQuery, preds == null ? pred : preds + pred);
         }
         /// <summary>
         /// 問合せフィルタ条件にパラメータ名の指定を加えます。
         /// </summary>
         /// <param name="s">パラメータ名</param>
         /// <returns>クエリ</returns>
-        public ParameterListQuery NameIs(string s)
+        public ParameterEnumerableQuery NameIs(string s)
         {
             return And(p => p.Name.Equals(s));
         }
@@ -70,7 +70,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="s">パラメータ名接頭辞</param>
         /// <returns>クエリ</returns>
-        public ParameterListQuery NameStartsWith(string s)
+        public ParameterEnumerableQuery NameStartsWith(string s)
         {
             return And(p => p.Name.StartsWith(s));
         }
@@ -79,7 +79,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="s">パラメータ名接尾辞</param>
         /// <returns>クエリ</returns>
-        public ParameterListQuery NameEndsWith(string s)
+        public ParameterEnumerableQuery NameEndsWith(string s)
         {
             return And(p => p.Name.EndsWith(s));
         }
@@ -88,7 +88,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="s">パラメータ名部分文字列</param>
         /// <returns>クエリ</returns>
-        public ParameterListQuery NameContains(string s)
+        public ParameterEnumerableQuery NameContains(string s)
         {
             return And(p => p.Name.Contains(s));
         }
@@ -97,7 +97,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="i">パラメータ値の数</param>
         /// <returns>クエリ</returns>
-        public ParameterListQuery ValueCountIs(int i)
+        public ParameterEnumerableQuery ValueCountIs(int i)
         {
             return And(p => p.Count == i);
         }
@@ -106,7 +106,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="i">パラメータ値数の境界値</param>
         /// <returns>クエリ</returns>
-        public ParameterListQuery ValueCountGreaterThan(int i)
+        public ParameterEnumerableQuery ValueCountGreaterThan(int i)
         {
             return And(p => p.Count > i);
         }
@@ -115,7 +115,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="i">パラメータ値数の境界値</param>
         /// <returns>クエリ</returns>
-        public ParameterListQuery ValueCountLessThan(int i)
+        public ParameterEnumerableQuery ValueCountLessThan(int i)
         {
             return And(p => p.Count < i);
         }
@@ -138,22 +138,22 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         }
     }
     /// <summary>
-    /// <see cref="ParameterListQuery"/>のフィルタ条件に
+    /// <see cref="ParameterEnumerableQuery"/>のフィルタ条件に
     /// 特定位置のパラメータ値についての条件を加えるクエリです。
     /// </summary>
     public sealed class NumberedValueConditionQuery : IQuery<IUnit, IEnumerable<IParameter>>
     {
         private static readonly string TrueString = true.ToString();
-        private readonly ParameterListQuery plq;
+        private readonly ParameterEnumerableQuery plq;
         private readonly int i;
         private readonly Predicate<IParameterValue> preds;
-        internal NumberedValueConditionQuery(ParameterListQuery plq, int i, Predicate<IParameterValue> preds)
+        internal NumberedValueConditionQuery(ParameterEnumerableQuery plq, int i, Predicate<IParameterValue> preds)
         {
             this.plq = plq;
             this.i = i;
             this.preds = preds;
         }
-        internal NumberedValueConditionQuery(ParameterListQuery plq, int i) :this(plq, i, null)
+        internal NumberedValueConditionQuery(ParameterEnumerableQuery plq, int i) :this(plq, i, null)
         {
 
         }

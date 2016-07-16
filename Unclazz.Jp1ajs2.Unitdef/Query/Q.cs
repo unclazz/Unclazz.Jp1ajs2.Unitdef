@@ -16,15 +16,15 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// <summary>
         /// 直属の下位ユニット（子ユニット）を問い合わせるクエリです。
         /// </summary>
-        public static readonly UnitListQuery Children = new UnitListQuery(u => u.SubUnits);
+        public static readonly UnitEnumerableQuery Children = new UnitEnumerableQuery(u => u.SubUnits);
         /// <summary>
         /// 直属・非直属の下位ユニット（子孫ユニット）を問い合わせるクエリです。
         /// ユニット探索は幅優先で行われます。
         /// </summary>
-        public static readonly UnitListQuery Descendants = new UnitListQuery(UnitdefUtil.GetDescendants);
+        public static readonly UnitEnumerableQuery Descendants = new UnitEnumerableQuery(UnitdefUtil.GetDescendants);
         /// <summary>
         /// ユニット定義パラメータを問合せるクエリです。
         /// </summary>
-        public static readonly ParameterListQuery Parameters = new ParameterListQuery(IdQuery<IUnit>.Instance);
+        public static readonly ParameterEnumerableQuery Parameters = new ParameterEnumerableQuery(IdQuery<IUnit>.Instance);
     }
 }

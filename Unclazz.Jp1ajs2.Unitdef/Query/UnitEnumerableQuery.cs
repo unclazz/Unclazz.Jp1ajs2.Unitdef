@@ -9,17 +9,17 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
     /// <summary>
     /// 下位ユニット（子ユニット、子孫ユニット）を問合せるためのクエリです。
     /// </summary>
-    public sealed class UnitListQuery : IQuery<IUnit, IEnumerable<IUnit>>
+    public sealed class UnitEnumerableQuery : IQuery<IUnit, IEnumerable<IUnit>>
     {
         private static readonly string TrueString = true.ToString();
         private readonly Func<IUnit, IEnumerable<IUnit>> func;
         private readonly Predicate<IUnit> preds;
-        internal UnitListQuery(Func<IUnit, IEnumerable<IUnit>> func, Predicate<IUnit> preds)
+        internal UnitEnumerableQuery(Func<IUnit, IEnumerable<IUnit>> func, Predicate<IUnit> preds)
         {
             this.func = func;
             this.preds = preds;
         }
-        internal UnitListQuery(Func<IUnit, IEnumerable<IUnit>> func)
+        internal UnitEnumerableQuery(Func<IUnit, IEnumerable<IUnit>> func)
         {
             this.func = func;
             this.preds = null;
@@ -50,17 +50,17 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="pred">フィルタ条件を表す<see cref="Predicate{IUnit}"/></param>
         /// <returns>クエリ</returns>
-        public UnitListQuery And(Predicate<IUnit> pred)
+        public UnitEnumerableQuery And(Predicate<IUnit> pred)
         {
             UnitdefUtil.ArgumentMustNotBeNull(pred, "predicate");
-            return new UnitListQuery(func, pred == null ? pred : preds + pred);
+            return new UnitEnumerableQuery(func, pred == null ? pred : preds + pred);
         }
         /// <summary>
         /// 問合せのフィルタ条件にユニット種別の指定を追加した新しいクエリを返します。
         /// </summary>
         /// <param name="t">ユニット種別</param>
         /// <returns>クエリ</returns>
-        public UnitListQuery TypeIs(IUnitType t)
+        public UnitEnumerableQuery TypeIs(IUnitType t)
         {
             return And(u => {
                 return u.Type.Equals(t);
@@ -71,7 +71,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="s">ユニット名</param>
         /// <returns>クエリ</returns>
-        public UnitListQuery NameIs(string s)
+        public UnitEnumerableQuery NameIs(string s)
         {
             return And(u => u.Name.Equals(s));
         }
@@ -80,7 +80,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="s">ユニット名接頭辞</param>
         /// <returns>クエリ</returns>
-        public UnitListQuery NameStartsWith(string s)
+        public UnitEnumerableQuery NameStartsWith(string s)
         {
             return And(u => u.Name.StartsWith(s));
         }
@@ -89,7 +89,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="s">ユニット名接尾辞</param>
         /// <returns>クエリ</returns>
-        public UnitListQuery NameEndsWith(string s)
+        public UnitEnumerableQuery NameEndsWith(string s)
         {
             return And(u => u.Name.EndsWith(s));
         }
@@ -98,7 +98,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="s">ユニット名部分文字列</param>
         /// <returns>クエリ</returns>
-        public UnitListQuery NameContains(string s)
+        public UnitEnumerableQuery NameContains(string s)
         {
             return And(u => u.Name.Contains(s));
         }
@@ -107,11 +107,11 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="s">コメント部分文字列</param>
         /// <returns>クエリ</returns>
-        public UnitListQuery CommentContains(string s)
+        public UnitEnumerableQuery CommentContains(string s)
         {
             return And(u => u.Comment == null && u.Comment.Contains(s));
         }
-        public UnitListQuery ADescendantOf(IUnit v)
+        public UnitEnumerableQuery ADescendantOf(IUnit v)
         {
             return And(u => { // 問い合わせ対象ユニットを引数として受け取る
                 // 比較対象ユニットの子孫ユニットを取得（遅延評価）
@@ -122,7 +122,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
                 });
             });
         }
-        public UnitListQuery AChildOf(IUnit v)
+        public UnitEnumerableQuery AChildOf(IUnit v)
         {
             return And(u => { // 問い合わせ対象ユニットを引数として受け取る
                 // 比較対象ユニットの子ユニットを取得（非・遅延評価）
@@ -137,7 +137,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// 問合せのフィルタ条件に「下位ユニットを持つかどうか」の条件を追加します。
         /// </summary>
         /// <returns>クエリ</returns>
-        public UnitListQuery HasChildren()
+        public UnitEnumerableQuery HasChildren()
         {
             return And(u => u.SubUnits.Count > 0);
         }
@@ -146,7 +146,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="s">ユニット定義パラメータ名</param>
         /// <returns>クエリ</returns>
-        public UnitListQuery HasParameter(string s)
+        public UnitEnumerableQuery HasParameter(string s)
         {
             return And(u => u.Parameters.Any(p => p.Name.Equals(s)));
         }
@@ -174,10 +174,10 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// <summary>
         /// ユニット定義パラメータを問合せるクエリを返します。
         /// </summary>
-        public ParameterListQuery TheirParameters
+        public ParameterEnumerableQuery TheirParameters
         {
             get {
-                return new ParameterListQuery(this);
+                return new ParameterEnumerableQuery(this);
             }
         }
     }
