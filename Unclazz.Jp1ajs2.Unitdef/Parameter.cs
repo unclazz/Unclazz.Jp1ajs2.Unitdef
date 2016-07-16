@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Unclazz.Jp1ajs2.Unitdef.Query;
 
 namespace Unclazz.Jp1ajs2.Unitdef
@@ -83,6 +85,21 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public override string ToString()
         {
             return string.Format("Parameter(Name={0},Values={1})", Name, Values);
+        }
+
+        public string Serialize()
+        {
+            StringBuilder b = new StringBuilder().Append(Name).Append('=');
+            int prefixLen = b.Length;
+            foreach (IParameterValue v in Values)
+            {
+                if (b.Length > prefixLen)
+                {
+                    b.Append(',');
+                }
+                b.Append(v.Serialize());
+            }
+            return b.Append(';').ToString();
         }
     }
 }

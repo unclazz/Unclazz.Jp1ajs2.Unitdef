@@ -51,6 +51,18 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
         }
         /// <summary>
+        /// チェック対象が0未満のとき例外をスローします。
+        /// </summary>
+        /// <param name="target">チェック対象</param>
+        /// <param name="label">対象の名前</param>
+        public static void ArgumentMustNotBeGreaterThanOrEqual0(int target, string label)
+        {
+            if (target < 0)
+            {
+                throw new ArgumentNullException(string.Format("{0} must not be greater than or equal 0.", label));
+            }
+        }
+        /// <summary>
         /// 祖先ノード（ルート・ノード）として与えられたユニットを起点に
         /// 再帰的に下位ユニットを取得して<see cref="IEnumerable{IUnit}"/>として返す。
         /// ユニットは幅優先で探索される。また探索は遅延評価型で行われる。

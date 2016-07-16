@@ -34,11 +34,15 @@ namespace Unclazz.Jp1ajs2.Unitdef.Sample
 
             // 直属・非直属の下位ユニットのうち種別がUNIXジョブであるもののscパラメータすべて
             IEnumerable<IParameter> paramsScOfDescendantsTypeIsUnixJob = u.Query(Q
-                .Descendants().TypeIs(UnitType.UnixJob).TheirParameters.NameIs("sc"));
+                .Descendants().TypeIs(UnitType.UnixJob).TheirParameters.NameEquals("sc"));
             // ...そのうち1件だけ（存在しない場合はnullを返す）
             IParameter param0ScOfDescendantsTypeIsUnixJob = u.Query(Q
                 .Descendants().TypeIs(UnitType.UnixJob)
-                .TheirParameters.NameIs("sc").One(true));
+                .TheirParameters.NameEquals("sc").One());
+
+            // 当該ユニットおよび下位ユニットのうちscパラメータを持ちかつその値が"/path/to"で始まるものすべて
+            IEnumerable<IUnit> unitsScStartsPathTo = u.Query(Q.ItSelfAndDescendants()
+                .HasParameter("sc").ValueAt(0).StartsWith("/path/to"));
         }
     }
 }

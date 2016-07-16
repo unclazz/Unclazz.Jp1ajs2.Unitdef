@@ -6,7 +6,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
     /// <summary>
     /// ユニット定義パラメータを表すインターフェースです。
     /// </summary>
-    public interface IParameter
+    public interface IParameter : IComponent
     {
         /// <summary>
         /// パラメータ名称（<code>"ty"</code>など）

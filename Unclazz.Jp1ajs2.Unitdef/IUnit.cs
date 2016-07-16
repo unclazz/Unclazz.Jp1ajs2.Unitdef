@@ -6,7 +6,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
     /// <summary>
     /// JP1/AJS2のジョブユニットを表すインターフェースです。
     /// </summary>
-    public interface IUnit
+    public interface IUnit : IComponent
     {
         /// <summary>
         /// ユニット名

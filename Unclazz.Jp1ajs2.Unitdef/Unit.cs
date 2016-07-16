@@ -134,5 +134,23 @@ namespace Unclazz.Jp1ajs2.Unitdef
             return string.Format("Unit(FullQualifiedName={0},Attributes={1},Parameters={2},SubUnits={3})", 
                 FullQualifiedName, Attributes, Parameters, SubUnits);
         }
+
+        public string Serialize()
+        {
+            StringBuilder b = new StringBuilder().Append("unit=");
+            b.Append(Attributes.UnitName).Append(',');
+            b.Append(Attributes.PermissionMode).Append(',');
+            b.Append(Attributes.Jp1UserName).Append(',');
+            b.Append(Attributes.ResourceGroupName).Append(';').Append('{');
+            foreach(IParameter p in Parameters)
+            {
+                b.Append(p.Serialize());
+            }
+            foreach(IUnit u in SubUnits)
+            {
+                b.Append(u.Serialize());
+            }
+            return b.Append('}').ToString();
+        }
     }
 }

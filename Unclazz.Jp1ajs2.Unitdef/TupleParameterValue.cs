@@ -52,5 +52,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             return string.Format("TupleParameterValue({0})", TupleValue);
         }
+
+        public string Serialize()
+        {
+            return TupleValue.Serialize();
+        }
     }
 }

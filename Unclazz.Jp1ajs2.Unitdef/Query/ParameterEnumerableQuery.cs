@@ -10,7 +10,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
     /// <see cref="UnitEnumerableQuery"/>で絞り込んだユニットの
     /// ユニット定義パラメータを問合せるためのクエリです。
     /// </summary>
-    public sealed class ParameterEnumerableQuery : IQuery<IUnit, IEnumerable<IParameter>>
+    public sealed class ParameterEnumerableQuery : IQuery<IUnit,IEnumerable<IParameter>>
     {
         private static readonly string TrueString = true.ToString();
         private readonly IQuery<IUnit, IEnumerable<IUnit>> unitListQuery;
@@ -61,7 +61,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="s">パラメータ名</param>
         /// <returns>クエリ</returns>
-        public ParameterEnumerableQuery NameIs(string s)
+        public ParameterEnumerableQuery NameEquals(string s)
         {
             return And(p => p.Name.Equals(s));
         }
@@ -128,10 +128,33 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         {
             return new NumberedValueConditionQuery(this,i);
         }
+        /// <summary>
+        /// 問合せ結果を1件だけ返すクエリを返します。
+        /// <paramref name="nullable"/>に<code>true</code>を指定すると、
+        /// 条件に合う要素が1件も見つからない場合にも例外<see cref="InvalidOperationException"/>をスローせず、
+        /// かわりに<code>null</code>を返すクエリになります。
+        /// </summary>
+        /// <param name="nullable">条件に合う要素が1件も見つからない場合<code>null</code>を返す</param>
+        /// <returns>クエリ</returns>
         public IQuery<IUnit, IParameter> One(bool nullable)
         {
-            return new OneQuery<IParameter>(this.QueryFrom, nullable);
+            return new OneQuery<IUnit, IParameter>(this, null);
         }
+        /// <summary>
+        /// 問合せ結果を1件だけ返すクエリを返します。
+        /// 条件に合う要素が1件も見つからない場合にはクエリはデフォルト値を返します。
+        /// </summary>
+        /// <param name="defaultValue">デフォルト値</param>
+        /// <returns>クエリ</returns>
+        public IQuery<IUnit, IParameter> One(IParameter defaultValue)
+        {
+            return new OneQuery<IUnit, IParameter>(this, defaultValue);
+        }
+        /// <summary>
+        /// 問合せ結果を1件だけ返すクエリを返します。
+        /// クエリは条件に合う要素が1件も見つからない場合は例外<see cref="InvalidOperationException"/>をスローします。
+        /// </summary>
+        /// <returns>クエリ</returns>
         public IQuery<IUnit, IParameter> One()
         {
             return One(false);
@@ -197,7 +220,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
             double d;
             return And(v => !double.TryParse(v.StringValue, out d));
         }
-        public NumberedValueConditionQuery ValueIs(string s)
+        public NumberedValueConditionQuery ValueEquals(string s)
         {
             return And(v => v.StringValue.Equals(s));
         }
@@ -213,10 +236,33 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         {
             return And(v => v.StringValue.Contains(s));
         }
+        /// <summary>
+        /// 問合せ結果を1件だけ返すクエリを返します。
+        /// <paramref name="nullable"/>に<code>true</code>を指定すると、
+        /// 条件に合う要素が1件も見つからない場合にも例外<see cref="InvalidOperationException"/>をスローせず、
+        /// かわりに<code>null</code>を返すクエリになります。
+        /// </summary>
+        /// <param name="nullable">条件に合う要素が1件も見つからない場合<code>null</code>を返す</param>
+        /// <returns>クエリ</returns>
         public IQuery<IUnit, IParameter> One(bool nullable)
         {
-            return new OneQuery<IParameter>(this.QueryFrom, nullable);
+            return new OneQuery<IUnit, IParameter>(this, null);
         }
+        /// <summary>
+        /// 問合せ結果を1件だけ返すクエリを返します。
+        /// 条件に合う要素が1件も見つからない場合にはクエリはデフォルト値を返します。
+        /// </summary>
+        /// <param name="defaultValue">デフォルト値</param>
+        /// <returns>クエリ</returns>
+        public IQuery<IUnit, IParameter> One(IParameter defaultValue)
+        {
+            return new OneQuery<IUnit, IParameter>(this, defaultValue);
+        }
+        /// <summary>
+        /// 問合せ結果を1件だけ返すクエリを返します。
+        /// クエリは条件に合う要素が1件も見つからない場合は例外<see cref="InvalidOperationException"/>をスローします。
+        /// </summary>
+        /// <returns>クエリ</returns>
         public IQuery<IUnit, IParameter> One()
         {
             return One(false);

@@ -29,5 +29,19 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             return string.Format("QuotedStringParameterValue({0})", StringValue);
         }
+
+        public string Serialize()
+        {
+            StringBuilder b = new StringBuilder().Append('"');
+            foreach (char ch in StringValue.ToList())
+            {
+                if (ch == '#' || ch == '"')
+                {
+                    b.Append('#');
+                }
+                b.Append(ch);
+            }
+            return b.Append('"').ToString();
+        }
     }
 }

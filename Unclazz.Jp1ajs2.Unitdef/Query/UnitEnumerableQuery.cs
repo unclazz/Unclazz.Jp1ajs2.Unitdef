@@ -71,7 +71,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="s">ユニット名</param>
         /// <returns>クエリ</returns>
-        public UnitEnumerableQuery NameIs(string s)
+        public UnitEnumerableQuery NameEquals(string s)
         {
             return And(u => u.Name.Equals(s));
         }
@@ -142,13 +142,13 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
             return And(u => u.SubUnits.Count > 0);
         }
         /// <summary>
-        /// 問合せのフィルタ条件に「ユニット定義パラメータを持つかどうか」の条件を追加します。
+        /// 問合せのフィルタ条件に「ユニット定義パラメータを持つかどうか」の条件を追加するためのファクトリを返します。
         /// </summary>
         /// <param name="s">ユニット定義パラメータ名</param>
-        /// <returns>クエリ</returns>
-        public UnitEnumerableQuery HasParameter(string s)
+        /// <returns>クエリ・ファクトリ</returns>
+        public UnitEnumerableQueryParameterValueConditionFactory HasParameter(string s)
         {
-            return And(u => u.Parameters.Any(p => p.Name.Equals(s)));
+            return new UnitEnumerableQueryParameterValueConditionFactory(s,func,preds);
         }
         /// <summary>
         /// 問合せ結果を1件だけ返すクエリを返します。
@@ -160,7 +160,17 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// <returns>クエリ</returns>
         public IQuery<IUnit, IUnit> One(bool nullable)
         {
-            return new OneQuery<IUnit>(QueryFrom, nullable);
+            return new OneQuery<IUnit,IUnit>(this, null);
+        }
+        /// <summary>
+        /// 問合せ結果を1件だけ返すクエリを返します。
+        /// 条件に合う要素が1件も見つからない場合にはクエリはデフォルト値を返します。
+        /// </summary>
+        /// <param name="defaultValue">デフォルト値</param>
+        /// <returns>クエリ</returns>
+        public IQuery<IUnit, IUnit> One(IUnit defaultValue)
+        {
+            return new OneQuery<IUnit,IUnit>(this, defaultValue);
         }
         /// <summary>
         /// 問合せ結果を1件だけ返すクエリを返します。

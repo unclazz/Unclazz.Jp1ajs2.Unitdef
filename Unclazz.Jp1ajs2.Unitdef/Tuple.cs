@@ -107,6 +107,26 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
             return sb.Append(")").ToString();
         }
+
+        public string Serialize()
+        {
+            StringBuilder b = new StringBuilder().Append('(');
+
+            foreach(ITupleEntry e in list)
+            {
+                if (b.Length > 1)
+                {
+                    b.Append(',');
+                }
+                if (e.HasKey)
+                {
+                    b.Append(e.Key).Append('=');
+                }
+                b.Append(e.Value);
+            }
+
+            return b.Append(')').ToString();
+        }
     }
     /// <summary>
     /// <code>ITupleEntry</code>のデフォルト実装です。
