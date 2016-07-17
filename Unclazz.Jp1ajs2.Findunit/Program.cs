@@ -8,7 +8,7 @@ using Unclazz.Jp1ajs2.Unitdef;
 using Unclazz.Jp1ajs2.Unitdef.Parser;
 using Unclazz.Jp1ajs2.Unitdef.Query;
 
-namespace Jp1ajs2.Findunit
+namespace Unclazz.Jp1ajs2.Findunit
 {
     class Program
     {

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unclazz.Jp1ajs2.Unitdef", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unclazz.Jp1ajs2.Unitdef.Test", "Unclazz.Jp1ajs2.Unitdef.Test\Unclazz.Jp1ajs2.Unitdef.Test.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jp1ajs2.Findunit", "Jp1ajs2.Findunit\Jp1ajs2.Findunit.csproj", "{608F098B-EF15-41A3-A46B-231F3F0B187E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unclazz.Jp1ajs2.Findunit", "Unclazz.Jp1ajs2.Findunit\Unclazz.Jp1ajs2.Findunit.csproj", "{608F098B-EF15-41A3-A46B-231F3F0B187E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

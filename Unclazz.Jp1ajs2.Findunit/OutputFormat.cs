@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jp1ajs2.Findunit
+namespace Unclazz.Jp1ajs2.Findunit
 {
     sealed class OutputFormat
     {
