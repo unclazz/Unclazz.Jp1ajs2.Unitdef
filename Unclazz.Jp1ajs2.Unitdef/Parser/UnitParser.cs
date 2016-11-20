@@ -55,7 +55,6 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
 
             // ユニット定義属性その他の初期値を作成
             string[] attrArray = new string[4];
-            List<IParameter> paramList = new List<IParameter>();
 
             for (int i = 0; i < 4; i++)
             {
@@ -92,11 +91,10 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             }
 
             // サブユニットを格納するリストを初期化
-            List<IUnit> subUnitList = new List<IUnit>();
             Unit.Builder builder = new Unit.Builder().FullQualifiedName(fqn).Attributes(attributes);
 
             // "unit"で始まらないならそれはパラメータ
-            if (!input.RestOfLine.StartsWith("unit"))
+			if (!input.RestOfLine.StartsWith("unit", StringComparison.Ordinal))
             {
                 while (!input.EndOfFile) {
 					// パラメータを読み取る
@@ -113,14 +111,14 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
                         return builder.Build();
 
                         /// "unit"と続くならパラメータの定義は終わりサブユニットの定義に移る
-                    }else if (input.RestOfLine.StartsWith("unit")){
+					}else if (input.RestOfLine.StartsWith("unit", StringComparison.Ordinal)){
                         break;
                     }
                 }
             }
 
             // "unit"で始まるならそれはサブユニット
-            while (input.RestOfLine.StartsWith("unit")) {
+            while (input.RestOfLine.StartsWith("unit", StringComparison.Ordinal)) {
                 builder.AddSubUnit(ParseUnit(input, fqn));
                 SkipWhitespace(input);
             }
@@ -147,11 +145,11 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
                     input.GoNext();
                 } else {
                     string rest = input.RestOfLine;
-                    if (rest.StartsWith(BlockCommentStart))
+                    if (rest.StartsWith(BlockCommentStart, StringComparison.Ordinal))
                     {
                         Next(input, BlockCommentStart.Length);
                         while (!input.EndOfLine) {
-                            if (input.RestOfLine.StartsWith(BlockCommentEnd)) {
+                            if (input.RestOfLine.StartsWith(BlockCommentEnd, StringComparison.Ordinal)) {
                                 Next(input, BlockCommentEnd.Length);
                                 break;
                             }
@@ -169,11 +167,11 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
         private void SkipComment(Input input)
         {
             string rest = input.RestOfLine;
-            if (rest.StartsWith(BlockCommentStart))
+            if (rest.StartsWith(BlockCommentStart, StringComparison.Ordinal))
             {
                 Next(input, BlockCommentStart.Length);
                 while (!input.EndOfFile) {
-                    if (input.RestOfLine.StartsWith(BlockCommentEnd)) {
+                    if (input.RestOfLine.StartsWith(BlockCommentEnd, StringComparison.Ordinal)) {
                         Next(input, BlockCommentEnd.Length);
                         break;
                     }
@@ -184,7 +182,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
         }
         private void SkipWord(Input input, string word)
         {
-            if (input.RestOfLine.StartsWith(word))
+            if (input.RestOfLine.StartsWith(word, StringComparison.Ordinal))
             {
                 Next(input, word.Length);
             } else {
@@ -237,8 +235,6 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
 
             // ビルダーを初期化
             Parameter.Builder builder = new Parameter.Builder().Name(name);
-            // パラメータ値を一時的に格納するリストを初期化
-            List<IParameterValue> values = new List<IParameterValue>();
             // パラメータの終端文字';'が登場するまで繰り返し
             while (input.Current != ';') {
                 // '='や','を読み飛ばして前進
