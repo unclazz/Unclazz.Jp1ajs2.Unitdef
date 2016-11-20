@@ -1,8 +1,8 @@
 # Unclazz.Jp1ajs2.Unitdef
 
-`Unclazz.Jp1ajs2.Unitdef`は日立ソリューションズの製造・販売する[JP1/AJS2](http://www.hitachi-solutions.co.jp/jp1/sp/?cid=aws0004461)の定義情報をパースし、C#オブジェクトとしてアクセスするためのAPIです。
+`Unclazz.Jp1ajs2.Unitdef`は日立ソリューションズの製造・販売する[JP1/AJS2](http://www.hitachi-solutions.co.jp/jp1/sp/?cid=aws0004461)の定義情報をパースし、C#オブジェクトとしてアクセスするためのAPIです。Java向けの同趣旨のAPIである[unclazz-jp1ajs2-unitdef](https://github.com/unclazz/unclazz-jp1ajs2-unitdef)をC#向けに実装しなおしたものです。
 
-Java向けの同趣旨のAPIである[unclazz-jp1ajs2-unitdef](https://github.com/unclazz/unclazz-jp1ajs2-unitdef)をC#向けに実装しなおしたものです。
+APIのアセンブリは[NuGet Gallery](https://www.nuget.org/packages/Unclazz.Jp1ajs2.Unitdef/)から取得することができます。
 
 ## 使い方
 
