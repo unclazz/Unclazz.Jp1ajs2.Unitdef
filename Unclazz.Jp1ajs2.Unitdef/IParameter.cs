@@ -33,6 +33,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <typeparam name="TResult">問い合わせ結果として得られるオブジェクトの型</typeparam>
         /// <param name="q">クエリ</param>
         /// <returns>問い合わせ結果</returns>
-        TResult query<TResult>(IQuery<IParameter,TResult> q);
+        TResult Query<TResult>(IQuery<IParameter,TResult> q);
     }
 }
