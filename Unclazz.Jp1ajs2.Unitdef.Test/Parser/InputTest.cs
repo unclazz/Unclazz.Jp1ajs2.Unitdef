@@ -29,7 +29,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
         {
             // Arrange
             Input i = Input.FromFile(JoinPathSegments
-                (GetTestProjectDirectory(), "InputTest.txt"));
+                (GetTestProjectDirectory(), "InputTest.txt"), Encoding.UTF8);
 
             // Act
             StringBuilder sb = new StringBuilder();
@@ -57,7 +57,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
 
             // Assert
             Assert.Throws<FileNotFoundException>(() => {
-                Input.FromFile(invalidPath);
+				Input.FromFile(invalidPath, Encoding.UTF8);
             });
         }
 

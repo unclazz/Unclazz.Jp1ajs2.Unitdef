@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Unclazz.Jp1ajs2.Unitdef.Parser;
 using Unclazz.Jp1ajs2.Unitdef.Query;
@@ -91,18 +92,36 @@ namespace Unclazz.Jp1ajs2.Unitdef
         }
 
         private static readonly UnitParser parser = UnitParser.Instance;
-        public static IUnit FromString(string s)
+        
+		/// <summary>
+		/// 文字列からユニット定義を読み取ります。
+		/// </summary>
+		/// <returns>ユニット定義</returns>
+		/// <param name="s">ユニット定義を含む文字列</param>
+		public static IUnit FromString(string s)
         {
             return parser.Parse(Input.FromString(s))[0];
         }
-        public static IUnit FromFile(string path)
-        {
-            return parser.Parse(Input.FromFile(path))[0];
-        }
+		/// <summary>
+		/// ファイルからユニット定義を読み取ります。
+		/// </summary>
+		/// <returns>ユニット定義</returns>
+		/// <param name="path">ファイルパス</param>
+		/// <param name="enc">エンコーディング</param>
         public static IUnit FromFile(string path, Encoding enc)
         {
             return parser.Parse(Input.FromFile(path, enc))[0];
         }
+		/// <summary>
+		/// ストリームからユニット定義を読み取ります。
+		/// </summary>
+		/// <returns>ユニット定義</returns>
+		/// <param name="stream">ストリーム</param>
+		/// <param name="enc">エンコーディング</param>
+		public static IUnit FromStream(Stream stream, Encoding enc)
+		{
+			return parser.Parse(Input.FromStream(stream, enc))[0];
+		}
 
         private Unit(IFullQualifiedName fqn, IAttributes attributes, IParameter ty, IParameter cm, 
             List<IParameter> parameters, List<IUnit> subUnits)

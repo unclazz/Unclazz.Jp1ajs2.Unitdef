@@ -30,16 +30,16 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
         {
             return new Input(new StreamReader(path, enc));
         }
-        /// <summary>
-        /// ファイルから入力オブジェクトのインスタンスを生成します。
-        /// エンコーディングにはシステムのデフォルトのエンコーディングが使用されます。
-        /// </summary>
-        /// <param name="path">ファイルのパス</param>
-        /// <returns>インスタンス</returns>
-        public static Input FromFile(string path)
-        {
-            return new Input(new StreamReader(path));
-        }
+		/// <summary>
+		/// ストリームから入力オブジェクトのインスタンスを生成します。
+		/// </summary>
+		/// <returns>インスタンス</returns>
+		/// <param name="stream">ストリーム</param>
+		/// <param name="enc">エンコーディング</param>
+		public static Input FromStream(Stream stream, Encoding enc)
+		{
+			return new Input(new StreamReader(stream, enc));
+		}
 
         private static readonly int CR = '\r';
         private static readonly int LF = '\n';
