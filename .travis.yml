@@ -1,0 +1,9 @@
+language: csharp
+script:
+  - xbuild /p:Configuration=Debug Unclazz.Jp1ajs2.sln
+before_install:
+  - sudo apt-get install nunit-console
+before_script:
+  - nuget restore Unclazz.Jp1ajs2.sln
+after_script:
+  - nunit-console Unclazz.Jp1ajs2.Unitdef.Test/bin/Debug/Unclazz.Jp1ajs2.Unitdef.Test.dll
