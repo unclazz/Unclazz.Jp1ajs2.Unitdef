@@ -45,6 +45,7 @@
     <Compile Include="TupleEntryTest.cs" />
     <Compile Include="TupleParameterValueTest.cs" />
     <Compile Include="TupleTest.cs" />
+    <Compile Include="MutableTupleTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
