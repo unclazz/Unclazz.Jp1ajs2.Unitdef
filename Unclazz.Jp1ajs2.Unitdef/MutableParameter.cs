@@ -105,7 +105,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             var b = new StringBuilder().Append(Name).Append('=');
             int prefixLen = b.Length;
-            foreach (IParameterValue v in Values)
+            foreach (IParameterValue v in _values)
             {
                 if (b.Length > prefixLen)
                 {
