@@ -212,6 +212,14 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
             return b.Append('}').ToString();
         }
+        StringBuilder AppendTabs(StringBuilder buff, int depth)
+        {
+            for (var i = 0; i < depth; i++)
+            {
+                buff.Append('\t');
+            }
+            return buff;
+        }
 
         public MutableUnit AsMutable()
         {
