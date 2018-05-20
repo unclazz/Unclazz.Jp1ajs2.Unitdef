@@ -189,19 +189,27 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public string Serialize()
         {
-            StringBuilder b = new StringBuilder().Append("unit=");
+            var depth = FullQualifiedName.Fragments.Count - 1;
+            StringBuilder b = new StringBuilder();
+
+            AppendTabs(b, depth).Append("unit=");
             b.Append(Attributes.UnitName).Append(',');
             b.Append(Attributes.PermissionMode).Append(',');
             b.Append(Attributes.Jp1UserName).Append(',');
-            b.Append(Attributes.ResourceGroupName).Append(';').Append('{');
-            foreach(IParameter p in Parameters)
+            b.Append(Attributes.ResourceGroupName).Append(';').Append(Environment.NewLine);
+
+            AppendTabs(b, depth).Append('{').Append(Environment.NewLine);
+
+            foreach (IParameter p in Parameters)
             {
-                b.Append(p.Serialize());
+                AppendTabs(b, depth).Append(p.Serialize()).Append(Environment.NewLine);
             }
-            foreach(IUnit u in SubUnits)
+
+            foreach (IUnit u in SubUnits)
             {
-                b.Append(u.Serialize());
+                b.Append(u.Serialize()).Append(Environment.NewLine);
             }
+
             return b.Append('}').ToString();
         }
 
