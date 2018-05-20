@@ -71,6 +71,31 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
         void Add(ITupleEntry entry);
         /// <summary>
+        /// タプルの添字で指定された位置に値を追加します。
+        /// </summary>
+        /// <param name="i">添字</param>
+        /// <param name="value">値</param>
+        /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">添字が範囲外の場合</exception>
+        void Insert(int i, string value);
+        /// <summary>
+        /// タプルの添字で指定された位置にキーと値を追加します。
+        /// </summary>
+        /// <param name="i">添字</param>
+        /// <param name="key">キー</param>
+        /// <param name="value">値</param>
+        /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">添字が範囲外の場合</exception>
+        void Insert(int i, string key, string value);
+        /// <summary>
+        /// タプルの添字で指定された位置にキーと値を追加します。
+        /// </summary>
+        /// <param name="i">添字</param>
+        /// <param name="entry">エントリー</param>
+        /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">添字が範囲外の場合</exception>
+        void Insert(int i, ITupleEntry entry);
+        /// <summary>
         /// 添字で指定された位置のエントリーを削除します。
         /// </summary>
         /// <param name="i">添字</param>

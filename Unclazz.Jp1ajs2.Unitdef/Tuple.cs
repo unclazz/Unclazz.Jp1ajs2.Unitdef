@@ -173,5 +173,20 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             throw new NotSupportedException("immutable object");
         }
+
+        public void Insert(int i, string value)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void Insert(int i, string key, string value)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void Insert(int i, ITupleEntry entry)
+        {
+            throw new NotSupportedException("immutable object");
+        }
     }
 }

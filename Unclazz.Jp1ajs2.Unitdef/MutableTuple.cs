@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
@@ -68,7 +69,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public IList<string> Values => new List<string>(_list.Select(e => e.Value));
 
-        public IList<ITupleEntry> Entries => new List<ITupleEntry>(Entries);
+        public IList<ITupleEntry> Entries => new List<ITupleEntry>(_list);
 
         public Tuple AsImmutable()
         {
@@ -92,7 +93,22 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public string Serialize()
         {
-            throw new NotImplementedException();
+            StringBuilder b = new StringBuilder().Append('(');
+
+            foreach (ITupleEntry e in _list)
+            {
+                if (b.Length > 1)
+                {
+                    b.Append(',');
+                }
+                if (e.HasKey)
+                {
+                    b.Append(e.Key).Append('=');
+                }
+                b.Append(e.Value);
+            }
+
+            return b.Append(')').ToString();
         }
 
         public void Add(string value)
@@ -133,6 +149,22 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public void Clear()
         {
             _list.Clear();
+        }
+
+        public void Insert(int i, string value)
+        {
+            _list.Insert(i, Immutable.TupleEntry.OfValue(value));
+        }
+
+        public void Insert(int i, string key, string value)
+        {
+            if (ContainsKey(key)) throw new ArgumentException("duplicated key");
+            _list.Insert(i, Immutable.TupleEntry.OfPair(key, value));
+        }
+
+        public void Insert(int i, ITupleEntry entry)
+        {
+            _list.Insert(i, entry);
         }
     }
 }
