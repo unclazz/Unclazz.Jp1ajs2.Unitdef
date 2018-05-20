@@ -16,7 +16,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             // Arrange
 
             // Act
-            IFullQualifiedName fqn = FullQualifiedName.FromRoot("XXXX0000");
+            IFullQualifiedName fqn = FullQualifiedName.FromFragments("XXXX0000");
 
             // Assert
             Assert.AreEqual(fqn.SuperUnitName, null);
@@ -34,7 +34,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             // Assert
             Assert.Throws<ArgumentNullException>(() =>
             {
-                FullQualifiedName.FromRoot(null);
+                FullQualifiedName.FromFragments(null);
             });
         }
 
@@ -48,7 +48,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             // Assert
             Assert.Throws<ArgumentException>(() =>
             {
-                FullQualifiedName.FromRoot("");
+                FullQualifiedName.FromFragments("");
             });
         }
 
@@ -56,7 +56,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
         public void GetSubUnitName_WhenSpecifiedNonEmptyString_ReturnsNewInstance()
         {
             // Arrange
-            IFullQualifiedName fqn = FullQualifiedName.FromRoot("XXXX0000");
+            IFullQualifiedName fqn = FullQualifiedName.FromFragments("XXXX0000");
 
             // Act
             IFullQualifiedName fqn2 = fqn.GetSubUnitName("XXXX1000");
@@ -73,7 +73,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
         public void GetSubUnitName_WhenSpecifiedNull_ThrowsException()
         {
             // Arrange
-            IFullQualifiedName fqn = FullQualifiedName.FromRoot("XXXX0000");
+            IFullQualifiedName fqn = FullQualifiedName.FromFragments("XXXX0000");
 
             // Act
 
@@ -88,7 +88,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
         public void GetSubUnitName_WhenSpecifiedEmptyString_ThrowsException()
         {
             // Arrange
-            IFullQualifiedName fqn = FullQualifiedName.FromRoot("XXXX0000");
+            IFullQualifiedName fqn = FullQualifiedName.FromFragments("XXXX0000");
 
             // Act
 
@@ -103,7 +103,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
         public void Equals_When2InstanceRepresentSameSequence_ReturnsTrue()
         {
             // Arrange
-            IFullQualifiedName fqn0 = FullQualifiedName.FromRoot("XXXX0000");
+            IFullQualifiedName fqn0 = FullQualifiedName.FromFragments("XXXX0000");
             IFullQualifiedName fqn1 = fqn0.GetSubUnitName("XXXX1000");
             IFullQualifiedName fqn2 = fqn0.GetSubUnitName("XXXX1100");
             IFullQualifiedName fqn3 = fqn0.GetSubUnitName("XXXX1000");

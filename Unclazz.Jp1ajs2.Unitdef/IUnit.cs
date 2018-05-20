@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unclazz.Jp1ajs2.Unitdef.Query;
 
 namespace Unclazz.Jp1ajs2.Unitdef
@@ -15,19 +16,19 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <summary>
         /// ユニット完全名
         /// </summary>
-        IFullQualifiedName FullQualifiedName { get; }
+        IFullQualifiedName FullQualifiedName { get; set; }
         /// <summary>
         /// ユニット属性パラメータ
         /// </summary>
-        IAttributes Attributes { get; }
+        IAttributes Attributes { get; set; }
         /// <summary>
         /// ユニット種別
         /// </summary>
-        IUnitType Type { get; }
+        IUnitType Type { get; set; }
         /// <summary>
         /// コメント
         /// </summary>
-        string Comment { get; }
+        string Comment { get; set; }
         /// <summary>
         /// ユニット定義パラメータのリスト
         /// </summary>
@@ -43,5 +44,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="q">クエリ</param>
         /// <returns>問い合わせ結果</returns>
         TResult Query<TResult>(IQuery<IUnit,TResult> q);
+        MutableUnit AsMutable();
+        Unit AsImmutable();
+        void Add(IUnit unit);
+        void Add(IParameter param);
+        void RemoveAll(Func<IUnit, bool> predicate);
+        void RemoveAll(Func<IParameter, bool> predicate);
     }
 }

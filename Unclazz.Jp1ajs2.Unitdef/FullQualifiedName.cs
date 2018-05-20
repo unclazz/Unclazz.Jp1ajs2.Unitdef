@@ -12,32 +12,46 @@ namespace Unclazz.Jp1ajs2.Unitdef
     public sealed class FullQualifiedName : IFullQualifiedName
     {
         /// <summary>
-        /// 指定された文字列を元にルートとなる完全名を生成して返します。
+        /// 指定されたフラグメントのリストを元に完全名を生成して返します。
         /// </summary>
-        /// <param name="root">ルートのユニット名</param>
+        /// <param name="fragments">フラグメントのリスト</param>
         /// <returns>完全名インスタンス</returns>
-        public static IFullQualifiedName FromRoot(string root)
+        public static FullQualifiedName FromFragments(params string[] fragments)
         {
-            return new FullQualifiedName(null, root);
+            return new FullQualifiedName(fragments);
         }
 
-        private readonly string[] fragments;
-        private string stringValue = null;
+        readonly string[] _fragments;
+        string _stringValue = null;
         public IFullQualifiedName SuperUnitName { get; }
 
-        private FullQualifiedName(FullQualifiedName superUnitName, string newFragment)
+        FullQualifiedName(string[] fragments) 
+        {
+            UnitdefUtil.ArgumentMustNotBeEmpty(fragments, nameof(fragments));
+            UnitdefUtil.ArgumentMustNotBeEmpty(fragments[fragments.Length - 1], "fragment");
+            var depth = fragments.Length;
+            FullQualifiedName parent = null;
+            foreach (var f in fragments.Take(depth - 1))
+            {
+                parent = new FullQualifiedName(parent, f);
+            }
+            SuperUnitName = parent;
+            _fragments = fragments;
+        }
+
+        FullQualifiedName(FullQualifiedName superUnitName, string newFragment)
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(newFragment, "fragment of full qualified name");
-            SuperUnitName = superUnitName;
-            if (SuperUnitName == null)
+            if (superUnitName == null)
             {
-                fragments = new string[] { newFragment };
+                _fragments = new string[] { newFragment };
             }
             else
             {
-                fragments = new string[superUnitName.fragments.Length + 1];
-                superUnitName.fragments.CopyTo(fragments, 0);
-                fragments[superUnitName.fragments.Length] = newFragment;
+                SuperUnitName = superUnitName;
+                _fragments = new string[superUnitName._fragments.Length + 1];
+                superUnitName._fragments.CopyTo(_fragments, 0);
+                _fragments[superUnitName._fragments.Length] = newFragment;
             }
         }
 
@@ -45,9 +59,14 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             get
             {
-                return new List<string>(fragments);
+                return new List<string>(_fragments);
             }
         }
+
+        public IFullQualifiedName RootUnitName => _fragments.Length == 1
+               ? this : FullQualifiedName.FromFragments(_fragments[0]);
+
+        public string BaseName => _fragments[_fragments.Length - 1];
 
         public IFullQualifiedName GetSubUnitName(string name)
         {
@@ -56,16 +75,16 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public override string ToString()
         {
-            if (stringValue == null)
+            if (_stringValue == null)
             {
                 StringBuilder sb = new StringBuilder();
-                foreach (string f in fragments)
+                foreach (string f in _fragments)
                 {
                     sb.Append("/").Append(f);
                 }
-                stringValue = sb.ToString();
+                _stringValue = sb.ToString();
             }
-            return stringValue;
+            return _stringValue;
         }
 
         public override bool Equals(object obj)

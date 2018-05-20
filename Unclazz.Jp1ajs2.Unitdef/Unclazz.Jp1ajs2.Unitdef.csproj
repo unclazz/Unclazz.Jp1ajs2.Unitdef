@@ -59,17 +59,22 @@
     <Compile Include="ITuple.cs" />
     <Compile Include="IUnit.cs" />
     <Compile Include="IUnitType.cs" />
-    <Compile Include="Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\UnitEnumerableQuery.cs" />
     <Compile Include="Query\UnitEnumerableQueryTupleConditionFactory.cs" />
-    <Compile Include="QuotedStringParameterValue.cs" />
-    <Compile Include="RawStringParameterValue.cs" />
-    <Compile Include="Tuple.cs" />
-    <Compile Include="TupleParameterValue.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitdefUtil.cs" />
     <Compile Include="UnitType.cs" />
+    <Compile Include="ITupleEntry.cs" />
+    <Compile Include="MutableParameter.cs" />
+    <Compile Include="MutableTuple.cs" />
+    <Compile Include="Parameter.cs" />
+    <Compile Include="QuotedStringParameterValue.cs" />
+    <Compile Include="RawStringParameterValue.cs" />
+    <Compile Include="Tuple.cs" />
+    <Compile Include="TupleEntry.cs" />
+    <Compile Include="TupleParameterValue.cs" />
+    <Compile Include="MutableUnit.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

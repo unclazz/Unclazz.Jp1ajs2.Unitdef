@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Unclazz.Jp1ajs2.Unitdef
 {
     /// <summary>
@@ -15,7 +17,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="jp1UserName">JP1ユーザ名（ユニット所有者）</param>
         /// <param name="resourceGroupName">JP1資源グループ名</param>
         /// <returns>ユニット属性パラメータ・インスタンス</returns>
-        public static IAttributes OfValues(string unitName, string permissionMode = "",
+        public static Attributes OfValues(string unitName, string permissionMode = "",
             string jp1UserName = "", string resourceGroupName = "")
         {
             if (permissionMode == null) permissionMode = string.Empty;
@@ -24,21 +26,38 @@ namespace Unclazz.Jp1ajs2.Unitdef
             return new Attributes(unitName, permissionMode, jp1UserName, resourceGroupName);
         }
 
-        public string UnitName { get; }
-        public string Jp1UserName { get; }
-        public string ResourceGroupName { get; }
-        public string PermissionMode { get; }
+        readonly string _unitName;
+        readonly string _jp1UserName;
+        readonly string _resourceGroupName;
+        readonly string _permissionMode;
 
-        private Attributes (string unitName, string permissionMode, string jp1UserName, string resourceGroupName)
+        public string UnitName 
+        {
+            get => _unitName;
+        }
+        public string Jp1UserName
+        {
+            get => _jp1UserName;
+        }
+        public string ResourceGroupName
+        {
+            get => _resourceGroupName;
+        }
+        public string PermissionMode
+        {
+            get => _permissionMode;
+        }
+
+        Attributes (string unitName, string permissionMode, string jp1UserName, string resourceGroupName)
         {
             UnitdefUtil.ArgumentMustNotBeNull(unitName, "unitName");
             UnitdefUtil.ArgumentMustNotBeNull(permissionMode, "permissionMode");
             UnitdefUtil.ArgumentMustNotBeNull(jp1UserName, "jp1UserName");
             UnitdefUtil.ArgumentMustNotBeNull(resourceGroupName, "resourceGroupName");
-            UnitName = unitName;
-            PermissionMode = permissionMode;
-            Jp1UserName = jp1UserName;
-            ResourceGroupName = resourceGroupName;
+            _unitName = unitName;
+            _permissionMode = permissionMode;
+            _jp1UserName = jp1UserName;
+            _resourceGroupName = resourceGroupName;
         }
 
         public override string ToString()

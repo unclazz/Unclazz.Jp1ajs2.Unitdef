@@ -72,7 +72,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             IAttributes attributes = Attributes.OfValues(attrArray[0], 
                 attrArray[1], attrArray[2], attrArray[3]);
             IFullQualifiedName fqn = parent == null ? FullQualifiedName.
-                FromRoot(attrArray[0]) : parent.GetSubUnitName(attrArray[0]);
+                FromFragments(attrArray[0]) : parent.GetSubUnitName(attrArray[0]);
 
             // 属性の定義は「；」で終わる
             Check(input, ';');
@@ -91,7 +91,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             }
 
             // サブユニットを格納するリストを初期化
-            Unit.Builder builder = new Unit.Builder().FullQualifiedName(fqn).Attributes(attributes);
+            Unit.Builder builder = Unit.Builder.Create().FullQualifiedName(fqn).Attributes(attributes);
 
             // "unit"で始まらないならそれはパラメータ
 			if (!input.RestOfLine.StartsWith("unit", StringComparison.Ordinal))
@@ -234,7 +234,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             }
 
             // ビルダーを初期化
-            Parameter.Builder builder = new Parameter.Builder().Name(name);
+            var builder = Parameter.Builder.Create().Name(name);
             // パラメータの終端文字';'が登場するまで繰り返し
             while (input.Current != ';') {
                 // '='や','を読み飛ばして前進
@@ -323,11 +323,11 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
                 }
                 if (hasKey)
                 {
-                    entries.Add(TupleEntry.OfPair(sb0.ToString(), sb1.ToString()));
+                    entries.Add(Immutable.TupleEntry.OfPair(sb0.ToString(), sb1.ToString()));
                 }
                 else
                 {
-                    entries.Add(TupleEntry.OfValue(sb0.ToString()));
+                    entries.Add(Immutable.TupleEntry.OfValue(sb0.ToString()));
                 }
                 if (input.Current == ')') {
                     break;

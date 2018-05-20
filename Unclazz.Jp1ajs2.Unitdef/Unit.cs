@@ -17,6 +17,13 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         public sealed class Builder
         {
+            public static Builder Create()
+            {
+                return new Builder();
+            }
+
+            Builder() {}
+
             private IFullQualifiedName fqn = null;
             private IParameter ty = null;
             private IParameter cm = null;
@@ -91,7 +98,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
         }
 
-        private static readonly UnitParser parser = UnitParser.Instance;
+        static readonly UnitParser parser = UnitParser.Instance;
         
 		/// <summary>
 		/// 文字列からユニット定義を読み取ります。
@@ -123,25 +130,51 @@ namespace Unclazz.Jp1ajs2.Unitdef
 			return parser.Parse(Input.FromStream(stream, enc))[0];
 		}
 
-        private Unit(IFullQualifiedName fqn, IAttributes attributes, IParameter ty, IParameter cm, 
+        Unit(IFullQualifiedName fqn, IAttributes attributes, IParameter ty, IParameter cm, 
             List<IParameter> parameters, List<IUnit> subUnits)
         {
-            FullQualifiedName = fqn;
-            Name = attributes.UnitName;
-            Attributes = attributes;
-            Type = UnitType.FromName(ty.Values[0].StringValue);
-            Comment = cm == null ? string.Empty : cm.Values[0].StringValue;
+            _fqn = fqn;
+            _name = attributes.UnitName;
+            _attrs = attributes;
+            _type = UnitType.FromName(ty.Values[0].StringValue);
+            _comment = cm == null ? string.Empty : cm.Values[0].StringValue;
             Parameters = parameters.AsReadOnly();
             SubUnits = subUnits.AsReadOnly();
         }
 
-        public IAttributes Attributes { get; }
-        public string Comment { get; }
-        public IFullQualifiedName FullQualifiedName { get; }
-        public string Name { get; }
+        readonly IFullQualifiedName _fqn;
+        readonly IAttributes _attrs;
+        readonly string _comment;
+        readonly string _name;
+        readonly IUnitType _type;
+
+        public IAttributes Attributes
+        {
+            get => _attrs;
+            set => throw new NotSupportedException();
+        }
+        public string Comment
+        {
+            get => _comment;
+            set => throw new NotSupportedException();
+        }
+        public IFullQualifiedName FullQualifiedName
+        {
+            get => _fqn;
+            set => throw new NotSupportedException();
+        }
+        public string Name
+        {
+            get => _name;
+            set => throw new NotSupportedException();
+        }
         public IList<IParameter> Parameters { get; }
         public IList<IUnit> SubUnits { get; }
-        public IUnitType Type { get; }
+        public IUnitType Type
+        {
+            get => _type;
+            set => throw new NotSupportedException();
+        }
 
         public TResult Query<TResult>(IQuery<IUnit,TResult> q)
         {
@@ -170,6 +203,46 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 b.Append(u.Serialize());
             }
             return b.Append('}').ToString();
+        }
+
+        public MutableUnit AsMutable()
+        {
+            var mutable = MutableUnit.ForFullQualifiedName(FullQualifiedName);
+            mutable.Attributes = Attributes;
+            foreach (var p in Parameters)
+            {
+                mutable.Add(p);
+            }
+            foreach (var u in SubUnits)
+            {
+                mutable.Add(u);
+            }
+            return mutable;
+        }
+
+        public Unit AsImmutable()
+        {
+            return this;
+        }
+
+        public void Add(IUnit unit)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void Add(IParameter param)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RemoveAll(Func<IUnit, bool> predicate)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RemoveAll(Func<IParameter, bool> predicate)
+        {
+            throw new NotSupportedException();
         }
     }
 }

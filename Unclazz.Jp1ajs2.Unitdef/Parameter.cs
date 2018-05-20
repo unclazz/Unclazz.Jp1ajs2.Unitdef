@@ -15,8 +15,15 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         public sealed class Builder
         {
-            private string name = null;
-            private List<IParameterValue> values = new List<IParameterValue>();
+            public static Builder Create()
+            {
+                return new Builder();
+            }
+
+            Builder() {}
+
+            string _name;
+            readonly List<IParameterValue> _values = new List<IParameterValue>();
             /// <summary>
             /// パラメータ名を設定します。
             /// </summary>
@@ -24,7 +31,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             /// <returns>ビルダー</returns>
             public Builder Name(string n)
             {
-                name = n;
+                _name = n;
                 return this;
             }
             /// <summary>
@@ -34,7 +41,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             /// <returns>ビルダー</returns>
             public Builder AddValue(IParameterValue v)
             {
-                values.Add(v);
+                _values.Add(v);
                 return this;
             }
             /// <summary>
@@ -43,14 +50,14 @@ namespace Unclazz.Jp1ajs2.Unitdef
             /// 条件を満たさない状態でこのメソッドを呼び出した場合例外がスローされます。
             /// </summary>
             /// <returns>ユニット定義パラメータ</returns>
-            /// <exception cref="ArgumentException">条件を満たさない状態でこのメソッドを呼び出した場合</exception>
-            public IParameter Build()
+            /// <exception cref="System.ArgumentException">条件を満たさない状態でこのメソッドを呼び出した場合</exception>
+            public Parameter Build()
             {
-                return new Parameter(name, values);
+                return new Parameter(_name, _values);
             }
         }
 
-        private Parameter(string name, List<IParameterValue> vs)
+        internal Parameter(string name, List<IParameterValue> vs)
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(name, "name of parameter");
             UnitdefUtil.ArgumentMustNotBeNull(vs, "list of parameter");
@@ -63,6 +70,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
             get
             {
                 return Values[i];
+            }
+            set
+            {
+                throw new NotSupportedException("immutable object");
             }
         }
 
@@ -89,7 +100,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public string Serialize()
         {
-            StringBuilder b = new StringBuilder().Append(Name).Append('=');
+            var b = new StringBuilder().Append(Name).Append('=');
             int prefixLen = b.Length;
             foreach (IParameterValue v in Values)
             {
@@ -100,6 +111,61 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 b.Append(v.Serialize());
             }
             return b.Append(';').ToString();
+        }
+
+        public MutableParameter AsMutable()
+        {
+            var mutable = MutableParameter.ForName(Name);
+            foreach (var value in Values)
+            {
+                mutable.Add(value);
+            }
+            return mutable;
+        }
+
+        public Parameter AsImmutable()
+        {
+            return this;
+        }
+
+        public void Add(IParameterValue value)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void Add(ITuple value)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void Add(string value, bool quoted)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void Insert(int i, IParameterValue value)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void Insert(int i, ITuple value)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void Insert(int i, string value, bool quoted)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void RemoveAt(int i)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void Clear()
+        {
+            throw new NotSupportedException("immutable object");
         }
     }
 }

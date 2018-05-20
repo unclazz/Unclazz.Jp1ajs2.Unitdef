@@ -15,7 +15,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         /// <param name="col">エントリーのコレクション</param>
         /// <returns>タプルのインスタンス</returns>
-        public static ITuple FromCollection(ICollection<ITupleEntry> col)
+        public static Tuple FromCollection(ICollection<ITupleEntry> col)
         {
             if (col.Count == 0)
             {
@@ -27,10 +27,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
         }
 
-        public static readonly ITuple Empty = new Tuple(new List<ITupleEntry>());
+        public static readonly Tuple Empty = new Tuple(new List<ITupleEntry>());
 
-        private readonly IDictionary<string, string> dict = new Dictionary<string, string>();
-        private readonly IList<ITupleEntry> list = new List<ITupleEntry>();
+        private readonly IDictionary<string, string> _dict = new Dictionary<string, string>();
+        private readonly IList<ITupleEntry> _list = new List<ITupleEntry>();
 
         private Tuple(ICollection<ITupleEntry> col)
         {
@@ -39,34 +39,30 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 UnitdefUtil.ArgumentMustNotBeNull(e, "entry of tuple");
                 if (e.HasKey)
                 {
-                    dict.Add(e.Key, e.Value);
+                    _dict.Add(e.Key, e.Value);
                 }
-                list.Add(e);
+                _list.Add(e);
             }
 
         }
 
         public string this[string k]
         {
-            get
-            {
-                return dict[k];
-            }
+            get => _dict[k]; 
+            set => throw new NotSupportedException("immutable object"); 
         }
 
         public string this[int i]
         {
-            get
-            {
-                return list[i].Value;
-            }
+            get => _list[i].Value;
+            set => throw new NotSupportedException("immutable object"); 
         }
 
         public int Count
         {
             get
             {
-                return list.Count;
+                return _list.Count;
             }
         }
 
@@ -74,7 +70,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             get
             {
-                return new List<ITupleEntry>(list);
+                return new List<ITupleEntry>(_list);
             }
         }
 
@@ -82,7 +78,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             get
             {
-                return new HashSet<string>(dict.Keys);
+                return new HashSet<string>(_dict.Keys);
             }
         }
 
@@ -90,14 +86,14 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             get
             {
-                return list.Select<ITupleEntry,string>(e => e.Value).ToList<string>();
+                return _list.Select<ITupleEntry,string>(e => e.Value).ToList<string>();
             }
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder("Tuple(");
-            foreach (ITupleEntry e in list)
+            foreach (ITupleEntry e in _list)
             {
                 if (sb.Length > 6)
                 {
@@ -112,7 +108,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             StringBuilder b = new StringBuilder().Append('(');
 
-            foreach(ITupleEntry e in list)
+            foreach(ITupleEntry e in _list)
             {
                 if (b.Length > 1)
                 {
@@ -127,71 +123,55 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
             return b.Append(')').ToString();
         }
-    }
-    /// <summary>
-    /// <code>ITupleEntry</code>のデフォルト実装です。
-    /// </summary>
-    public sealed class TupleEntry : ITupleEntry
-    {
-        public static ITupleEntry OfPair(string key, string value)
+
+        public MutableTuple AsMutable()
         {
-            return new TupleEntry(key, value);
-        }
-        public static ITupleEntry OfValue( string value)
-        {
-            return new TupleEntry(null, value);
+            return MutableTuple.FromCollection(Entries);
         }
 
-        public string Key { get; }
-        public string Value { get; }
-        public bool HasKey { get; }
-
-        private TupleEntry (string k, string v)
+        public Tuple AsImmutable()
         {
-            UnitdefUtil.ArgumentMustNotBeNull(v, "value of tuple entry");
-            if (k != null && k.Length == 0)
-            {
-                throw new ArgumentException("key of tuple must not be empty.");
-            }
-            HasKey = k != null;
-            Key = HasKey ? k : null;
-            Value = v;
+            return this;
         }
 
-        public override string ToString()
+        public bool ContainsKey(string key)
         {
-            return string.Format("TupleEntry(Key={0},Value={1})", Key, Value);
+            return _dict.ContainsKey(key);
         }
 
-        public override int GetHashCode()
+        public bool ContainsValue(string value)
         {
-            return (HasKey ? Key.GetHashCode() : 0) + Value.GetHashCode();
+            return _list.Any(e => e.Value == value);
         }
 
-        public override bool Equals(object obj)
+        public void Add(string value)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-            if (this == obj)
-            {
-                return true;
-            }
-            ITupleEntry that = obj as ITupleEntry;
-            if (that == null)
-            {
-                return false;
-            }
-            if (HasKey)
-            {
-                return Key.Equals(that.Key) && Value.Equals(that.Value);
-            }
-            if (that.HasKey)
-            {
-                return false;
-            }
-            return Value.Equals(that.Value);
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void Add(string key, string value)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void Add(ITupleEntry entry)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void RemoveAt(int i)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public bool Remove(string key)
+        {
+            throw new NotSupportedException("immutable object");
+        }
+
+        public void Clear()
+        {
+            throw new NotSupportedException("immutable object");
         }
     }
 }
