@@ -164,16 +164,16 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public string Serialize()
         {
-            var depth = FullQualifiedName.Fragments.Count - 1;
+            var depth = FullQualifiedName.Fragments.Count;
             StringBuilder b = new StringBuilder();
 
-            AppendTabs(b, depth).Append("unit=");
+            AppendTabs(b, depth - 1).Append("unit=");
             b.Append(Attributes.UnitName).Append(',');
             b.Append(Attributes.PermissionMode).Append(',');
             b.Append(Attributes.Jp1UserName).Append(',');
             b.Append(Attributes.ResourceGroupName).Append(';').Append(Environment.NewLine);
 
-            AppendTabs(b, depth).Append('{').Append(Environment.NewLine);
+            AppendTabs(b, depth - 1).Append('{').Append(Environment.NewLine);
 
             foreach (IParameter p in Parameters)
             {
@@ -185,7 +185,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 b.Append(u.Serialize()).Append(Environment.NewLine);
             }
 
-            return b.Append('}').ToString();
+            return AppendTabs(b, depth - 1).Append('}').ToString();
         }
         StringBuilder AppendTabs(StringBuilder buff, int depth)
         {
