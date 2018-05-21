@@ -208,11 +208,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             if (param.Name == "ty")
             {
-                _params.First(p => p.Name == "ty").Values[0] = param.Values[0];
+                _params.First(p => p.Name == "ty")[0] = param[0];
             }
             else if (param.Name == "cm" && _params.Any(p => p.Name == "cm"))
             {
-                _params.First(p => p.Name == "cm").Values[0] = param.Values[0];
+                _params.First(p => p.Name == "cm")[0] = param[0];
             }
             else
             {
