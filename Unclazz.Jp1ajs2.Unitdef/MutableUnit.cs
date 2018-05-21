@@ -81,7 +81,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
             set
             {
                 _attrs = _attrs ?? throw new ArgumentNullException(nameof(value));
-                _fqn = FullQualifiedName.SuperUnitName.GetSubUnitName(_attrs.UnitName);
+                var fragments = FullQualifiedName.Fragments;
+                fragments.RemoveAt(fragments.Count - 1);
+                fragments.Add(value.UnitName);
+                _fqn = Unitdef.FullQualifiedName.FromFragments(fragments.ToArray());
             }
         }
 
