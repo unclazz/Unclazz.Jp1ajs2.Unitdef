@@ -47,7 +47,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         MutableUnit()
         {
             var ty = MutableParameter.ForName("ty");
-            ty.Add(RawStringParameterValue.OfValue("g"));
+            ty.Values.Add(RawStringParameterValue.OfValue("g"));
             _params.Add(ty);
         }
 
@@ -114,7 +114,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 if (cm == null)
                 {
                     cm = MutableParameter.ForName("cm");
-                    cm.Add(QuotedStringParameterValue.OfValue(value));
+                    cm.Values.Add(QuotedStringParameterValue.OfValue(value));
                     _params.Add(cm);
                 }
                 else
@@ -208,11 +208,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             if (param.Name == "ty")
             {
-                _params.First(p => p.Name == "ty")[0] = param[0];
+                _params.First(p => p.Name == "ty").Values[0] = param.Values[0];
             }
             else if (param.Name == "cm" && _params.Any(p => p.Name == "cm"))
             {
-                _params.First(p => p.Name == "cm")[0] = param[0];
+                _params.First(p => p.Name == "cm").Values[0] = param.Values[0];
             }
             else
             {

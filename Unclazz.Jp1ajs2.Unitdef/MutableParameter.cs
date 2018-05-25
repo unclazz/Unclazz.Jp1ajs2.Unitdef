@@ -14,43 +14,16 @@ namespace Unclazz.Jp1ajs2.Unitdef
             return new MutableParameter(name);
         }
 
-        readonly List<IParameterValue> _values = new List<IParameterValue>();
+        readonly ParameterValues _values = new ParameterValues(new List<IParameterValue>());
 
         MutableParameter(string name)
         {
             Name = name;
         }
 
-        public IParameterValue this[int i] 
-        {
-            get => _values[i];
-            set => _values[i] = value;
-        }
-
         public string Name { get; }
 
-        public int Count => _values.Count;
-
-        public IList<IParameterValue> Values => new List<IParameterValue>(_values);
-
-        public void Add(IParameterValue value)
-        {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            _values.Add(value);
-        }
-
-        public void Add(ITuple value)
-        {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            _values.Add(TupleParameterValue.OfValue(value));
-        }
-
-        public void Add(string value, bool quoted)
-        {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            _values.Add(quoted ? QuotedStringParameterValue.OfValue(value)
-                        : RawStringParameterValue.OfValue(value));
-        }
+        public ParameterValues Values => _values;
 
         public Parameter AsImmutable()
         {
@@ -62,31 +35,12 @@ namespace Unclazz.Jp1ajs2.Unitdef
             return copy.Build();
         }
 
-        public void Insert(int i, IParameterValue value)
-        {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            _values.Insert(i, value);
-        }
-
-        public void Insert(int i, ITuple value)
-        {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            _values.Insert(i, TupleParameterValue.OfValue(value));
-        }
-
-        public void Insert(int i, string value, bool quoted)
-        {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-            _values.Insert(i, quoted ? QuotedStringParameterValue.OfValue(value)
-                           : RawStringParameterValue.OfValue(value));
-        }
-
         public MutableParameter AsMutable()
         {
             var copy = ForName(Name);
             foreach (var value in _values) 
             {
-                copy.Add(value);
+                copy.Values.Add(value);
             }
             return copy;
         }
@@ -94,11 +48,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public TResult Query<TResult>(IQuery<IParameter, TResult> q)
         {
             return q.QueryFrom(this);
-        }
-
-        public void RemoveAt(int i)
-        {
-            _values.RemoveAt(i);
         }
 
         public string Serialize()
@@ -114,11 +63,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 b.Append(v.Serialize());
             }
             return b.Append(';').ToString();
-        }
-
-        public void Clear()
-        {
-            _values.Clear();
         }
     }
 }

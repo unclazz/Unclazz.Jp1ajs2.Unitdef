@@ -62,31 +62,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
             UnitdefUtil.ArgumentMustNotBeEmpty(name, "name of parameter");
             UnitdefUtil.ArgumentMustNotBeNull(vs, "list of parameter");
             Name = name;
-            Values = vs.AsReadOnly();
-        }
-
-        public IParameterValue this[int i]
-        {
-            get
-            {
-                return Values[i];
-            }
-            set
-            {
-                throw new NotSupportedException("immutable object");
-            }
-        }
-
-        public int Count
-        {
-            get
-            {
-                return Values.Count;
-            }
+            Values = new ParameterValues(vs.AsReadOnly());
         }
 
         public string Name { get; }
-        public IList<IParameterValue> Values { get; }
+        public ParameterValues Values { get; }
 
         public TResult Query<TResult>(IQuery<IParameter,TResult> q)
         {
@@ -118,7 +98,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             var mutable = MutableParameter.ForName(Name);
             foreach (var value in Values)
             {
-                mutable.Add(value);
+                mutable.Values.Add(value);
             }
             return mutable;
         }
@@ -126,46 +106,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public Parameter AsImmutable()
         {
             return this;
-        }
-
-        public void Add(IParameterValue value)
-        {
-            throw new NotSupportedException("immutable object");
-        }
-
-        public void Add(ITuple value)
-        {
-            throw new NotSupportedException("immutable object");
-        }
-
-        public void Add(string value, bool quoted)
-        {
-            throw new NotSupportedException("immutable object");
-        }
-
-        public void Insert(int i, IParameterValue value)
-        {
-            throw new NotSupportedException("immutable object");
-        }
-
-        public void Insert(int i, ITuple value)
-        {
-            throw new NotSupportedException("immutable object");
-        }
-
-        public void Insert(int i, string value, bool quoted)
-        {
-            throw new NotSupportedException("immutable object");
-        }
-
-        public void RemoveAt(int i)
-        {
-            throw new NotSupportedException("immutable object");
-        }
-
-        public void Clear()
-        {
-            throw new NotSupportedException("immutable object");
         }
     }
 }

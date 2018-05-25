@@ -99,7 +99,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// <returns>クエリ</returns>
         public ParameterEnumerableQuery ValueCountIs(int i)
         {
-            return And(p => p.Count == i);
+            return And(p => p.Values.Count == i);
         }
         /// <summary>
         /// 問合せフィルタ条件にパラメータ値数の指定を加えます。
@@ -108,7 +108,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// <returns>クエリ</returns>
         public ParameterEnumerableQuery ValueCountGreaterThan(int i)
         {
-            return And(p => p.Count > i);
+            return And(p => p.Values.Count > i);
         }
         /// <summary>
         /// 問合せフィルタ条件にパラメータ値数の指定を加えます。
@@ -117,7 +117,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// <returns>クエリ</returns>
         public ParameterEnumerableQuery ValueCountLessThan(int i)
         {
-            return And(p => p.Count < i);
+            return And(p => p.Values.Count < i);
         }
         /// <summary>
         /// 問合せフィルタ条件に特定位置のパラメータ値についての条件を加えます。
@@ -182,7 +182,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         }
         private bool Matches(IParameter p)
         {
-            if (i < 0 || p.Count <= i)
+            if (i < 0 || p.Values.Count <= i)
             {
                 return false;
             }
