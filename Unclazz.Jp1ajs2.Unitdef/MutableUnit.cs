@@ -80,7 +80,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             get => _attrs;
             set
             {
-                _attrs = _attrs ?? throw new ArgumentNullException(nameof(value));
+                _attrs = value ?? throw new ArgumentNullException(nameof(value));
                 var fragments = FullQualifiedName.Fragments;
                 fragments.RemoveAt(fragments.Count - 1);
                 fragments.Add(value.UnitName);
