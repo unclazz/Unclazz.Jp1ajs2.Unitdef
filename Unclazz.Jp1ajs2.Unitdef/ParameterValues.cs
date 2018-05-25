@@ -4,6 +4,12 @@ using System.Collections.Generic;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
+    /// <summary>
+    /// <see cref="IParameterValue"/>を要素とするリストです。
+    /// このリストは読み取り専用である可能性があります。
+    /// 読み取り専用のインスタンスに対して変更の操作を行った場合の挙動は、
+    /// <see cref="List{T}.AsReadOnly()"/>の返す読み取り専用コレクションのそれと同じです。
+    /// </summary>
     public sealed class ParameterValues : IList<IParameterValue>
     {
         readonly IList<IParameterValue> _values;
@@ -21,6 +27,9 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public int Count => _values.Count;
 
         public bool IsReadOnly => _values.IsReadOnly;
+
+        public ParameterValues AsReadOnly() => IsReadOnly
+        ? this : new ParameterValues(new List<IParameterValue>(_values).AsReadOnly());
 
         public void Add(IParameterValue value)
         {
