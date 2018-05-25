@@ -57,7 +57,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
         }
 
-        internal Parameter(string name, List<IParameterValue> vs)
+        Parameter(string name, List<IParameterValue> vs)
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(name, "name of parameter");
             UnitdefUtil.ArgumentMustNotBeNull(vs, "list of parameter");
