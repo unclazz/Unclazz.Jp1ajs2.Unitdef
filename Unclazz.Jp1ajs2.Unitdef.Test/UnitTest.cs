@@ -31,6 +31,11 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
                         Is.EqualTo("pj"));
             Assert.That(mutable1.SubUnits[0].Type, Is.EqualTo(UnitType.PcJob));
             Assert.That(mutable1.SubUnits[1].Type, Is.EqualTo(UnitType.UnixJob));
+
+            Assert.That(mutable1, Is.InstanceOf<MutableUnit>());
+            Assert.That(mutable1.Parameters[0], Is.InstanceOf<MutableParameter>());
+            Assert.That(mutable1.SubUnits[0], Is.InstanceOf<MutableUnit>());
+            Assert.That(mutable1.SubUnits[0].Parameters[0], Is.InstanceOf<MutableParameter>());
         }
     }
 }
