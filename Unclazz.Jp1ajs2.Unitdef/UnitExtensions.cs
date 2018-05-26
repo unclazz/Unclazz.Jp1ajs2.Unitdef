@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -151,11 +152,157 @@ namespace Unclazz.Jp1ajs2.Unitdef
             self.WriteLine();
             return self;
         }
-
-        public static IUnit First(this IUnit self, string unitName)
+        /// <summary>
+        /// このユニットの子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        public static IEnumerable<IUnit> Children(this IUnit self)
         {
-            UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
-            return self.SubUnits.First(u => u.Name == unitName);
+            return self.SubUnits;
+        }
+        /// <summary>
+        /// このユニットの子ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IEnumerable<IUnit> Children(this IUnit self, UnitType type)
+        {
+            return self.SubUnits.Where(u => u.Type == type);
+        }
+        /// <summary>
+        /// このユニットの子ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IEnumerable<IUnit> Children(this IUnit self, string type)
+        {
+            return self.Children(UnitType.FromName(type));
+        }
+        /// <summary>
+        /// このユニットの子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        public static IEnumerable<IUnit> Descendants(this IUnit self)
+        {
+            var stack = new Stack<IUnit>(self.SubUnits);
+
+            while (stack.Any())
+            {
+                var elm = stack.Pop();
+                foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
+                yield return elm;
+            }
+        }
+        /// <summary>
+        /// このユニットの子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IEnumerable<IUnit> Descendants(this IUnit self, UnitType type)
+        {
+            var stack = new Stack<IUnit>(self.SubUnits);
+
+            while (stack.Any())
+            {
+                var elm = stack.Pop();
+                foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
+                if (elm.Type == type) yield return elm;
+            }
+        }
+        /// <summary>
+        /// このユニットの子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IEnumerable<IUnit> Descendants(this IUnit self, string type)
+        {
+            return self.Descendants(UnitType.FromName(type));
+        }
+        /// <summary>
+        /// ユニットのシーケンスに対してユニット名によるフィルタリングを行います。
+        /// </summary>
+        /// <returns>フィルタリングされたシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="prefix">ユニット名の接頭辞</param>
+        public static IEnumerable<IUnit> NameStartsWith(this IEnumerable<IUnit> self, string prefix)
+        {
+            return self.Where(u => u.Name.StartsWith(prefix));
+        }
+        /// <summary>
+        /// ユニットのシーケンスに対してユニット名によるフィルタリングを行います。
+        /// </summary>
+        /// <returns>フィルタリングされたシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="suffix">ユニット名の接尾辞</param>
+        public static IEnumerable<IUnit> NameEndsWith(this IEnumerable<IUnit> self, string suffix)
+        {
+            return self.Where(u => u.Name.EndsWith(suffix));
+        }
+        /// <summary>
+        /// ユニットのシーケンスに対してユニット名によるフィルタリングを行います。
+        /// </summary>
+        /// <returns>フィルタリングされたシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="substring">ユニット名に含まれる部分文字列</param>
+        public static IEnumerable<IUnit> NameContains(this IEnumerable<IUnit> self, string substring)
+        {
+            return self.Where(u => u.Name.Contains(substring));
+        }
+        /// <summary>
+        /// ユニットのシーケンスに対してユニット名によるフィルタリングを行います。
+        /// </summary>
+        /// <returns>フィルタリングされたシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="name">ユニット名</param>
+        public static IEnumerable<IUnit> NameEquals(this IEnumerable<IUnit> self, string name)
+        {
+            return self.Where(u => u.Name == name);
+        }
+        /// <summary>
+        /// 保有するユニット定義パラメータによるフィルタリングを行います。
+        /// </summary>
+        /// <returns>フィルタリングされたシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="paramName">ユニット定義パラメータ名</param>
+        public static IEnumerable<IUnit> HasParameter(this IEnumerable<IUnit> self, string paramName)
+        {
+            return self.Where(u => u.Parameters.Any(p => p.Name == paramName));
+        }
+        /// <summary>
+        /// 子ユニットを保有するかどうかでフィルタリングを行います。
+        /// </summary>
+        /// <returns>フィルタリングされたシーケンス</returns>
+        /// <param name="self"></param>
+        public static IEnumerable<IUnit> HasChildren(this IEnumerable<IUnit> self)
+        {
+            return self.Where(u => u.SubUnits.Any());
+        }
+        /// <summary>
+        /// 保有する子ユニットによるフィルタリングを行います。
+        /// </summary>
+        /// <returns>フィルタリングされたシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">子ユニットのユニット種別</param>
+        public static IEnumerable<IUnit> HasChildren(this IEnumerable<IUnit> self, UnitType type)
+        {
+            return self.Where(u => u.SubUnits.Any(s => s.Type == type));
+        }
+        /// <summary>
+        /// 保有する子ユニットによるフィルタリングを行います。
+        /// </summary>
+        /// <returns>フィルタリングされたシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">子ユニットのユニット種別</param>
+        public static IEnumerable<IUnit> HasChildren(this IEnumerable<IUnit> self, string type)
+        {
+            var expected = UnitType.FromName(type);
+            return self.Where(u => u.SubUnits.Any(s => s.Type == expected));
         }
     }
 }
