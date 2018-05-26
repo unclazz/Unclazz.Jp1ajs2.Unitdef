@@ -14,7 +14,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             return new MutableParameter(name);
         }
 
-        readonly ParameterValues _values = new ParameterValues(new List<IParameterValue>());
+        readonly ParameterValueCollection _values = new ParameterValueCollection(new List<IParameterValue>());
 
         MutableParameter(string name)
         {
@@ -23,7 +23,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public string Name { get; }
 
-        public ParameterValues Values => _values;
+        public ParameterValueCollection Values => _values;
 
         public Parameter AsImmutable()
         {

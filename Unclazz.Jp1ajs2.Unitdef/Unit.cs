@@ -138,8 +138,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
             _attrs = attributes;
             _type = UnitType.FromName(ty.Values[0].StringValue);
             _comment = cm == null ? string.Empty : cm.Values[0].StringValue;
-            Parameters = parameters.AsReadOnly();
-            SubUnits = subUnits.AsReadOnly();
+            Parameters = new ParameterCollection(parameters.AsReadOnly());
+            SubUnits = new SubUnitCollection(subUnits.AsReadOnly());
         }
 
         readonly IFullQualifiedName _fqn;
@@ -168,8 +168,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
             get => _name;
             set => throw new NotSupportedException();
         }
-        public IList<IParameter> Parameters { get; }
-        public IList<IUnit> SubUnits { get; }
+        public ParameterCollection Parameters { get; }
+        public SubUnitCollection SubUnits { get; }
         public IUnitType Type
         {
             get => _type;
@@ -227,11 +227,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
             mutable.Attributes = Attributes;
             foreach (var p in Parameters)
             {
-                mutable.Add(p);
+                mutable.Parameters.Add(p);
             }
             foreach (var u in SubUnits)
             {
-                mutable.Add(u);
+                mutable.SubUnits.Add(u);
             }
             return mutable;
         }
@@ -239,26 +239,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public Unit AsImmutable()
         {
             return this;
-        }
-
-        public void Add(IUnit unit)
-        {
-            throw new NotSupportedException();
-        }
-
-        public void Add(IParameter param)
-        {
-            throw new NotSupportedException();
-        }
-
-        public void RemoveAll(Func<IUnit, bool> predicate)
-        {
-            throw new NotSupportedException();
-        }
-
-        public void RemoveAll(Func<IParameter, bool> predicate)
-        {
-            throw new NotSupportedException();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <summary>
         /// パラメータ値のリスト
         /// </summary>
-        ParameterValues Values { get; }
+        ParameterValueCollection Values { get; }
         /// <summary>
         /// クエリを利用して問い合わせ（レシーバ・オブジェクトの持つ情報の検索/変換）を行います。
         /// </summary>

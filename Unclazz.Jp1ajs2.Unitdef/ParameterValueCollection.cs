@@ -10,10 +10,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
     /// 読み取り専用のインスタンスに対して変更の操作を行った場合の挙動は、
     /// <see cref="List{T}.AsReadOnly()"/>の返す読み取り専用コレクションのそれと同じです。
     /// </summary>
-    public sealed class ParameterValues : IList<IParameterValue>
+    public sealed class ParameterValueCollection : IList<IParameterValue>
     {
         readonly IList<IParameterValue> _values;
-        internal ParameterValues(IList<IParameterValue> values)
+        internal ParameterValueCollection(IList<IParameterValue> values)
         {
             _values = values ?? throw new ArgumentNullException(nameof(values));
         }
@@ -28,8 +28,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public bool IsReadOnly => _values.IsReadOnly;
 
-        public ParameterValues AsReadOnly() => IsReadOnly
-        ? this : new ParameterValues(new List<IParameterValue>(_values).AsReadOnly());
+        public ParameterValueCollection AsReadOnly() => IsReadOnly
+        ? this : new ParameterValueCollection(new List<IParameterValue>(_values).AsReadOnly());
 
         public void Add(IParameterValue value)
         {

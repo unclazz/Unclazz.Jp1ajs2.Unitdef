@@ -62,11 +62,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
             UnitdefUtil.ArgumentMustNotBeEmpty(name, "name of parameter");
             UnitdefUtil.ArgumentMustNotBeNull(vs, "list of parameter");
             Name = name;
-            Values = new ParameterValues(vs.AsReadOnly());
+            Values = new ParameterValueCollection(vs.AsReadOnly());
         }
 
         public string Name { get; }
-        public ParameterValues Values { get; }
+        public ParameterValueCollection Values { get; }
 
         public TResult Query<TResult>(IQuery<IParameter,TResult> q)
         {

@@ -32,11 +32,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <summary>
         /// ユニット定義パラメータのリスト
         /// </summary>
-        IList<IParameter> Parameters { get; }
+        ParameterCollection Parameters { get; }
         /// <summary>
         /// 下位ユニットのリスト
         /// </summary>
-        IList<IUnit> SubUnits { get; }
+        SubUnitCollection SubUnits { get; }
         /// <summary>
         /// クエリを利用して問い合わせ（レシーバ・オブジェクトの持つ情報の検索/変換）を行います。
         /// </summary>
@@ -46,9 +46,5 @@ namespace Unclazz.Jp1ajs2.Unitdef
         TResult Query<TResult>(IQuery<IUnit,TResult> q);
         MutableUnit AsMutable();
         Unit AsImmutable();
-        void Add(IUnit unit);
-        void Add(IParameter param);
-        void RemoveAll(Func<IUnit, bool> predicate);
-        void RemoveAll(Func<IParameter, bool> predicate);
     }
 }

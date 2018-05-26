@@ -23,8 +23,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         IFullQualifiedName _fqn;
         IAttributes _attrs;
-        readonly List<MutableParameter> _params = new List<MutableParameter>();
-        readonly List<MutableUnit> _subUnits = new List<MutableUnit>();
+        readonly ParameterCollection _params = new ParameterCollection(new List<IParameter>());
+        readonly SubUnitCollection _subUnits = new SubUnitCollection(new List<IUnit>());
 
         MutableUnit(IFullQualifiedName fqn) : this()
         {
@@ -124,9 +124,9 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
         }
 
-        public IList<IParameter> Parameters => new List<IParameter>(_params);
+        public ParameterCollection Parameters => _params;
 
-        public IList<IUnit> SubUnits => new List<IUnit>(_subUnits);
+        public SubUnitCollection SubUnits => _subUnits;
 
         public Unit AsImmutable()
         {
@@ -151,11 +151,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
             mutable.Attributes = Attributes;
             foreach (var p in _params)
             {
-                mutable.Add(p);
+                mutable.Parameters.Add(p);
             }
             foreach (var u in _subUnits)
             {
-                mutable.Add(u);
+                mutable.SubUnits.Add(u);
             }
             return mutable;
         }
@@ -197,37 +197,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 buff.Append('\t');
             }
             return buff;
-        }
-
-        public void Add(IUnit unit)
-        {
-            _subUnits.Add(unit.AsMutable());
-        }
-
-        public void Add(IParameter param)
-        {
-            if (param.Name == "ty")
-            {
-                _params.First(p => p.Name == "ty").Values[0] = param.Values[0];
-            }
-            else if (param.Name == "cm" && _params.Any(p => p.Name == "cm"))
-            {
-                _params.First(p => p.Name == "cm").Values[0] = param.Values[0];
-            }
-            else
-            {
-                _params.Add(param.AsMutable());
-            }
-        }
-
-        public void RemoveAll(Func<IUnit, bool> predicate)
-        {
-            _subUnits.RemoveAll(a => predicate(a));
-        }
-
-        public void RemoveAll(Func<IParameter, bool> predicate)
-        {
-            _params.RemoveAll(a => a.Name != "ty" && predicate(a));
         }
     }
 }

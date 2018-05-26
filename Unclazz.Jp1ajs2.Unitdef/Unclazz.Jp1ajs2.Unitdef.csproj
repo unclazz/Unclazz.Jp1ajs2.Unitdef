@@ -75,7 +75,9 @@
     <Compile Include="TupleEntry.cs" />
     <Compile Include="TupleParameterValue.cs" />
     <Compile Include="MutableUnit.cs" />
-    <Compile Include="ParameterValues.cs" />
+    <Compile Include="ParameterValueCollection.cs" />
+    <Compile Include="ParameterCollection.cs" />
+    <Compile Include="SubUnitCollection.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
