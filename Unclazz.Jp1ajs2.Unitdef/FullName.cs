@@ -7,39 +7,44 @@ using System.Threading.Tasks;
 namespace Unclazz.Jp1ajs2.Unitdef
 {
     /// <summary>
-    /// <code>IFullQualifiedName</code>のデフォルト実装です。
+    /// ユニットの完全名を表すクラスです。
     /// </summary>
-    public sealed class FullQualifiedName : IFullQualifiedName
+    public sealed class FullName
     {
         /// <summary>
         /// 指定されたフラグメントのリストを元に完全名を生成して返します。
         /// </summary>
         /// <param name="fragments">フラグメントのリスト</param>
         /// <returns>完全名インスタンス</returns>
-        public static FullQualifiedName FromFragments(params string[] fragments)
+        public static FullName FromFragments(params string[] fragments)
         {
-            return new FullQualifiedName(fragments);
+            return new FullName(fragments);
         }
 
         readonly string[] _fragments;
         string _stringValue = null;
-        public IFullQualifiedName SuperUnitName { get; }
 
-        FullQualifiedName(string[] fragments) 
+        /// <summary>
+        /// 上位ユニットの完全名を返します。
+        /// </summary>
+        /// <returns>上位ユニットの完全名（自身がルート・ユニットの場合<code>null</code>）</returns>
+        public FullName SuperUnitName { get; }
+
+        FullName(string[] fragments) 
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(fragments, nameof(fragments));
             UnitdefUtil.ArgumentMustNotBeEmpty(fragments[fragments.Length - 1], "fragment");
             var depth = fragments.Length;
-            FullQualifiedName parent = null;
+            FullName parent = null;
             foreach (var f in fragments.Take(depth - 1))
             {
-                parent = new FullQualifiedName(parent, f);
+                parent = new FullName(parent, f);
             }
             SuperUnitName = parent;
             _fragments = fragments;
         }
 
-        FullQualifiedName(FullQualifiedName superUnitName, string newFragment)
+        FullName(FullName superUnitName, string newFragment)
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(newFragment, "fragment of full qualified name");
             if (superUnitName == null)
@@ -55,6 +60,9 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
         }
 
+        /// <summary>
+        /// 完全名を構成するフラグメントのリストを返します。
+        /// </summary>
         public IList<string> Fragments
         {
             get
@@ -63,14 +71,27 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
         }
 
-        public IFullQualifiedName RootUnitName => _fragments.Length == 1
-               ? this : FullQualifiedName.FromFragments(_fragments[0]);
+        /// <summary>
+        /// ルート・ユニットの完全名を返します。
+        /// </summary>
+        /// <value>ルート・ユニットの完全名（自身がルート・ユニットの場合<c>this</c>）</value>
+        public FullName RootUnitName => _fragments.Length == 1
+               ? this : FullName.FromFragments(_fragments[0]);
 
+        /// <summary>
+        /// 完全名を構成するフラグメントのリストの末尾を返します。
+        /// </summary>
+        /// <value>フラグメントのリストの末尾</value>
         public string BaseName => _fragments[_fragments.Length - 1];
 
-        public IFullQualifiedName GetSubUnitName(string name)
+        /// <summary>
+        /// 下位ユニットの完全名を返します。
+        /// </summary>
+        /// <param name="name">下位ユニットの完全名</param>
+        /// <returns></returns>
+        public FullName GetSubUnitName(string name)
         {
-            return new FullQualifiedName(this, name);
+            return new FullName(this, name);
         }
 
         public override string ToString()
@@ -89,7 +110,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public override bool Equals(object obj)
         {
-            IFullQualifiedName that = obj as IFullQualifiedName;
+            FullName that = obj as FullName;
             if (that == null)
             {
                 return false;

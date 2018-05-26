@@ -48,7 +48,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
                 input.Dispose();
             }
         }
-        private IUnit ParseUnit(Input input, IFullQualifiedName parent)
+        private IUnit ParseUnit(Input input, FullName parent)
         {
             // ユニット定義の開始キーワードを読み取る
             SkipWord(input, "unit");
@@ -69,9 +69,9 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
                 }
             }
 
-            IAttributes attributes = Attributes.OfValues(attrArray[0], 
+            Attributes attributes = Attributes.OfValues(attrArray[0], 
                 attrArray[1], attrArray[2], attrArray[3]);
-            IFullQualifiedName fqn = parent == null ? FullQualifiedName.
+            FullName fqn = parent == null ? FullName.
                 FromFragments(attrArray[0]) : parent.GetSubUnitName(attrArray[0]);
 
             // 属性の定義は「；」で終わる
@@ -91,7 +91,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             }
 
             // サブユニットを格納するリストを初期化
-            Unit.Builder builder = Unit.Builder.Create().FullQualifiedName(fqn).Attributes(attributes);
+            Unit.Builder builder = Unit.Builder.Create().FullName(fqn).Attributes(attributes);
 
             // "unit"で始まらないならそれはパラメータ
 			if (!input.RestOfLine.StartsWith("unit", StringComparison.Ordinal))

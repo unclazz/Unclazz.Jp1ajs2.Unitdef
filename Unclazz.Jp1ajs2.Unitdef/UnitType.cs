@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
-    public sealed class UnitType : IUnitType
+    /// <summary>
+    /// JP1/AJS2のユニット種別を表すクラスです。
+    /// </summary>
+    public sealed class UnitType
     {
         private static readonly IDictionary<string, UnitType> dict = new Dictionary<string, UnitType>();
 
@@ -261,11 +264,20 @@ namespace Unclazz.Jp1ajs2.Unitdef
             return new HashSet<UnitType>(dict.Values);
         }
 
+        /// <summary>
+        /// ユニット種別の名称（<code>"pj"</code>など）
+        /// </summary>
         public string Name { get; }
+        /// <summary>
+        /// ユニット種別の長い名称（<code>"PcJob"</code>など）
+        /// </summary>
         public string LongName { get; }
+        /// <summary>
+        /// リカバリージョブの場合<code>true</code>
+        /// </summary>
         public bool IsRecoveryType { get; }
 
-        private UnitType (string name, string longName)
+        UnitType (string name, string longName)
         {
             Name = name;
             LongName = longName;
@@ -288,7 +300,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             {
                 return true;
             }
-            IUnitType that = obj as IUnitType;
+            UnitType that = obj as UnitType;
             return that != null && that.Name.Equals(this.Name);
         }
         public override int GetHashCode()

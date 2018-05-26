@@ -12,35 +12,35 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             return new MutableUnit(name);
         }
-        public static MutableUnit ForFullQualifiedName(IFullQualifiedName fqn)
+        public static MutableUnit ForFullName(FullName fqn)
         {
             return new MutableUnit(fqn);
         }
-        public static MutableUnit ForAttributes(IAttributes attrs)
+        public static MutableUnit ForAttributes(Attributes attrs)
         {
             return new MutableUnit(attrs);
         }
 
-        IFullQualifiedName _fqn;
-        IAttributes _attrs;
+        FullName _fqn;
+        Attributes _attrs;
         readonly ParameterCollection _params = new ParameterCollection(new List<IParameter>());
         readonly SubUnitCollection _subUnits = new SubUnitCollection(new List<IUnit>());
 
-        MutableUnit(IFullQualifiedName fqn) : this()
+        MutableUnit(FullName fqn) : this()
         {
             _fqn = fqn ?? throw new ArgumentNullException(nameof(fqn));
             _attrs = Unitdef.Attributes.OfValues(fqn.BaseName);
         }
 
-        MutableUnit(IAttributes attrs) : this()
+        MutableUnit(Attributes attrs) : this()
         {
-            _fqn = Unitdef.FullQualifiedName.FromFragments(attrs.UnitName);
+            _fqn = Unitdef.FullName.FromFragments(attrs.UnitName);
             _attrs = _attrs ?? throw new ArgumentNullException(nameof(attrs));
         }
 
         MutableUnit(string name) : this()
         {
-            _fqn = Unitdef.FullQualifiedName.FromFragments(name);
+            _fqn = Unitdef.FullName.FromFragments(name);
             _attrs = Unitdef.Attributes.OfValues(name);
         }
 
@@ -61,7 +61,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
                                  Attributes.ResourceGroupName);
         }
 
-        public IFullQualifiedName FullQualifiedName
+        public FullName FullName
         {
             get => _fqn;
             set 
@@ -75,20 +75,20 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
         }
 
-        public IAttributes Attributes
+        public Attributes Attributes
         {
             get => _attrs;
             set
             {
                 _attrs = value ?? throw new ArgumentNullException(nameof(value));
-                var fragments = FullQualifiedName.Fragments;
+                var fragments = FullName.Fragments;
                 fragments.RemoveAt(fragments.Count - 1);
                 fragments.Add(value.UnitName);
-                _fqn = Unitdef.FullQualifiedName.FromFragments(fragments.ToArray());
+                _fqn = Unitdef.FullName.FromFragments(fragments.ToArray());
             }
         }
 
-        public IUnitType Type
+        public UnitType Type
         {
             get 
             {
@@ -131,7 +131,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public Unit AsImmutable()
         {
             var b = Unit.Builder.Create()
-                        .FullQualifiedName(FullQualifiedName)
+                        .FullName(FullName)
                         .Attributes(Attributes);
             foreach (var p in _params)
             {
@@ -146,7 +146,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public MutableUnit AsMutable()
         {
-            var mutable = MutableUnit.ForFullQualifiedName(FullQualifiedName);
+            var mutable = MutableUnit.ForFullName(FullName);
             mutable.Attributes = Attributes;
             foreach (var p in Parameters)
             {
@@ -173,7 +173,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public string Serialize()
         {
-            var depth = FullQualifiedName.Fragments.Count;
+            var depth = FullName.Fragments.Count;
             StringBuilder b = new StringBuilder();
 
             AppendTabs(b, depth - 1).Append("unit=");

@@ -60,7 +60,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
         /// </summary>
         /// <param name="t">ユニット種別</param>
         /// <returns>クエリ</returns>
-        public UnitEnumerableQuery TypeIs(IUnitType t)
+        public UnitEnumerableQuery TypeIs(UnitType t)
         {
             return And(u => {
                 return u.Type.Equals(t);
@@ -118,7 +118,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
                 return UnitdefUtil.GetDescendants(v).Any(vs => {
                     // 比較対象ユニットの子孫ユニットと問い合わせ対象ユニットが
                     // 同一かどうかをチェックして結果を返す
-                    return vs == u || vs.FullQualifiedName.Equals(u.FullQualifiedName);
+                    return vs == u || vs.FullName.Equals(u.FullName);
                 });
             });
         }
@@ -129,7 +129,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Query
                 return v.SubUnits.Any(vs => {
                     // 比較対象ユニットの子ユニットと問い合わせ対象ユニットが
                     // 同一かどうかをチェックして結果を返す
-                    return vs == u || vs.FullQualifiedName.Equals(u.FullQualifiedName);
+                    return vs == u || vs.FullName.Equals(u.FullName);
                 });
             });
         }

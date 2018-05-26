@@ -54,7 +54,7 @@ namespace Unclazz.Jp1ajs2.Findunit
         {
             if (ps.OutputFormat == OutputFormat.FqnList)
             {
-                return (IUnit u) => new StringBuilder().Append(u.FullQualifiedName);
+                return (IUnit u) => new StringBuilder().Append(u.FullName);
             }
             else if (ps.OutputFormat == OutputFormat.UnitDef)
             {
@@ -199,7 +199,7 @@ namespace Unclazz.Jp1ajs2.Findunit
         StringBuilder PrittyPrint(IUnit u)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(string.Format("/* {0} */", u.FullQualifiedName)).Append(Environment.NewLine);
+            sb.Append(string.Format("/* {0} */", u.FullName)).Append(Environment.NewLine);
             PrittyPrintHelper(u, sb, 0);
             return sb;
         }

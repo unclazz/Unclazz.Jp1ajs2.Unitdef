@@ -4,9 +4,13 @@ using System;
 namespace Unclazz.Jp1ajs2.Unitdef
 {
     /// <summary>
-    /// <code>IAttributes</code>のデフォルト実装です。
+    /// ユニット属性パラメータを表わすクラスです。
+    /// <para>
+    /// プロパティは次の構文に含まれる項目に対応します：
+    /// <c>"unit=ユニット名[,[許可モード][,[JP1ユーザ名][,[JP1資源グループ名]]]];"</c>
+    /// </para>
     /// </summary>
-    public class Attributes : IAttributes
+    public class Attributes
     {
         /// <summary>
         /// ユニット属性パラメータのインスタンスを返します。
@@ -31,18 +35,34 @@ namespace Unclazz.Jp1ajs2.Unitdef
         readonly string _resourceGroupName;
         readonly string _permissionMode;
 
+        /// <summary>
+        /// ユニット名です。
+        /// </summary>
+        /// <value>ユニット名</value>
         public string UnitName 
         {
             get => _unitName;
         }
+        /// <summary>
+        /// JP1ユーザ名です。
+        /// </summary>
+        /// <value>JP1ユーザ名</value>
         public string Jp1UserName
         {
             get => _jp1UserName;
         }
+        /// <summary>
+        /// 資源グループ名です。
+        /// </summary>
+        /// <value>資源グループ名</value>
         public string ResourceGroupName
         {
             get => _resourceGroupName;
         }
+        /// <summary>
+        /// 許可モードです。
+        /// </summary>
+        /// <value>許可モード</value>
         public string PermissionMode
         {
             get => _permissionMode;

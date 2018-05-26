@@ -27,7 +27,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             // Assert
             Assert.That(mutable1.Name, Is.EqualTo(name1));
             Assert.That(mutable1.Attributes.UnitName, Is.EqualTo(name1));
-            Assert.That(mutable1.FullQualifiedName.BaseName, Is.EqualTo(name1));
+            Assert.That(mutable1.FullName.BaseName, Is.EqualTo(name1));
         }
 
         [Test]

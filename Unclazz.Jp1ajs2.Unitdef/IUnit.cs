@@ -16,15 +16,15 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <summary>
         /// ユニット完全名
         /// </summary>
-        IFullQualifiedName FullQualifiedName { get; set; }
+        FullName FullName { get; set; }
         /// <summary>
         /// ユニット属性パラメータ
         /// </summary>
-        IAttributes Attributes { get; set; }
+        Attributes Attributes { get; set; }
         /// <summary>
         /// ユニット種別
         /// </summary>
-        IUnitType Type { get; set; }
+        UnitType Type { get; set; }
         /// <summary>
         /// コメント
         /// </summary>

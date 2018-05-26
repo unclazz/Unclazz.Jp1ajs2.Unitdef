@@ -25,10 +25,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
             Builder() {}
 
-            private IFullQualifiedName fqn = null;
+            private FullName fqn = null;
             private IParameter ty = null;
             private IParameter cm = null;
-            private IAttributes attributes = null;
+            private Attributes attributes = null;
             private List<IParameter> parameters = new List<IParameter>();
             private List<IUnit> subUnits = new List<IUnit>();
             /// <summary>
@@ -36,7 +36,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             /// </summary>
             /// <param name="f">完全名</param>
             /// <returns>ビルダー</returns>
-            public Builder FullQualifiedName(IFullQualifiedName f)
+            public Builder FullName(FullName f)
             {
                 this.fqn = f;
                 return this;
@@ -46,7 +46,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             /// </summary>
             /// <param name="a">ユニット属性パラメータ</param>
             /// <returns>ビルダー</returns>
-            public Builder Attributes(IAttributes a)
+            public Builder Attributes(Attributes a)
             {
                 this.attributes = a;
                 return this;
@@ -131,7 +131,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 			return parser.Parse(Input.FromStream(stream, enc))[0];
 		}
 
-        Unit(IFullQualifiedName fqn, IAttributes attributes, IParameter ty, IParameter cm, 
+        Unit(FullName fqn, Attributes attributes, IParameter ty, IParameter cm, 
             List<IParameter> parameters, List<IUnit> subUnits)
         {
             _fqn = fqn;
@@ -143,13 +143,13 @@ namespace Unclazz.Jp1ajs2.Unitdef
             SubUnits = new SubUnitCollection(subUnits.AsReadOnly());
         }
 
-        readonly IFullQualifiedName _fqn;
-        readonly IAttributes _attrs;
+        readonly FullName _fqn;
+        readonly Attributes _attrs;
         readonly string _comment;
         readonly string _name;
-        readonly IUnitType _type;
+        readonly UnitType _type;
 
-        public IAttributes Attributes
+        public Attributes Attributes
         {
             get => _attrs;
             set => throw new NotSupportedException();
@@ -159,7 +159,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             get => _comment;
             set => throw new NotSupportedException();
         }
-        public IFullQualifiedName FullQualifiedName
+        public FullName FullName
         {
             get => _fqn;
             set => throw new NotSupportedException();
@@ -171,7 +171,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         }
         public ParameterCollection Parameters { get; }
         public SubUnitCollection SubUnits { get; }
-        public IUnitType Type
+        public UnitType Type
         {
             get => _type;
             set => throw new NotSupportedException();
@@ -185,12 +185,12 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public override string ToString()
         {
             return string.Format("Unit(FullQualifiedName={0},Attributes={1},Parameters={2},SubUnits={3})", 
-                FullQualifiedName, Attributes, Parameters, SubUnits);
+                FullName, Attributes, Parameters, SubUnits);
         }
 
         public string Serialize()
         {
-            var depth = FullQualifiedName.Fragments.Count;
+            var depth = FullName.Fragments.Count;
             StringBuilder b = new StringBuilder();
 
             AppendTabs(b, depth - 1).Append("unit=");
@@ -224,7 +224,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public MutableUnit AsMutable()
         {
-            var mutable = MutableUnit.ForFullQualifiedName(FullQualifiedName);
+            var mutable = MutableUnit.ForFullName(FullName);
             mutable.Attributes = Attributes;
             foreach (var p in Parameters)
             {
