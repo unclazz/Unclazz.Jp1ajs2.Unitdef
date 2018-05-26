@@ -9,7 +9,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
     {
         static readonly IUnit immutableUnit0 = Unit.FromString
                ("unit=XXXX0000,,,;" +
-                "{ty=g;" +
+                "{ty=g;cm=\"foo\";" +
                 "unit=XXXX1000,,,;{ty=pj;sc=xxx;}" +
                 "unit=XXXX2000,,,;{ty=j;sc=xxx;}" +
                 "}");
@@ -57,13 +57,14 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
         }
 
         [Test]
-        public void set_Type_ReplaceUnitType()
+        public void set_Type_ReplacesOriginalUnitType()
         {
             // Arrange
             var type1 = "n";
             var mutable1 = immutableUnit0.AsMutable();
 
             // Act
+            Assert.That(mutable1.Parameters.Count(p => p.Name == "ty"), Is.EqualTo(1));
             mutable1.Type = UnitType.FromName(type1);
 
             // Assert
@@ -71,6 +72,33 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             Assert.That(mutable1.Parameters
                         .First(p => p.Name == "ty").Values[0].StringValue,
                         Is.EqualTo(type1));
+            Assert.That(mutable1.Parameters.Count(p => p.Name == "ty"), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void set_Comment_ReplacesOriginalComment()
+        {
+            // Arrange
+            var mutable1 = immutableUnit0.AsMutable();
+
+            // Act
+            mutable1.Comment = "bar";
+
+            // Assert
+            Assert.That(mutable1.Comment, Is.EqualTo("bar"));
+            Assert.That(mutable1.Parameters.Count(p => p.Name == "cm"), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void set_Comment_WhenValueIsNull_ThrowsException()
+        {
+            // Arrange
+            var mutable1 = immutableUnit0.AsMutable();
+
+            // Act
+            // Assert
+            Assert.That(() => mutable1.Comment = null, Throws.ArgumentNullException);
+
         }
     }
 }
