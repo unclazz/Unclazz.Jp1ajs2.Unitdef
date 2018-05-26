@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
@@ -153,6 +155,46 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 // IEnumerableの2番目以降の要素として順番に返す
                 yield return u;
             }
+        }
+        public static string ToString(IUnit u)
+        {
+            var w = new StringWriter();
+            u.WriteTo(w);
+            return w.ToString();
+        }
+        public static string ToString(IParameter p)
+        {
+            var b = new StringBuilder().Append(p.Name).Append('=');
+            int prefixLen = b.Length;
+            foreach (IParameterValue v in p.Values)
+            {
+                if (b.Length > prefixLen)
+                {
+                    b.Append(',');
+                }
+                b.Append(v.ToString());
+            }
+            b.Append(';');
+            return b.ToString();
+        }
+        public static string ToString(ITuple tuple)
+        {
+            var b = new StringBuilder().Append('(');
+
+            foreach (ITupleEntry e in tuple.Entries)
+            {
+                if (b.Length > 1)
+                {
+                    b.Append(',');
+                }
+                if (e.HasKey)
+                {
+                    b.Append(e.Key).Append('=');
+                }
+                b.Append(e.Value);
+            }
+
+            return b.Append(')').ToString();
         }
     }
 }

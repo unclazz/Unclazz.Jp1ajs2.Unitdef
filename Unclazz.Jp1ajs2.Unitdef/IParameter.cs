@@ -7,7 +7,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
     /// <summary>
     /// ユニット定義パラメータを表すインターフェースです。
     /// </summary>
-    public interface IParameter : IComponent
+    public interface IParameter
     {
         /// <summary>
         /// パラメータ名称（<code>"ty"</code>など）
@@ -24,15 +24,5 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="q">クエリ</param>
         /// <returns>問い合わせ結果</returns>
         TResult Query<TResult>(IQuery<IParameter,TResult> q);
-        /// <summary>
-        /// このオブジェクトのミュータブルなコピーを作成します。
-        /// </summary>
-        /// <returns>元のオブジェクトと同じ内容を持つミュータブルなオブジェクト</returns>
-        MutableParameter AsMutable();
-        /// <summary>
-        /// このオブジェクトと同じ内容を持つイミュータブルなオブジェクトを返します。
-        /// </summary>
-        /// <returns>元のオブジェクトと同じ内容を持つイミュータブルなオブジェクト</returns>
-        Parameter AsImmutable();
     }
 }

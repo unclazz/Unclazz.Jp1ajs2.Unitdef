@@ -69,7 +69,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             Assert.That(mutable1.Values[0], Is.EqualTo("nokey"));
             Assert.That(mutable1.Values[1], Is.EqualTo("haskey1"));
             Assert.That(mutable1.Values[2], Is.EqualTo("haskey2"));
-            Assert.That(mutable1.Serialize(), Is.EqualTo("(nokey,key1=haskey1,key2=haskey2)"));
+            Assert.That(mutable1.ToString(), Is.EqualTo("(nokey,key1=haskey1,key2=haskey2)"));
         }
         [Test]
         public void Add_WhenSameKeyAlreadyExists_ThrowsArgumentException()
@@ -104,7 +104,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             Assert.That(mutable1.Values[0], Is.EqualTo("nokey"));
             Assert.That(mutable1.Values[2], Is.EqualTo("haskey1"));
             Assert.That(mutable1.Values[1], Is.EqualTo("haskey2"));
-            Assert.That(mutable1.Serialize(), Is.EqualTo("(nokey,key2=haskey2,key1=haskey1)"));
+            Assert.That(mutable1.ToString(), Is.EqualTo("(nokey,key2=haskey2,key1=haskey1)"));
         }
         [Test]
         public void Insert_WhenSameKeyAlreadyExists_ThrowsArgumentException()
@@ -153,7 +153,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
 
             // Assert
             Assert.That(mutable1.Count, Is.EqualTo(2));
-            Assert.That(mutable1.Serialize(), Is.EqualTo("(key1=haskey1,key2=haskey2)"));
+            Assert.That(mutable1.ToString(), Is.EqualTo("(key1=haskey1,key2=haskey2)"));
         }
         [Test]
         public void RemoveAt_RemovesSpecifiedEntry_Case2()
@@ -170,7 +170,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
 
             // Assert
             Assert.That(mutable1.Count, Is.EqualTo(2));
-            Assert.That(mutable1.Serialize(), Is.EqualTo("(nokey,key1=haskey1)"));
+            Assert.That(mutable1.ToString(), Is.EqualTo("(nokey,key1=haskey1)"));
         }
     }
 }

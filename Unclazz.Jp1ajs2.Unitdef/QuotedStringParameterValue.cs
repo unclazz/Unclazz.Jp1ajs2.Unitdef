@@ -27,12 +27,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public override string ToString()
         {
-            return string.Format("QuotedStringParameterValue({0})", StringValue);
-        }
-
-        public string Serialize()
-        {
-            StringBuilder b = new StringBuilder().Append('"');
+            var b = new StringBuilder().Append('"');
             foreach (char ch in StringValue.ToList())
             {
                 if (ch == '#' || ch == '"')

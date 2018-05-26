@@ -27,11 +27,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public override string ToString()
         {
-            return string.Format("RawStringParameterValue({0})", StringValue);
-        }
-
-        public string Serialize()
-        {
             return StringValue;
         }
     }

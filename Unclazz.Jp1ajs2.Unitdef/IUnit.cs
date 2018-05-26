@@ -7,7 +7,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
     /// <summary>
     /// JP1/AJS2のジョブユニットを表すインターフェースです。
     /// </summary>
-    public interface IUnit : IComponent
+    public interface IUnit
     {
         /// <summary>
         /// ユニット名
@@ -44,7 +44,5 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="q">クエリ</param>
         /// <returns>問い合わせ結果</returns>
         TResult Query<TResult>(IQuery<IUnit,TResult> q);
-        MutableUnit AsMutable();
-        Unit AsImmutable();
     }
 }

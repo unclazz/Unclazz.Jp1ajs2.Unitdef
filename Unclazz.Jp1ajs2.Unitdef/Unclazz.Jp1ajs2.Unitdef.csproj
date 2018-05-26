@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes.cs" />
-    <Compile Include="IComponent.cs" />
     <Compile Include="Parser\ParseException.cs" />
     <Compile Include="Parser\UnitParser.cs" />
     <Compile Include="FullName.cs" />
@@ -75,6 +74,8 @@
     <Compile Include="ParameterValueCollection.cs" />
     <Compile Include="ParameterCollection.cs" />
     <Compile Include="SubUnitCollection.cs" />
+    <Compile Include="UnitExtensions.cs" />
+    <Compile Include="ParameterExtension.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

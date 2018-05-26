@@ -4,7 +4,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
     /// <summary>
     /// ユニット定義パラメータの値を表すインターフェースです。
     /// </summary>
-    public interface IParameterValue : IComponent
+    public interface IParameterValue
     {
         /// <summary>
         /// パラメータ値の種別

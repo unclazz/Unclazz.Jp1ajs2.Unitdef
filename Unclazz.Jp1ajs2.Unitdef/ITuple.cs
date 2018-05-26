@@ -5,7 +5,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
     /// <summary>
     /// ユニット定義パラメータ値のタプルを表すインターフェースです。
     /// </summary>
-    public interface ITuple : IComponent
+    public interface ITuple
     {
         /// <summary>
         /// タプルが持つエントリー数

@@ -92,36 +92,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder("Tuple(");
-            foreach (ITupleEntry e in _list)
-            {
-                if (sb.Length > 6)
-                {
-                    sb.Append(",");
-                }
-                sb.Append(e);
-            }
-            return sb.Append(")").ToString();
-        }
-
-        public string Serialize()
-        {
-            StringBuilder b = new StringBuilder().Append('(');
-
-            foreach(ITupleEntry e in _list)
-            {
-                if (b.Length > 1)
-                {
-                    b.Append(',');
-                }
-                if (e.HasKey)
-                {
-                    b.Append(e.Key).Append('=');
-                }
-                b.Append(e.Value);
-            }
-
-            return b.Append(')').ToString();
+            return UnitdefUtil.ToString(this);
         }
 
         public MutableTuple AsMutable()

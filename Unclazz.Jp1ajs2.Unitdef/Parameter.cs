@@ -75,37 +75,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public override string ToString()
         {
-            return string.Format("Parameter(Name={0},Values={1})", Name, Values);
-        }
-
-        public string Serialize()
-        {
-            var b = new StringBuilder().Append(Name).Append('=');
-            int prefixLen = b.Length;
-            foreach (IParameterValue v in Values)
-            {
-                if (b.Length > prefixLen)
-                {
-                    b.Append(',');
-                }
-                b.Append(v.Serialize());
-            }
-            return b.Append(';').ToString();
-        }
-
-        public MutableParameter AsMutable()
-        {
-            var mutable = MutableParameter.ForName(Name);
-            foreach (var value in Values)
-            {
-                mutable.Values.Add(value);
-            }
-            return mutable;
-        }
-
-        public Parameter AsImmutable()
-        {
-            return this;
+            return UnitdefUtil.ToString(this);
         }
     }
 }

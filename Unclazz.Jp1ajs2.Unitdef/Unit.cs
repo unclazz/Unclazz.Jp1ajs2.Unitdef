@@ -184,69 +184,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public override string ToString()
         {
-            return string.Format("Unit(FullQualifiedName={0},Attributes={1},Parameters={2},SubUnits={3})", 
-                FullName, Attributes, Parameters, SubUnits);
-        }
-
-        public string Serialize()
-        {
-            var depth = FullName.Fragments.Count;
-            StringBuilder b = new StringBuilder();
-
-            AppendTabs(b, depth - 1).Append("unit=");
-            b.Append(Attributes.UnitName).Append(',');
-            b.Append(Attributes.PermissionMode).Append(',');
-            b.Append(Attributes.Jp1UserName).Append(',');
-            b.Append(Attributes.ResourceGroupName).Append(';').Append(Environment.NewLine);
-
-            AppendTabs(b, depth - 1).Append('{').Append(Environment.NewLine);
-
-            foreach (IParameter p in Parameters)
-            {
-                AppendTabs(b, depth).Append(p.Serialize()).Append(Environment.NewLine);
-            }
-
-            foreach (IUnit u in SubUnits)
-            {
-                b.Append(u.Serialize()).Append(Environment.NewLine);
-            }
-
-            return AppendTabs(b, depth - 1).Append('}').ToString();
-        }
-        StringBuilder AppendTabs(StringBuilder buff, int depth)
-        {
-            for (var i = 0; i < depth; i++)
-            {
-                buff.Append('\t');
-            }
-            return buff;
-        }
-
-        public MutableUnit AsMutable()
-        {
-            var mutable = MutableUnit.ForFullName(FullName);
-            mutable.Attributes = Attributes;
-            foreach (var p in Parameters)
-            {
-                if (p.Name == "ty")
-                {
-                    mutable.Parameters.First(p2 => p2.Name == "ty").Values[0] = p.Values[0];
-                }
-                else 
-                {
-                    mutable.Parameters.Add(p.AsMutable());
-                }
-            }
-            foreach (var u in SubUnits)
-            {
-                mutable.SubUnits.Add(u.AsMutable());
-            }
-            return mutable;
-        }
-
-        public Unit AsImmutable()
-        {
-            return this;
+            return UnitdefUtil.ToString(this);
         }
     }
 }

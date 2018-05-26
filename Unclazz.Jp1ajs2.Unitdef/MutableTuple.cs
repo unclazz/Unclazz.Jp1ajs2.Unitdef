@@ -71,6 +71,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public IList<ITupleEntry> Entries => new List<ITupleEntry>(_list);
 
+        public override string ToString()
+        {
+            return UnitdefUtil.ToString(this);
+        }
+
         public Tuple AsImmutable()
         {
             return Tuple.FromCollection(Entries);
@@ -89,26 +94,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public bool ContainsValue(string value)
         {
             return _list.Any(e => e.Value == value);
-        }
-
-        public string Serialize()
-        {
-            StringBuilder b = new StringBuilder().Append('(');
-
-            foreach (ITupleEntry e in _list)
-            {
-                if (b.Length > 1)
-                {
-                    b.Append(',');
-                }
-                if (e.HasKey)
-                {
-                    b.Append(e.Key).Append('=');
-                }
-                b.Append(e.Value);
-            }
-
-            return b.Append(')').ToString();
         }
 
         public void Add(string value)

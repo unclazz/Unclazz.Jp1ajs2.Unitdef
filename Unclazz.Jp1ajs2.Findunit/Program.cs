@@ -58,7 +58,7 @@ namespace Unclazz.Jp1ajs2.Findunit
             }
             else if (ps.OutputFormat == OutputFormat.UnitDef)
             {
-                return (IUnit u) => new StringBuilder().Append(u.Serialize());
+                return (IUnit u) => new StringBuilder().Append(u.ToString());
             }
             else
             {
@@ -215,7 +215,7 @@ namespace Unclazz.Jp1ajs2.Findunit
             foreach (IParameter p in u.Parameters)
             {
                 AppendTabSequence(sb, d + 1);
-                sb.Append(p.Serialize()).Append(Environment.NewLine);
+                sb.Append(p.ToString()).Append(Environment.NewLine);
             }
             foreach (IUnit u2 in u.SubUnits)
             {

@@ -25,53 +25,14 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public ParameterValueCollection Values => _values;
 
-        public Parameter AsImmutable()
-        {
-            var copy = Parameter.Builder.Create().Name(Name);
-            foreach (var value in _values)
-            {
-                if (value.Type == ParameterValueType.Tuple)
-                {
-                    var original = value.TupleValue;
-                    if (original is Tuple) copy.AddValue(value);
-                    else copy.AddValue(TupleParameterValue.OfValue(value.TupleValue.AsImmutable()));
-                }
-                else 
-                {
-                    copy.AddValue(value);
-                }
-            }
-            return copy.Build();
-        }
-
-        public MutableParameter AsMutable()
-        {
-            var copy = ForName(Name);
-            foreach (var value in _values) 
-            {
-                copy.Values.Add(value);
-            }
-            return copy;
-        }
-
         public TResult Query<TResult>(IQuery<IParameter, TResult> q)
         {
             return q.QueryFrom(this);
         }
 
-        public string Serialize()
+        public override string ToString()
         {
-            var b = new StringBuilder().Append(Name).Append('=');
-            int prefixLen = b.Length;
-            foreach (IParameterValue v in _values)
-            {
-                if (b.Length > prefixLen)
-                {
-                    b.Append(',');
-                }
-                b.Append(v.Serialize());
-            }
-            return b.Append(';').ToString();
+            return UnitdefUtil.ToString(this);
         }
     }
 }
