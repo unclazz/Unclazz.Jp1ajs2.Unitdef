@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Unclazz.Jp1ajs2.Unitdef.Parser;
 using Unclazz.Jp1ajs2.Unitdef.Query;
@@ -227,11 +228,18 @@ namespace Unclazz.Jp1ajs2.Unitdef
             mutable.Attributes = Attributes;
             foreach (var p in Parameters)
             {
-                mutable.Parameters.Add(p);
+                if (p.Name == "ty")
+                {
+                    mutable.Parameters.First(p2 => p2.Name == "ty").Values[0] = p.Values[0];
+                }
+                else 
+                {
+                    mutable.Parameters.Add(p.AsMutable());
+                }
             }
             foreach (var u in SubUnits)
             {
-                mutable.SubUnits.Add(u);
+                mutable.SubUnits.Add(u.AsMutable());
             }
             return mutable;
         }

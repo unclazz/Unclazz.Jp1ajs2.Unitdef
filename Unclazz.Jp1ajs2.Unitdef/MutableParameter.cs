@@ -30,7 +30,16 @@ namespace Unclazz.Jp1ajs2.Unitdef
             var copy = Parameter.Builder.Create().Name(Name);
             foreach (var value in _values)
             {
-                copy.AddValue(value);
+                if (value.Type == ParameterValueType.Tuple)
+                {
+                    var original = value.TupleValue;
+                    if (original is Tuple) copy.AddValue(value);
+                    else copy.AddValue(TupleParameterValue.OfValue(value.TupleValue.AsImmutable()));
+                }
+                else 
+                {
+                    copy.AddValue(value);
+                }
             }
             return copy.Build();
         }

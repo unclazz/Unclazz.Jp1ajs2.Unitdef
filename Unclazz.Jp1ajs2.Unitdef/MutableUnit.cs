@@ -135,27 +135,33 @@ namespace Unclazz.Jp1ajs2.Unitdef
                         .Attributes(Attributes);
             foreach (var p in _params)
             {
-                b.AddParameter(p);
+                b.AddParameter(p.AsImmutable());
             }
             foreach(var u in _subUnits)
             {
-                b.AddSubUnit(u);
+                b.AddSubUnit(u.AsImmutable());
             }
             return b.Build();
         }
 
         public MutableUnit AsMutable()
         {
-            var mutable = new MutableUnit(Name);
-            mutable.FullQualifiedName = FullQualifiedName;
+            var mutable = MutableUnit.ForFullQualifiedName(FullQualifiedName);
             mutable.Attributes = Attributes;
-            foreach (var p in _params)
+            foreach (var p in Parameters)
             {
-                mutable.Parameters.Add(p);
+                if (p.Name == "ty")
+                {
+                    mutable.Parameters.First(p2 => p2.Name == "ty").Values[0] = p.Values[0];
+                }
+                else
+                {
+                    mutable.Parameters.Add(p.AsMutable());
+                }
             }
-            foreach (var u in _subUnits)
+            foreach (var u in SubUnits)
             {
-                mutable.SubUnits.Add(u);
+                mutable.SubUnits.Add(u.AsMutable());
             }
             return mutable;
         }
