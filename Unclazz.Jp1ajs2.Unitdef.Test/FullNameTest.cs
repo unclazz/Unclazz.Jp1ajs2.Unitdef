@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Unclazz.Jp1ajs2.Unitdef.Test
 {
     [TestFixture]
-    public class FullQualifiedNameTest
+    public class FullNameTest
     {
         [Test]
         public void FromRoot_WhenSpecifiedNonEmptyString_ReturnsInstance()
@@ -20,8 +20,28 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
 
             // Assert
             Assert.AreEqual(fqn.SuperUnitName, null);
+            Assert.AreEqual(fqn.RootUnitName, FullName.FromFragments("XXXX0000"));
+            Assert.AreEqual(fqn.BaseName, "XXXX0000");
             Assert.AreEqual(fqn.Fragments[0], "XXXX0000");
             Assert.AreEqual(fqn.Fragments.Count, 1);
+        }
+
+        [Test]
+        public void FromRoot_WhenSpecifiedNonEmptyStringSequence_ReturnsInstance()
+        {
+            // Arrange
+
+            // Act
+            FullName fqn = FullName.FromFragments("XXXX0000", "YYYY1111", "ZZZZ2222");
+
+            // Assert
+            Assert.AreEqual(fqn.SuperUnitName, FullName.FromFragments("XXXX0000", "YYYY1111"));
+            Assert.AreEqual(fqn.RootUnitName, FullName.FromFragments("XXXX0000"));
+            Assert.AreEqual(fqn.BaseName, "ZZZZ2222");
+            Assert.AreEqual(fqn.Fragments[0], "XXXX0000");
+            Assert.AreEqual(fqn.Fragments[1], "YYYY1111");
+            Assert.AreEqual(fqn.Fragments[2], "ZZZZ2222");
+            Assert.AreEqual(fqn.Fragments.Count, 3);
         }
 
         [Test]
