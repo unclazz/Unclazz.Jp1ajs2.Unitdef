@@ -96,16 +96,9 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public override string ToString()
         {
-            if (_stringValue == null)
-            {
-                StringBuilder sb = new StringBuilder();
-                foreach (string f in _fragments)
-                {
-                    sb.Append("/").Append(f);
-                }
-                _stringValue = sb.ToString();
-            }
-            return _stringValue;
+            return _stringValue 
+                ?? (_stringValue = _fragments.Aggregate(new StringBuilder(), 
+                    (a, b) => a.Append('/').Append(b), x => x.ToString()));
         }
 
         public override bool Equals(object obj)
@@ -115,12 +108,12 @@ namespace Unclazz.Jp1ajs2.Unitdef
             {
                 return false;
             }
-            return this.ToString().Equals(that.ToString());
+            return this == that || ToString() == that.ToString();
         }
 
         public override int GetHashCode()
         {
-            return this.ToString().GetHashCode();
+            return ToString().GetHashCode();
         }
     }
 }

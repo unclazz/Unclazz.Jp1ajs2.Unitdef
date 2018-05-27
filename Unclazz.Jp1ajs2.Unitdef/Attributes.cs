@@ -30,6 +30,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
             return new Attributes(unitName, permissionMode, jp1UserName, resourceGroupName);
         }
 
+        string _stringValue;
+
         /// <summary>
         /// ユニット名です。
         /// </summary>
@@ -65,8 +67,21 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public override string ToString()
         {
-            return string.Format("Attributes(UnitName={0},PermissionMode={1},Jp1UserName={2},ResourceGroupName={3})",
-                UnitName, PermissionMode, Jp1UserName, ResourceGroupName);
+            return _stringValue 
+                ?? (_stringValue = string.Format("{0},{1},{2},{3})",
+                UnitName, PermissionMode, Jp1UserName, ResourceGroupName));
+        }
+
+        public override bool Equals(object obj)
+        {
+            var that = obj as Attributes;
+            if (that == null) return false;
+            return this == that || ToString() == that.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
         }
     }
 }
