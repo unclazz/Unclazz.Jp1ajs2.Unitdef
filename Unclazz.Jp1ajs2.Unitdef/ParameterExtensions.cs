@@ -9,7 +9,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
     /// <summary>
     /// <see cref="IParameter"/>およびその派生型のために拡張メソッドを提供するクラスです。
     /// </summary>
-    public static class ParameterExtension
+    public static class ParameterExtensions
     {
         /// <summary>
         /// <see cref="IParameter"/>のイミュータブルな実装を返します。
