@@ -60,6 +60,118 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
             return mutable;
         }
+
+        /// <summary>
+        /// 名前が一致する最初のユニットを返します。
+        /// </summary>
+        /// <returns>条件にマッチした要素</returns>
+        /// <param name="self"></param>
+        /// <param name="unitName">ユニット名</param>
+        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="unitName"/>が<c>null</c>の場合</exception>
+        /// <exception cref="InvalidOperationException">条件にマッチする要素が存在しない場合</exception>
+        /// <exception cref="ArgumentException"><paramref name="unitName"/>が空文字列の場合</exception>
+        public static IUnit First(this SubUnitCollection self, string unitName)
+        {
+            UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
+            return self.First(a => a.Name == unitName);
+        }
+        /// <summary>
+        /// 名前が一致する最初のユニットを返します。
+        /// 条件にマッチする要素がない場合は<c>null</c>を返します。
+        /// </summary>
+        /// <returns>条件にマッチした要素</returns>
+        /// <param name="self"></param>
+        /// <param name="unitName">ユニット名</param>
+        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="unitName"/>が<c>null</c>の場合</exception>
+        /// <exception cref="ArgumentException"><paramref name="unitName"/>が空文字列の場合</exception>
+        public static IUnit FirstOrDefault(this SubUnitCollection self, string unitName)
+        {
+            UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
+            return self.FirstOrDefault(a => a.Name == unitName);
+        }
+        /// <summary>
+        /// <see cref="Func{T, TResult}"/>で示された条件にマッチする要素をすべて削除しその要素数を返します。
+        /// </summary>
+        /// <returns>削除した要素の数</returns>
+        /// <param name="self"></param>
+        /// <param name="predicate">削除をする条件</param>
+        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="predicate"/>が<c>null</c>の場合</exception>
+        /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
+        public static int RemoveAll(this SubUnitCollection self, Func<IUnit, bool> predicate)
+        {
+            var count = 0;
+            for (var i = self.Count - 1; 0 <= i; i++)
+            {
+                if (predicate(self[i]))
+                {
+                    self.RemoveAt(i);
+                    count++;
+                }
+            }
+            return count;
+        }
+        /// <summary>
+        /// 名前が一致する要素をすべて削除しその要素数を返します。
+        /// </summary>
+        /// <returns>削除した要素の数</returns>
+        /// <param name="self"></param>
+        /// <param name="unitName">削除をする要素の名前</param>
+        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="unitName"/>が<c>null</c>の場合</exception>
+        /// <exception cref="ArgumentException"><paramref name="unitName"/>が空文字列の場合</exception>
+        /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
+        public static int RemoveAll(this SubUnitCollection self, string unitName)
+        {
+            UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
+            var count = 0;
+            for (var i = self.Count - 1; 0 <= i; i++)
+            {
+                if (self[i].Name == unitName)
+                {
+                    self.RemoveAt(i);
+                    count++;
+                }
+            }
+            return count;
+        }
+        /// <summary>
+        /// 指定されたユニットで同名の既存のユニットを置き換え、影響を被った既存の要素数を返します。
+        /// </summary>
+        /// <returns>置き換えされた既存の要素の数</returns>
+        /// <param name="self"></param>
+        /// <param name="newUnits">新しいユニット</param>
+        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="newUnits"/>が<c>null</c>の場合</exception>
+        /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
+        public static int ReplaceAll(this SubUnitCollection self, params IUnit[] newUnits)
+        {
+            var unitNames = newUnits.Select(p => p.Name).Distinct().ToArray();
+            Func<IUnit, bool> predicate = p => unitNames.Contains(p.Name);
+            var removed = self.RemoveAll(predicate);
+            foreach (var newParam in newUnits)
+            {
+                self.Add(newParam);
+            }
+            return removed;
+        }
+        /// <summary>
+        /// 指定されたユニットで同名の既存のユニットを置き換え、影響を被った既存の要素数を返します。
+        /// </summary>
+        /// <returns>置き換えされた既存の要素の数</returns>
+        /// <param name="self"></param>
+        /// <param name="newUnits">新しいユニット</param>
+        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="newUnits"/>が<c>null</c>の場合</exception>
+        /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
+        public static int ReplaceAll(this SubUnitCollection self, IEnumerable<IUnit> newUnits)
+        {
+            var unitNames = newUnits.Select(p => p.Name).Distinct().ToArray();
+            Func<IUnit, bool> predicate = p => unitNames.Contains(p.Name);
+            var removed = self.RemoveAll(predicate);
+            foreach (var newParam in newUnits)
+            {
+                self.Add(newParam);
+            }
+            return removed;
+        }
+
         /// <summary>
         /// ユニット定義情報を<see cref="Stream"/>に書き出します。
         /// システムのデフォルトのエンコーディングが使用されます。
@@ -119,6 +231,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
             writer.AppendTabs(depth - 1).Append('}');
             writer.Flush();
         }
+
+        #region WriteToのためのprivateメソッド群
         static TextWriter AppendTabs(this TextWriter self, int count)
         {
             for (var i = 0; i < count; i++)
@@ -152,6 +266,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
             self.WriteLine();
             return self;
         }
+        #endregion
+
         /// <summary>
         /// このユニットの子孫ユニットを探索して返します。
         /// </summary>
