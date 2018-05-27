@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Unclazz.Jp1ajs2.Unitdef;
 using Unclazz.Jp1ajs2.Unitdef.Parser;
-using Unclazz.Jp1ajs2.Unitdef.Query;
 
 namespace Unclazz.Jp1ajs2.Unitdef.Sample
 {
@@ -28,21 +27,18 @@ namespace Unclazz.Jp1ajs2.Unitdef.Sample
                 "}");
 
             // 直属の下位ユニットのうち名前が1000で終わるものすべて
-            IEnumerable<IUnit> childrenNameEndsWith1000 = u.Query(Q.Children().NameEndsWith("1000"));
+            IEnumerable<IUnit> childrenNameEndsWith1000 = u.Children().NameEndsWith("1000");
             // ...そのうち1件だけ（存在しない場合は例外をスローする）
-            IUnit child0NameEndsWith1000 = u.Query(Q.Children().NameEndsWith("1000").One());
+            IUnit child0NameEndsWith1000 = u.Children().NameEndsWith("1000").First();
 
             // 直属・非直属の下位ユニットのうち種別がUNIXジョブであるもののscパラメータすべて
-            IEnumerable<IParameter> paramsScOfDescendantsTypeIsUnixJob = u.Query(Q
-                .Descendants().TypeIs(UnitType.UnixJob).TheirParameters.NameEquals("sc"));
-            // ...そのうち1件だけ（存在しない場合はnullを返す）
-            IParameter param0ScOfDescendantsTypeIsUnixJob = u.Query(Q
-                .Descendants().TypeIs(UnitType.UnixJob)
-                .TheirParameters.NameEquals("sc").One());
+            IEnumerable<IParameter> paramsScOfDescendantsTypeIsUnixJob =
+                u.Descendants(UnitType.UnixJob).SelectMany(a => a.Parameters)
+                 .Where(a => a.Name == "sc");
 
-            // 当該ユニットおよび下位ユニットのうちscパラメータを持ちかつその値が"/path/to"で始まるものすべて
-            IEnumerable<IUnit> unitsScStartsPathTo = u.Query(Q.ItSelfAndDescendants()
-                .HasParameter("sc").ValueAt(0).StartsWith("/path/to"));
+            // ...そのうち1件だけ（存在しない場合はnullを返す）
+            IParameter param0ScOfDescendantsTypeIsUnixJob = 
+                paramsScOfDescendantsTypeIsUnixJob.FirstOrDefault();
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Unclazz.Jp1ajs2.Unitdef.Query;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
@@ -127,11 +126,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public ParameterCollection Parameters => _params;
 
         public SubUnitCollection SubUnits => _subUnits;
-
-        public TResult Query<TResult>(IQuery<IUnit, TResult> q)
-        {
-            return q.QueryFrom(this);
-        }
 
         public override string ToString()
         {

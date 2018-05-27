@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Unclazz.Jp1ajs2.Unitdef.Query;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
@@ -67,11 +66,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         public string Name { get; }
         public ParameterValueCollection Values { get; }
-
-        public TResult Query<TResult>(IQuery<IParameter,TResult> q)
-        {
-            return q.QueryFrom(this);
-        }
 
         public override string ToString()
         {

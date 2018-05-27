@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Unclazz.Jp1ajs2.Unitdef.Parser;
-using Unclazz.Jp1ajs2.Unitdef.Query;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
@@ -175,11 +174,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             get => _type;
             set => throw new NotSupportedException();
-        }
-
-        public TResult Query<TResult>(IQuery<IUnit,TResult> q)
-        {
-            return q.QueryFrom(this);
         }
 
         public override string ToString()
