@@ -30,43 +30,26 @@ namespace Unclazz.Jp1ajs2.Unitdef
             return new Attributes(unitName, permissionMode, jp1UserName, resourceGroupName);
         }
 
-        readonly string _unitName;
-        readonly string _jp1UserName;
-        readonly string _resourceGroupName;
-        readonly string _permissionMode;
-
         /// <summary>
         /// ユニット名です。
         /// </summary>
         /// <value>ユニット名</value>
-        public string UnitName 
-        {
-            get => _unitName;
-        }
+        public string UnitName { get; }
         /// <summary>
         /// JP1ユーザ名です。
         /// </summary>
         /// <value>JP1ユーザ名</value>
-        public string Jp1UserName
-        {
-            get => _jp1UserName;
-        }
+        public string Jp1UserName { get; }
         /// <summary>
         /// 資源グループ名です。
         /// </summary>
         /// <value>資源グループ名</value>
-        public string ResourceGroupName
-        {
-            get => _resourceGroupName;
-        }
+        public string ResourceGroupName { get; }
         /// <summary>
         /// 許可モードです。
         /// </summary>
         /// <value>許可モード</value>
-        public string PermissionMode
-        {
-            get => _permissionMode;
-        }
+        public string PermissionMode { get; }
 
         Attributes (string unitName, string permissionMode, string jp1UserName, string resourceGroupName)
         {
@@ -74,10 +57,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
             UnitdefUtil.ArgumentMustNotBeNull(permissionMode, "permissionMode");
             UnitdefUtil.ArgumentMustNotBeNull(jp1UserName, "jp1UserName");
             UnitdefUtil.ArgumentMustNotBeNull(resourceGroupName, "resourceGroupName");
-            _unitName = unitName;
-            _permissionMode = permissionMode;
-            _jp1UserName = jp1UserName;
-            _resourceGroupName = resourceGroupName;
+            UnitName = unitName;
+            PermissionMode = permissionMode;
+            Jp1UserName = jp1UserName;
+            ResourceGroupName = resourceGroupName;
         }
 
         public override string ToString()
