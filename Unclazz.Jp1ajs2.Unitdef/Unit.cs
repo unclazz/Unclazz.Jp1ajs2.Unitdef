@@ -8,7 +8,7 @@ using Unclazz.Jp1ajs2.Unitdef.Parser;
 namespace Unclazz.Jp1ajs2.Unitdef
 {
     /// <summary>
-    /// <code>IUnit</code>のデフォルト実装です。
+    /// <code>IUnit</code>のイミュータブルなデフォルト実装です。
     /// </summary>
     public sealed class Unit : IUnit
     {
@@ -17,6 +17,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         public sealed class Builder
         {
+            /// <summary>
+            /// ビルダーのインスタンスを生成します。
+            /// </summary>
+            /// <returns>ビルダーのインスタンス</returns>
             public static Builder Create()
             {
                 return new Builder();
@@ -138,8 +142,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
             _attrs = attributes;
             _type = UnitType.FromName(ty.Values[0].StringValue);
             _comment = cm == null ? string.Empty : cm.Values[0].StringValue;
-            Parameters = new ParameterCollection(parameters.AsReadOnly());
-            SubUnits = new SubUnitCollection(subUnits.AsReadOnly());
+            Parameters = new NonNullCollection<IParameter>(parameters.AsReadOnly());
+            SubUnits = new NonNullCollection<IUnit>(subUnits.AsReadOnly());
         }
 
         readonly FullName _fqn;
@@ -148,34 +152,58 @@ namespace Unclazz.Jp1ajs2.Unitdef
         readonly string _name;
         readonly UnitType _type;
 
+        /// <summary>
+        /// ユニット属性パラメータ
+        /// </summary>
         public Attributes Attributes
         {
             get => _attrs;
             set => throw new NotSupportedException();
         }
+        /// <summary>
+        /// コメント
+        /// </summary>
         public string Comment
         {
             get => _comment;
             set => throw new NotSupportedException();
         }
+        /// <summary>
+        /// ユニット完全名
+        /// </summary>
         public FullName FullName
         {
             get => _fqn;
             set => throw new NotSupportedException();
         }
+        /// <summary>
+        /// ユニット名
+        /// </summary>
         public string Name
         {
             get => _name;
             set => throw new NotSupportedException();
         }
-        public ParameterCollection Parameters { get; }
-        public SubUnitCollection SubUnits { get; }
+        /// <summary>
+        /// ユニット定義パラメータのリスト
+        /// </summary>
+        public NonNullCollection<IParameter> Parameters { get; }
+        /// <summary>
+        /// 下位ユニットのリスト
+        /// </summary>
+        public NonNullCollection<IUnit> SubUnits { get; }
+        /// <summary>
+        /// ユニット種別
+        /// </summary>
         public UnitType Type
         {
             get => _type;
             set => throw new NotSupportedException();
         }
-
+        /// <summary>
+        /// このオブジェクトの文字列表現を返します。
+        /// </summary>
+        /// <returns>このオブジェクトの文字列表現</returns>
         public override string ToString()
         {
             return UnitdefUtil.ToString(this);

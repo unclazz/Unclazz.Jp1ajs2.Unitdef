@@ -7,15 +7,17 @@ namespace Unclazz.Jp1ajs2.Unitdef
     public interface IParameterValue
     {
         /// <summary>
-        /// パラメータ値の種別
+        /// パラメータ値の種別を返します。
         /// </summary>
         ParameterValueType Type { get; }
         /// <summary>
-        /// タプル（種別がタプルでない場合<code>null</code>）
+        /// パラメータの内容であるタプルを返します。
+        /// このパラメータの種別がタプルでない場合<code>null</code>を返します。
         /// </summary>
         ITuple TupleValue { get; }
         /// <summary>
-        /// 文字列（二重引用符で囲われた文字列の場合、引用符は取り除かれエスケープも解除される）
+        /// パラメータの内容である文字列を返します。
+        /// 二重引用符で囲われた文字列の場合、引用符は取り除かれエスケープも解除されたものとなります。
         /// </summary>
         string StringValue { get; }
     }

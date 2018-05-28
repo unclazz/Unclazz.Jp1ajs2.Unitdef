@@ -46,7 +46,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <exception cref="ArgumentNullException"><paramref name="self"/>が<c>null</c>の場合</exception>
         public static MutableParameter AsMutable(this IParameter self)
         {
-            var copy = MutableParameter.ForName(self.Name);
+            var copy = MutableParameter.Create(self.Name);
             foreach (var value in self.Values)
             {
                 if (value.Type == ParameterValueType.Tuple)
@@ -63,6 +63,81 @@ namespace Unclazz.Jp1ajs2.Unitdef
             return copy;
         }
         /// <summary>
+        /// コレクションの読み取り専用のインスタンスを生成して返します。
+        /// </summary>
+        /// <returns>読み取り専用のインスタンス</returns>
+        public static NonNullCollection<IParameter> AsReadOnly(this NonNullCollection<IParameter> self)
+        {
+            if (self.IsReadOnly) return self;
+            return new NonNullCollection<IParameter>(new List<IParameter>(self).AsReadOnly());
+        }
+        /// <summary>
+        /// コレクションの読み取り専用のインスタンスを生成して返します。
+        /// </summary>
+        /// <returns>読み取り専用のインスタンス</returns>
+        public static NonNullCollection<IParameterValue> AsReadOnly(this NonNullCollection<IParameterValue> self)
+        {
+            if (self.IsReadOnly) return self;
+            return new NonNullCollection<IParameterValue>(new List<IParameterValue>(self).AsReadOnly());
+        }
+        /// <summary>
+        /// コレクションの末尾に新しい要素を追加します。
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="item">新しい要素</param>
+        /// <exception cref="ArgumentNullException">新しい要素として<c>null</c>が指定された場合</exception>
+        /// <exception cref="NotSupportedException">コレクションが読み取り専用の場合</exception>
+        public static void Add(this NonNullCollection<IParameterValue> self, ITuple item)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            self.Add(TupleParameterValue.OfValue(item));
+        }
+        /// <summary>
+        /// コレクションの末尾に新しい要素を追加します。
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="item">新しい要素</param>
+        /// <param name="quoted">引用符付き文字列として追加する場合は<c>true</c></param>
+        /// <exception cref="ArgumentNullException">新しい要素として<c>null</c>が指定された場合</exception>
+        /// <exception cref="NotSupportedException">コレクションが読み取り専用の場合</exception>
+        public static void Add(this NonNullCollection<IParameterValue> self, string item, bool quoted)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            self.Add(quoted ? QuotedStringParameterValue.OfValue(item)
+                        : RawStringParameterValue.OfValue(item));
+        }
+        /// <summary>
+        /// コレクション内の指定された位置に新しい要素を挿入します。
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="index">要素の添字</param>
+        /// <param name="item">新しい要素</param>
+        /// <exception cref="ArgumentOutOfRangeException">添字が範囲外の場合</exception>
+        /// <exception cref="ArgumentNullException">setterの引数として<c>null</c>が指定された場合</exception>
+        /// <exception cref="NotSupportedException">コレクションが読み取り専用の場合</exception>
+        public static void Insert(this NonNullCollection<IParameterValue> self, int index, ITuple item)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            self.Insert(index, TupleParameterValue.OfValue(item));
+        }
+        /// <summary>
+        /// コレクション内の指定された位置に新しい要素を挿入します。
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="index">要素の添字</param>
+        /// <param name="item">新しい要素</param>
+        /// <param name="quoted">引用符付き文字列として追加する場合は<c>true</c></param>
+        /// <exception cref="ArgumentOutOfRangeException">添字が範囲外の場合</exception>
+        /// <exception cref="ArgumentNullException">setterの引数として<c>null</c>が指定された場合</exception>
+        /// <exception cref="NotSupportedException">コレクションが読み取り専用の場合</exception>
+        public static void Insert(this NonNullCollection<IParameterValue> self, int index, string item, bool quoted)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            self.Insert(index, quoted ? QuotedStringParameterValue.OfValue(item)
+                           : RawStringParameterValue.OfValue(item));
+        }
+
+        /// <summary>
         /// 名前が一致する最初のユニット定義パラメータを返します。
         /// </summary>
         /// <returns>条件にマッチした要素</returns>
@@ -71,7 +146,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="paramName"/>が<c>null</c>の場合</exception>
         /// <exception cref="InvalidOperationException">条件にマッチする要素が存在しない場合</exception>
         /// <exception cref="ArgumentException"><paramref name="paramName"/>が空文字列の場合</exception>
-        public static IParameter First(this ParameterCollection self, string paramName)
+        public static IParameter First(this NonNullCollection<IParameter> self, string paramName)
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(paramName, nameof(paramName));
             return self.First(a => a.Name == paramName);
@@ -85,7 +160,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="paramName">ユニット定義パラメータ名</param>
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="paramName"/>が<c>null</c>の場合</exception>
         /// <exception cref="ArgumentException"><paramref name="paramName"/>が空文字列の場合</exception>
-        public static IParameter FirstOrDefault(this ParameterCollection self, string paramName)
+        public static IParameter FirstOrDefault(this NonNullCollection<IParameter> self, string paramName)
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(paramName, nameof(paramName));
             return self.FirstOrDefault(a => a.Name == paramName);
@@ -98,7 +173,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="predicate">削除をする条件</param>
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="predicate"/>が<c>null</c>の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
-        public static int RemoveAll(this ParameterCollection self, Func<IParameter,bool> predicate)
+        public static int RemoveAll(this NonNullCollection<IParameter> self, Func<IParameter,bool> predicate)
         {
             var count = 0;
             for (var i = self.Count - 1; 0 <= i; i++)
@@ -120,7 +195,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="paramName"/>が<c>null</c>の場合</exception>
         /// <exception cref="ArgumentException"><paramref name="paramName"/>が空文字列の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
-        public static int RemoveAll(this ParameterCollection self, string paramName)
+        public static int RemoveAll(this NonNullCollection<IParameter> self, string paramName)
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(paramName, nameof(paramName));
             var count = 0;
@@ -142,7 +217,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="newParams">新しいパラメータ</param>
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="newParams"/>が<c>null</c>の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
-        public static int ReplaceAll(this ParameterCollection self, params IParameter[] newParams)
+        public static int ReplaceAll(this NonNullCollection<IParameter> self, params IParameter[] newParams)
         {
             var paramNames = newParams.Select(p => p.Name).Distinct().ToArray();
             Func<IParameter, bool> predicate = p => paramNames.Contains(p.Name);
@@ -161,7 +236,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="newParams">新しいパラメータ</param>
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="newParams"/>が<c>null</c>の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
-        public static int ReplaceAll(this ParameterCollection self, IEnumerable<IParameter> newParams)
+        public static int ReplaceAll(this NonNullCollection<IParameter> self, IEnumerable<IParameter> newParams)
         {
             var paramNames = newParams.Select(p => p.Name).Distinct().ToArray();
             Func<IParameter, bool> predicate = p => paramNames.Contains(p.Name);

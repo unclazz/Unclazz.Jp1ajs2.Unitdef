@@ -64,21 +64,32 @@ namespace Unclazz.Jp1ajs2.Unitdef
             Jp1UserName = jp1UserName;
             ResourceGroupName = resourceGroupName;
         }
-
+        /// <summary>
+        /// このオブジェクトの文字列表現を返します。
+        /// </summary>
+        /// <returns>このオブジェクトの文字列表現</returns>
         public override string ToString()
         {
             return _stringValue 
                 ?? (_stringValue = string.Format("{0},{1},{2},{3})",
                 UnitName, PermissionMode, Jp1UserName, ResourceGroupName));
         }
-
+        /// <summary>
+        /// このオブジェクトと引数で指定されたオブジェクトの等価性比較を行います。
+        /// <see cref="Attributes"/>の等価性比較はこのオブジェクトの持つプロパティの値が一致するかどうかで判断されます。
+        /// </summary>
+        /// <param name="obj">比較対象のオブジェクト</param>
+        /// <returns>2つのオブジェクトが等価である場合<c>true</c></returns>
         public override bool Equals(object obj)
         {
             var that = obj as Attributes;
             if (that == null) return false;
             return this == that || ToString() == that.ToString();
         }
-
+        /// <summary>
+        /// このオブジェクトのハッシュコードを取得します。
+        /// </summary>
+        /// <returns>ハッシュコード</returns>
         public override int GetHashCode()
         {
             return ToString().GetHashCode();

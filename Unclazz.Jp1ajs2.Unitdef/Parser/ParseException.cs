@@ -14,30 +14,22 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
         /// <summary>
         /// 例外メッセージ
         /// </summary>
-        public override string Message { get; }
-        private readonly Exception cause;
 
-        public ParseException(Input input)
+        internal ParseException(Input input) 
+        : this(input, MakeMessage(input, "Error has occurred."))
+        {
+        }
+        internal ParseException(Input input, string message) 
+        : base(MakeMessage(input, message))
         {
             Input = input;
-            Message = MakeMessage(input, "Error has occurred.");
         }
-        public ParseException(Input input, string message)
+        internal ParseException(Input input, string message, Exception cause) 
+        : base(MakeMessage(input, message), cause)
         {
             Input = input;
-            Message = MakeMessage(input, message);
         }
-        public ParseException(Input input, string message, Exception cause)
-        {
-            Input = input;
-            Message = MakeMessage(input, message);
-            this.cause = cause;
-        }
-        public override Exception GetBaseException()
-        {
-            return cause;
-        }
-        private string MakeMessage(Input input, string message)
+        static string MakeMessage(Input input, string message)
         {
             return string.Format("At line {0}, column {1}. {2}",
                 input.LineNumber, input.ColumnNumber, message);

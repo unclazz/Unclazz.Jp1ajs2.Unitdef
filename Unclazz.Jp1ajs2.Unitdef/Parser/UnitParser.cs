@@ -110,7 +110,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
                         input.GoNext();
                         return builder.Build();
 
-                        /// "unit"と続くならパラメータの定義は終わりサブユニットの定義に移る
+                        // "unit"と続くならパラメータの定義は終わりサブユニットの定義に移る
 					}else if (input.RestOfLine.StartsWith("unit", StringComparison.Ordinal)){
                         break;
                     }

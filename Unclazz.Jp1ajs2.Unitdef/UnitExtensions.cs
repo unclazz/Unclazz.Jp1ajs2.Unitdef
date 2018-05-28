@@ -41,7 +41,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="self">レシーバ・オブジェクト</param>
         public static MutableUnit AsMutable(this IUnit self)
         {
-            var mutable = MutableUnit.ForFullName(self.FullName);
+            var mutable = MutableUnit.Create(self.FullName);
             mutable.Attributes = self.Attributes;
             foreach (var p in self.Parameters)
             {
@@ -70,7 +70,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="unitName"/>が<c>null</c>の場合</exception>
         /// <exception cref="InvalidOperationException">条件にマッチする要素が存在しない場合</exception>
         /// <exception cref="ArgumentException"><paramref name="unitName"/>が空文字列の場合</exception>
-        public static IUnit First(this SubUnitCollection self, string unitName)
+        public static IUnit First(this NonNullCollection<IUnit> self, string unitName)
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
             return self.First(a => a.Name == unitName);
@@ -84,7 +84,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="unitName">ユニット名</param>
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="unitName"/>が<c>null</c>の場合</exception>
         /// <exception cref="ArgumentException"><paramref name="unitName"/>が空文字列の場合</exception>
-        public static IUnit FirstOrDefault(this SubUnitCollection self, string unitName)
+        public static IUnit FirstOrDefault(this NonNullCollection<IUnit> self, string unitName)
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
             return self.FirstOrDefault(a => a.Name == unitName);
@@ -97,7 +97,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="predicate">削除をする条件</param>
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="predicate"/>が<c>null</c>の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
-        public static int RemoveAll(this SubUnitCollection self, Func<IUnit, bool> predicate)
+        public static int RemoveAll(this NonNullCollection<IUnit> self, Func<IUnit, bool> predicate)
         {
             var count = 0;
             for (var i = self.Count - 1; 0 <= i; i++)
@@ -119,7 +119,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="unitName"/>が<c>null</c>の場合</exception>
         /// <exception cref="ArgumentException"><paramref name="unitName"/>が空文字列の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
-        public static int RemoveAll(this SubUnitCollection self, string unitName)
+        public static int RemoveAll(this NonNullCollection<IUnit> self, string unitName)
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
             var count = 0;
@@ -141,7 +141,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="newUnits">新しいユニット</param>
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="newUnits"/>が<c>null</c>の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
-        public static int ReplaceAll(this SubUnitCollection self, params IUnit[] newUnits)
+        public static int ReplaceAll(this NonNullCollection<IUnit> self, params IUnit[] newUnits)
         {
             var unitNames = newUnits.Select(p => p.Name).Distinct().ToArray();
             Func<IUnit, bool> predicate = p => unitNames.Contains(p.Name);
@@ -160,7 +160,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="newUnits">新しいユニット</param>
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="newUnits"/>が<c>null</c>の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
-        public static int ReplaceAll(this SubUnitCollection self, IEnumerable<IUnit> newUnits)
+        public static int ReplaceAll(this NonNullCollection<IUnit> self, IEnumerable<IUnit> newUnits)
         {
             var unitNames = newUnits.Select(p => p.Name).Distinct().ToArray();
             Func<IUnit, bool> predicate = p => unitNames.Contains(p.Name);
@@ -267,6 +267,16 @@ namespace Unclazz.Jp1ajs2.Unitdef
             return self;
         }
         #endregion
+
+        /// <summary>
+        /// コレクションの読み取り専用のインスタンスを生成して返します。
+        /// </summary>
+        /// <returns>読み取り専用のインスタンス</returns>
+        public static NonNullCollection<IUnit> AsReadOnly(this NonNullCollection<IUnit> self)
+        {
+            if (self.IsReadOnly) return self;
+            return new NonNullCollection<IUnit>(new List<IUnit>(self).AsReadOnly());
+        }
 
         /// <summary>
         /// このユニットの子孫ユニットを探索して返します。

@@ -5,25 +5,45 @@ using System.Text;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
+    /// <summary>
+    /// <code>IUnit</code>のミュータブルなデフォルト実装です。
+    /// </summary>
     public class MutableUnit : IUnit
     {
-        public static MutableUnit ForName(string name)
+        /// <summary>
+        /// 指定された名前を持つユニットを生成して返します。
+        /// </summary>
+        /// <returns>ユニット</returns>
+        /// <param name="name">ユニット名</param>
+        public static MutableUnit Create(string name)
         {
             return new MutableUnit(name);
         }
-        public static MutableUnit ForFullName(FullName fqn)
+        /// <summary>
+        /// 指定された完全名を持つユニットを生成して返します。
+        /// </summary>
+        /// <returns>ユニット</returns>
+        /// <param name="fqn">ユニット完全名</param>
+        public static MutableUnit Create(FullName fqn)
         {
             return new MutableUnit(fqn);
         }
-        public static MutableUnit ForAttributes(Attributes attrs)
+        /// <summary>
+        /// 指定されたユニット属性パラメータを持つユニットを生成して返します。
+        /// </summary>
+        /// <returns>ユニット</returns>
+        /// <param name="attrs">ユニット属性パラメータ</param>
+        public static MutableUnit Create(Attributes attrs)
         {
             return new MutableUnit(attrs);
         }
 
         FullName _fqn;
         Attributes _attrs;
-        readonly ParameterCollection _params = new ParameterCollection(new List<IParameter>());
-        readonly SubUnitCollection _subUnits = new SubUnitCollection(new List<IUnit>());
+        readonly NonNullCollection<IParameter> _params = 
+            new NonNullCollection<IParameter>(new List<IParameter>());
+        readonly NonNullCollection<IUnit> _subUnits = 
+            new NonNullCollection<IUnit>(new List<IUnit>());
 
         MutableUnit(FullName fqn) : this()
         {
@@ -45,11 +65,14 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
         MutableUnit()
         {
-            var ty = MutableParameter.ForName("ty");
+            var ty = MutableParameter.Create("ty");
             ty.Values.Add(RawStringParameterValue.OfValue("g"));
             _params.Add(ty);
         }
 
+        /// <summary>
+        /// ユニット名
+        /// </summary>
         public string Name
         {
             get => Attributes.UnitName;
@@ -59,7 +82,9 @@ namespace Unclazz.Jp1ajs2.Unitdef
                                  Attributes.Jp1UserName,
                                  Attributes.ResourceGroupName);
         }
-
+        /// <summary>
+        /// ユニット完全名
+        /// </summary>
         public FullName FullName
         {
             get => _fqn;
@@ -73,7 +98,9 @@ namespace Unclazz.Jp1ajs2.Unitdef
                                  Attributes.ResourceGroupName);
             }
         }
-
+        /// <summary>
+        /// ユニット属性パラメータ
+        /// </summary>
         public Attributes Attributes
         {
             get => _attrs;
@@ -86,7 +113,9 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 _fqn = Unitdef.FullName.FromFragments(fragments.ToArray());
             }
         }
-
+        /// <summary>
+        /// ユニット種別
+        /// </summary>
         public UnitType Type
         {
             get 
@@ -99,7 +128,9 @@ namespace Unclazz.Jp1ajs2.Unitdef
                        = RawStringParameterValue.OfValue(value.Name);
             }
         }
-
+        /// <summary>
+        /// コメント
+        /// </summary>
         public string Comment 
         {
             get
@@ -112,7 +143,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 var cm = _params.FirstOrDefault(p => p.Name == "cm");
                 if (cm == null)
                 {
-                    cm = MutableParameter.ForName("cm");
+                    cm = MutableParameter.Create("cm");
                     cm.Values.Add(QuotedStringParameterValue.OfValue(value));
                     _params.Add(cm);
                 }
@@ -122,11 +153,18 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 }
             }
         }
-
-        public ParameterCollection Parameters => _params;
-
-        public SubUnitCollection SubUnits => _subUnits;
-
+        /// <summary>
+        /// ユニット定義パラメータのリスト
+        /// </summary>
+        public NonNullCollection<IParameter> Parameters => _params;
+        /// <summary>
+        /// 下位ユニットのリスト
+        /// </summary>
+        public NonNullCollection<IUnit> SubUnits => _subUnits;
+        /// <summary>
+        /// このオブジェクトの文字列表現を返します。
+        /// </summary>
+        /// <returns>このオブジェクトの文字列表現</returns>
         public override string ToString()
         {
             return UnitdefUtil.ToString(this);

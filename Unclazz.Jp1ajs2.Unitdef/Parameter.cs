@@ -5,7 +5,7 @@ using System.Text;
 namespace Unclazz.Jp1ajs2.Unitdef
 {
     /// <summary>
-    /// <code>IParameter</code>のデフォルト実装です。
+    /// <code>IParameter</code>のイミュータブルなデフォルト実装です。
     /// </summary>
     public sealed class Parameter : IParameter
     {
@@ -14,6 +14,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         public sealed class Builder
         {
+            /// <summary>
+            /// ビルダーのインスタンスを生成して返します。
+            /// </summary>
+            /// <returns>ビルダーのインスタンス</returns>
             public static Builder Create()
             {
                 return new Builder();
@@ -61,12 +65,21 @@ namespace Unclazz.Jp1ajs2.Unitdef
             UnitdefUtil.ArgumentMustNotBeEmpty(name, "name of parameter");
             UnitdefUtil.ArgumentMustNotBeNull(vs, "list of parameter");
             Name = name;
-            Values = new ParameterValueCollection(vs.AsReadOnly());
+            Values = new NonNullCollection<IParameterValue>(vs.AsReadOnly());
         }
 
+        /// <summary>
+        /// パラメータ名称（<code>"ty"</code>など）
+        /// </summary>
         public string Name { get; }
-        public ParameterValueCollection Values { get; }
-
+        /// <summary>
+        /// パラメータ値のリスト
+        /// </summary>
+        public NonNullCollection<IParameterValue> Values { get; }
+        /// <summary>
+        /// このオブジェクトの文字列表現を返します。
+        /// </summary>
+        /// <returns>このオブジェクトの文字列表現</returns>
         public override string ToString()
         {
             return UnitdefUtil.ToString(this);

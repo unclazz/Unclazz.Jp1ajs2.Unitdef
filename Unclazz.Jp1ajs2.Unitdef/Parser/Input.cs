@@ -217,13 +217,18 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
                 throw new ParseException(this, "IO error.", e);
             }
         }
-
+        /// <summary>
+        /// このオブジェクトの文字列表現を返します。
+        /// </summary>
+        /// <returns>このオブジェクトの文字列表現</returns>
         public override string ToString()
         {
             return string.Format("Input(Source={0},LineNumber={1},ColumnNumer={2})",
                 reader, LineNumber, ColumnNumber);
         }
-
+        /// <summary>
+        /// このオブジェクトが使用しているリソースを解放します。
+        /// </summary>
         public void Dispose()
         {
             reader.Dispose();

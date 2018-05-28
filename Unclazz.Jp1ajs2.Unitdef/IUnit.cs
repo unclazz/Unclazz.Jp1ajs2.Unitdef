@@ -31,10 +31,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <summary>
         /// ユニット定義パラメータのリスト
         /// </summary>
-        ParameterCollection Parameters { get; }
+        NonNullCollection<IParameter> Parameters { get; }
         /// <summary>
         /// 下位ユニットのリスト
         /// </summary>
-        SubUnitCollection SubUnits { get; }
+        NonNullCollection<IUnit> SubUnits { get; }
     }
 }

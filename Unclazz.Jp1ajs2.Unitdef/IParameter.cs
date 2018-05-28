@@ -15,6 +15,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <summary>
         /// パラメータ値のリスト
         /// </summary>
-        ParameterValueCollection Values { get; }
+        NonNullCollection<IParameterValue> Values { get; }
     }
 }

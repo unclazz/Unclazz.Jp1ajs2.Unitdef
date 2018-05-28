@@ -94,13 +94,22 @@ namespace Unclazz.Jp1ajs2.Unitdef
             return new FullName(this, name);
         }
 
+        /// <summary>
+        /// このオブジェクトの文字列表現を返します。
+        /// </summary>
+        /// <returns>このオブジェクトの文字列表現</returns>
         public override string ToString()
         {
             return _stringValue 
                 ?? (_stringValue = _fragments.Aggregate(new StringBuilder(), 
                     (a, b) => a.Append('/').Append(b), x => x.ToString()));
         }
-
+        /// <summary>
+        /// このオブジェクトと引数で指定されたオブジェクトの等価性比較を行います。
+        /// <see cref="FullName"/>の等価性比較はこのオブジェクトの文字列表現が一致するかどうかで判断されます。
+        /// </summary>
+        /// <param name="obj">比較対象のオブジェクト</param>
+        /// <returns>2つのオブジェクトが等価である場合<c>true</c></returns>
         public override bool Equals(object obj)
         {
             FullName that = obj as FullName;
@@ -110,7 +119,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
             return this == that || ToString() == that.ToString();
         }
-
+        /// <summary>
+        /// このオブジェクトのハッシュコードを取得します。
+        /// </summary>
+        /// <returns>ハッシュコード</returns>
         public override int GetHashCode()
         {
             return ToString().GetHashCode();

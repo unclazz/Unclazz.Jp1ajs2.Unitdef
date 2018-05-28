@@ -285,15 +285,20 @@ namespace Unclazz.Jp1ajs2.Unitdef
             dict[name] = this;
         }
 
+        /// <summary>
+        /// このオブジェクトの文字列表現を返します。
+        /// </summary>
+        /// <returns>このオブジェクトの文字列表現</returns>
         public override string ToString()
         {
             return string.Format("UnitType(Name={0},LongName={1})", Name, LongName);
         }
         /// <summary>
-        /// インスタンスが同一かどうかを判断します。
+        /// このオブジェクトと引数で指定されたオブジェクトの等価性比較を行います。
+        /// <see cref="UnitType"/>の等価性比較はこのオブジェクトの参照が一致するかどうかで判断されます。
         /// </summary>
         /// <param name="obj">比較対象のオブジェクト</param>
-        /// <returns>判断結果（参照が同一である場合<code>true</code>）</returns>
+        /// <returns>2つのオブジェクトが等価である場合<c>true</c></returns>
         public override bool Equals(object obj)
         {
             if (object.ReferenceEquals(this, obj))
@@ -303,6 +308,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
             UnitType that = obj as UnitType;
             return that != null && that.Name.Equals(this.Name);
         }
+        /// <summary>
+        /// このオブジェクトのハッシュコードを取得します。
+        /// </summary>
+        /// <returns>ハッシュコード</returns>
         public override int GetHashCode()
         {
             return Name.GetHashCode();

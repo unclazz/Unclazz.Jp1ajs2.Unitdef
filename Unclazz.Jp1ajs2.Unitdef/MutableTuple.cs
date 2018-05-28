@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
+    /// <summary>
+    /// <code>ITuple</code>のミュータブルなデフォルト実装です。
+    /// </summary>
     public sealed class MutableTuple : ITuple
     {
         /// <summary>
@@ -23,7 +26,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 return new MutableTuple(col);
             }
         }
-
+        /// <summary>
+        /// 空のタプルを生成して返します。
+        /// </summary>
+        /// <value>空のタプル</value>
         public static MutableTuple Empty => new MutableTuple();
 
         readonly IList<ITupleEntry> _list = new List<ITupleEntry>();
@@ -40,12 +46,19 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
         }
 
+        /// <summary>
+        /// 添字で指定された要素にアクセスします。
+        /// </summary>
+        /// <param name="i">添字</param>
         public string this[int i]
         {
             get => _list[i].Value;
             set => _list[i] = Immutable.TupleEntry.OfValue(value);
         }
-
+        /// <summary>
+        /// キーで指定された要素にアクセスします。
+        /// </summary>
+        /// <param name="k">キー</param>
         public string this[string k]
         {
             get => _list.First(e => e.Key == k).Value;
@@ -62,61 +75,113 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 _list.Add(Immutable.TupleEntry.OfPair(k, value));
             }
         }
-
+        /// <summary>
+        /// 要素の数を返します。
+        /// </summary>
+        /// <value>要素の数</value>
         public int Count => _list.Count;
-
+        /// <summary>
+        /// キーのセットを返します。
+        /// </summary>
+        /// <value>キーのセット</value>
         public ISet<string> Keys => new HashSet<string>(_list.Where(e => e.HasKey).Select(e => e.Key));
-
+        /// <summary>
+        /// 値のリストを返します。
+        /// </summary>
+        /// <value>値のリスト</value>
         public IList<string> Values => new List<string>(_list.Select(e => e.Value));
-
+        /// <summary>
+        /// エントリーのリストを返します。
+        /// </summary>
+        /// <value>エントリーのリストを返します。</value>
         public IList<ITupleEntry> Entries => new List<ITupleEntry>(_list);
-
+        /// <summary>
+        /// このオブジェクトの文字列表現を返します。
+        /// </summary>
+        /// <returns>このオブジェクトの文字列表現</returns>
         public override string ToString()
         {
             return UnitdefUtil.ToString(this);
         }
-
+        /// <summary>
+        /// タプルのイミュータブルな実装を返します。
+        /// </summary>
+        /// <returns>イミュータブルなタブルの実装</returns>
         public Tuple AsImmutable()
         {
             return Tuple.FromCollection(Entries);
         }
-
+        /// <summary>
+        /// タプルのミュータブルな実装を返します。
+        /// </summary>
+        /// <returns>ミュータブルなタブルの実装</returns>
         public MutableTuple AsMutable()
         {
             return new MutableTuple(_list.Cast<ITupleEntry>().ToList());
         }
-
+        /// <summary>
+        /// 指定されたキーが存在するかどうかチェックします。
+        /// </summary>
+        /// <returns>存在する場合<c>true</c></returns>
+        /// <param name="key">キー</param>
         public bool ContainsKey(string key)
         {
             return _list.Any(e => e.Key == key);
         }
-
+        /// <summary>
+        /// 指定された値が存在するかどうかチェックします。
+        /// </summary>
+        /// <returns>存在する場合<c>true</c></returns>
+        /// <param name="value">値</param>
         public bool ContainsValue(string value)
         {
             return _list.Any(e => e.Value == value);
         }
-
+        /// <summary>
+        /// タプルに値を追加します。
+        /// </summary>
+        /// <param name="value">値</param>
+        /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
         public void Add(string value)
         {
             _list.Add(Immutable.TupleEntry.OfValue(value));
         }
-
+        /// <summary>
+        /// タプルにキーと値を追加します。
+        /// </summary>
+        /// <param name="key">キー</param>
+        /// <param name="value">値</param>
+        /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
         public void Add(string key, string value)
         {
             if (ContainsKey(key)) throw new ArgumentException("duplicated key");
             _list.Add(Immutable.TupleEntry.OfPair(key, value));
         }
-
+        /// <summary>
+        /// タプルにキーと値を追加します。
+        /// </summary>
+        /// <param name="entry">エントリー</param>
+        /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
         public void Add(ITupleEntry entry)
         {
             Add(entry.Key, entry.Value);
         }
-
+        /// <summary>
+        /// 添字で指定された位置のエントリーを削除します。
+        /// </summary>
+        /// <param name="i">添字</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">添字が範囲外である場合</exception>
+        /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
         public void RemoveAt(int i)
         {
             _list.RemoveAt(i);
         }
-
+        /// <summary>
+        /// キーで指定されたエントリーを削除します。
+        /// </summary>
+        /// <returns>指定されたキーを持つエントリーが存在して削除に成功した場合<c>true</c></returns>
+        /// <param name="key">キー</param>
+        /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
         public bool Remove(string key)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
@@ -130,23 +195,45 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
             return false;
         }
-
+        /// <summary>
+        /// エントリーをすべて削除します。
+        /// </summary>
+        /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
         public void Clear()
         {
             _list.Clear();
         }
-
+        /// <summary>
+        /// タプルの添字で指定された位置に値を追加します。
+        /// </summary>
+        /// <param name="i">添字</param>
+        /// <param name="value">値</param>
+        /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">添字が範囲外の場合</exception>
         public void Insert(int i, string value)
         {
             _list.Insert(i, Immutable.TupleEntry.OfValue(value));
         }
-
+        /// <summary>
+        /// タプルの添字で指定された位置にキーと値を追加します。
+        /// </summary>
+        /// <param name="i">添字</param>
+        /// <param name="key">キー</param>
+        /// <param name="value">値</param>
+        /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">添字が範囲外の場合</exception>
         public void Insert(int i, string key, string value)
         {
             if (ContainsKey(key)) throw new ArgumentException("duplicated key");
             _list.Insert(i, Immutable.TupleEntry.OfPair(key, value));
         }
-
+        /// <summary>
+        /// タプルの添字で指定された位置にキーと値を追加します。
+        /// </summary>
+        /// <param name="i">添字</param>
+        /// <param name="entry">エントリー</param>
+        /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">添字が範囲外の場合</exception>
         public void Insert(int i, ITupleEntry entry)
         {
             _list.Insert(i, entry);
