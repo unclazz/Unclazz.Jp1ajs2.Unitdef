@@ -27,30 +27,34 @@ IUnit u = Unit.FromString(
 	"}");
 
 // 直属の下位ユニットのうち名前が1000で終わるものすべて
-IEnumerable<IUnit> childrenNameEndsWith1000 = u.Query(Q.Children().NameEndsWith("1000"));
+IEnumerable<IUnit> childrenNameEndsWith1000 = u.Children().NameEndsWith("1000");
 // ...そのうち1件だけ（存在しない場合は例外をスローする）
-IUnit child0NameEndsWith1000 = u.Query(Q.Children().NameEndsWith("1001").One());
+IUnit child0NameEndsWith1000 = u.Children().NameEndsWith("1001").First();
 
 // 直属・非直属の下位ユニットのうち種別がUNIXジョブであるもののscパラメータすべて
-IEnumerable<IParameter> paramsScOfDescendantsTypeIsUnixJob = u.Query(Q
-	.Descendants().TypeIs(UnitType.UnixJob).TheirParameters.NameEquals("sc"));
+IEnumerable<IParameter> paramsScOfDescendantsTypeIsUnixJob = 
+	u.Descendants(UnitType.UnixJob).SelectMany(v => v.Parameters).NameEquals("sc");
 // ...そのうち1件だけ（存在しない場合はnullを返す）
-IParameter param0ScOfDescendantsTypeIsUnixJob = u.Query(Q
-	.Descendants().TypeIs(UnitType.UnixJob)
-	.TheirParameters.NameEquals("sc").One(true));
+IParameter param0ScOfDescendantsTypeIsUnixJob = 
+	u.Descendants(UnitType.UnixJob).SelectMany(v => v.Parameters)
+	.NameEquals("sc").FirstOrDefault();
+
 // 当該ユニットおよび下位ユニットのうちscパラメータを持ちその値が"/path/to"で始まるものすべて
-IEnumerable<IUnit> unitsScStartsWithPathTo = u.Query(Q
-	.Descendants().TypeIs(UnitType.UnixJob)
-	.HasParameter("sc").StartsWith("/path/to").One(true));
+IEnumerable<IUnit> unitsScStartsWithPathTo = 
+	u.Descendants(UnitType.UnixJob)
+	.Where(v => w.Parameters.Any(p => p.Name == "sc" && 
+	p.Values[0].StringValue.StartsWith("/path/to")));
 ```
 
 ## 名前空間の構成
 
 `Unclazz.Jp1ajs2.Unitdef`─この名前空間にはユニット定義を構成するユニット、ユニット属性パラメータ、ユニット定義パラメータなどに対応するインターフェースとそのデフォルト実装が含まれています。中核となるのはインターフェース`IUnit`およびその実装である`Unit`です。`Unit.FromString(string)`と`Unit.FromFile(string)`を通じてユニット定義のパースを行うことができます。
 
-`Unclazz.Jp1ajs2.Unitdef.Parser`─この名前空間にはユニット定義のパース処理に関連するクラスが含まれています。`UnitParser`は文字通りユニット定義のパーサーであり、`Unit.From...`と異なって複数のルート・ユニットを持つユニット定義をパースし、結果をリストとして取得することが可能です。
+下位ユニット `IUnit.SubUnits` やユニット属性パラメータ `IUnit.Parameters` 、そのパラメータの値 `IParameter.Values` は、いずれも `NonNullCollection<T>` クラスのインスタンスにくるまれています。このクラスは名前の通りnull非許容のコレクションで、内包する要素に応じて `IList<T>` には存在しないいくつかの追加のメソッドも提供しています。
 
-`Unclazz.Jp1ajs2.Unitdef.Query`─この名前空間にはユニット定義を構成するオブジェクトに対して問合せをして、何かしらの値を抽出するためのインターフェース`IQuery<T,TResult>`およびそのデフォルト実装を提供するユーティリティ`Q`などが含まれています。
+膨大な量のユニットを必要に応じて並列で処理することも想定して、パース結果はイミュータブルなオブジェクトを返すように実装されています。しかし `IUnit.AsMutable()` により容易にミュータブルなバージョンを得られます。その逆に `IUnit.AsImmutable()` によりイミュータブルなバージョンに変換することも可能です。
+
+`Unclazz.Jp1ajs2.Unitdef.Parser`─この名前空間にはユニット定義のパース処理に関連するクラスが含まれています。`UnitParser`は文字通りユニット定義のパーサーであり、`Unit.From...`と異なって複数のルート・ユニットを持つユニット定義をパースし、結果をリストとして取得することが可能です。
 
 ## JP1/AJS2製造・販売元との関係
 
