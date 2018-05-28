@@ -281,7 +281,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <summary>
         /// このユニットの子孫ユニットを探索して返します。
         /// </summary>
-        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <returns>子ユニットのシーケンス</returns>
         /// <param name="self"></param>
         public static IEnumerable<IUnit> Children(this IUnit self)
         {
@@ -306,6 +306,35 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public static IEnumerable<IUnit> Children(this IUnit self, string type)
         {
             return self.Children(UnitType.FromName(type));
+        }
+        /// <summary>
+        /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>このユニットおよび子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        public static IEnumerable<IUnit> ItSelfAndChildren(this IUnit self)
+        {
+            return new[] { self }.Concat(self.SubUnits);
+        }
+        /// <summary>
+        /// このユニットおよびこのユニットの子ユニットを探索して返します。
+        /// </summary>
+        /// <returns>このユニットおよび子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IEnumerable<IUnit> ItSelfAndChildren(this IUnit self, UnitType type)
+        {
+            return new[] { self }.Concat(self.SubUnits).Where(u => u.Type == type);
+        }
+        /// <summary>
+        /// このユニットおよびこのユニットの子ユニットを探索して返します。
+        /// </summary>
+        /// <returns>このユニットおよび子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IEnumerable<IUnit> ItSelfAndChildren(this IUnit self, string type)
+        {
+            return self.ItSelfAndChildren(UnitType.FromName(type));
         }
         /// <summary>
         /// このユニットの子孫ユニットを探索して返します。
@@ -349,6 +378,51 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public static IEnumerable<IUnit> Descendants(this IUnit self, string type)
         {
             return self.Descendants(UnitType.FromName(type));
+        }
+        /// <summary>
+        /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self)
+        {
+            var stack = new Stack<IUnit>();
+            stack.Push(self);
+
+            while (stack.Any())
+            {
+                var elm = stack.Pop();
+                foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
+                yield return elm;
+            }
+        }
+        /// <summary>
+        /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self, UnitType type)
+        {
+            var stack = new Stack<IUnit>();
+            stack.Push(self);
+
+            while (stack.Any())
+            {
+                var elm = stack.Pop();
+                foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
+                if (elm.Type == type) yield return elm;
+            }
+        }
+        /// <summary>
+        /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self, string type)
+        {
+            return self.ItSelfAndDescendants(UnitType.FromName(type));
         }
         /// <summary>
         /// ユニットのシーケンスに対してユニット名によるフィルタリングを行います。
