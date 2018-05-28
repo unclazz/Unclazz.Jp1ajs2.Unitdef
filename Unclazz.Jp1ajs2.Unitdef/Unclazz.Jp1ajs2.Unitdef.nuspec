@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Unclazz.Jp1ajs2.Unitdef</id><!--id>$id$</id-->
-    <version>1.5.0.0</version><!--version>$version$</version-->
+    <version>1.5.1.0</version><!--version>$version$</version-->
     <!--title>$title$</title-->
     <authors>unclazz.org</authors><!--authors>$author$</authors-->
     <!--owners>$author$</owners-->
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Unofficial API for JP1/AJS2 unit definition</description><!--description>$description$</description-->
     <!--releaseNotes>Summary of changes made in this release of the package.</releaseNotes-->
-    <copyright>Copyright 2016</copyright>
+    <copyright>Copyright 2018</copyright>
     <!--tags>Tag1 Tag2</tags-->
   </metadata>
   <files>
