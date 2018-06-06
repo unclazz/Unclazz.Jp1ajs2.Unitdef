@@ -182,7 +182,20 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="stream">出力ストリーム</param>
         public static void WriteTo(this IUnit self, Stream stream)
         {
-            WriteTo(self, stream, null);
+            WriteTo(self, stream, null, new FormatOptions());
+        }
+        /// <summary>
+        /// ユニット定義情報を<see cref="Stream"/>に書き出します。
+        /// システムのデフォルトのエンコーディングが使用されます。
+        /// メソッド内で<see cref="IDisposable.Dispose"/>は呼び出されません。
+        /// 呼び出し側で必要に応じて呼び出しを行ってください。
+        /// </summary>
+        /// <param name="self">レシーバ・オブジェクト</param>
+        /// <param name="stream">出力ストリーム</param>
+        /// <param name="options">書式化オプション</param>
+        public static void WriteTo(this IUnit self, Stream stream, FormatOptions options)
+        {
+            WriteTo(self, stream, null, options);
         }
         /// <summary>
         /// ユニット定義情報を<see cref="Stream"/>に書き出します。
@@ -195,7 +208,22 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public static void WriteTo(this IUnit self, Stream stream, Encoding encoding)
         {
             if (encoding == null) encoding = Encoding.Default;
-            WriteTo(self, new StreamWriter(stream, encoding));
+            WriteTo(self, new StreamWriter(stream, encoding), new FormatOptions());
+        }
+        /// <summary>
+        /// ユニット定義情報を<see cref="Stream"/>に書き出します。
+        /// メソッド内で<see cref="IDisposable.Dispose"/>は呼び出されません。
+        /// 呼び出し側で必要に応じて呼び出しを行ってください。
+        /// </summary>
+        /// <param name="self">レシーバ・オブジェクト</param>
+        /// <param name="stream">出力ストリーム</param>
+        /// <param name="encoding">エンコーディング</param>
+        /// <param name="options">書式化オプション</param>
+        public static void WriteTo(this IUnit self, Stream stream, Encoding encoding, FormatOptions options)
+        {
+            if (encoding == null) encoding = Encoding.Default;
+            if (options == null) throw new ArgumentNullException(nameof(options));
+            WriteTo(self, new StreamWriter(stream, encoding), options);
         }
         /// <summary>
         /// ユニット定義情報を<see cref="TextWriter"/>に書き出します。
