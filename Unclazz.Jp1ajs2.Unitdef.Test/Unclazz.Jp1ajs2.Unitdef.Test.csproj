@@ -48,6 +48,7 @@
     <Compile Include="MutableTupleTest.cs" />
     <Compile Include="MutableUnitTest.cs" />
     <Compile Include="UnitTest.cs" />
+    <Compile Include="FormatOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
