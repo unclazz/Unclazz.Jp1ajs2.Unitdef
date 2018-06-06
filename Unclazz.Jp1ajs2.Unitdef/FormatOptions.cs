@@ -17,6 +17,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// デフォルトでは<c>Environment.NewLine</c>と同じ値です。
         /// </summary>
         /// <value>The new line.</value>
+        /// <exception cref="ArgumentNullException">値が<c>null</c>の場合</exception>
         public string NewLine
         {
             get => _newLine;
@@ -37,12 +38,14 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// デフォルトでは<c>4</c>です。
         /// </summary>
         /// <value>The size of the tab.</value>
+        /// <exception cref="ArgumentOutOfRangeException">値が<c>0</c>より小さい場合</exception>
         public int TabSize 
         {
             get => _tabSize;
             set
             {
-                if (value < 0) throw new ArgumentException("value must be greater than or equal 0.");
+                if (value < 0) throw new ArgumentOutOfRangeException
+                    (nameof(value), "value must be greater than or equal 0.");
                 _tabSize = value;
             }
         }
