@@ -36,6 +36,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="Unclazz.Parsec">
+      <HintPath>..\packages\Unclazz.Parsec.1.4.0\lib\net45\Unclazz.Parsec.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FullNameTest.cs" />
@@ -48,6 +51,7 @@
     <Compile Include="MutableTupleTest.cs" />
     <Compile Include="MutableUnitTest.cs" />
     <Compile Include="UnitTest.cs" />
+    <Compile Include="Parser\UnitParser2.AttributesParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

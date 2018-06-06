@@ -38,6 +38,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unclazz.Parsec">
+      <HintPath>..\packages\Unclazz.Parsec.1.4.0\lib\net45\Unclazz.Parsec.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes.cs" />
@@ -66,8 +69,18 @@
     <Compile Include="UnitExtensions.cs" />
     <Compile Include="ParameterExtensions.cs" />
     <Compile Include="NonNullCollection.cs" />
+    <Compile Include="Parser\UnitParser2.cs" />
+    <Compile Include="Parser\UnitParser2.AttributesParser.cs" />
+    <Compile Include="Parser\UnitParser2.CommentParser.cs" />
+    <Compile Include="Parser\UnitParser2.SharpEscapeParser.cs" />
+    <Compile Include="Parser\UnitParser2.ParameterValueParser.cs" />
+    <Compile Include="Parser\UnitParser2.TupleParser.cs" />
+    <Compile Include="Parser\UnitParser2.ParameterParser.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
