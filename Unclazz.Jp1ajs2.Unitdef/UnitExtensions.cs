@@ -266,7 +266,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
 
             foreach (IUnit u in self.SubUnits)
             {
-                u.WriteTo(writer);
+                u.WriteTo(writer, options);
                 writer.Append(options.NewLine);
             }
 
