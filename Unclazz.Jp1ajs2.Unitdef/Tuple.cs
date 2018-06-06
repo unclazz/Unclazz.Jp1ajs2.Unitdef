@@ -17,6 +17,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <returns>タプルのインスタンス</returns>
         public static Tuple FromCollection(IEnumerable<ITupleEntry> col)
         {
+            if (col == null) throw new ArgumentNullException(nameof(col));
             var rol = col.ToArray();
             if (rol.Length == 0)
             {
