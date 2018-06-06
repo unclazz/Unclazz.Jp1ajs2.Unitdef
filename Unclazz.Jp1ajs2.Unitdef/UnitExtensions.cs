@@ -206,38 +206,59 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="writer">ライター・オブジェクト</param>
         public static void WriteTo(this IUnit self, TextWriter writer)
         {
+            WriteTo(self, writer, new FormatOptions());
+        }
+        /// <summary>
+        /// ユニット定義情報を<see cref="TextWriter"/>に書き出します。
+        /// メソッド内で<see cref="IDisposable.Dispose"/>は呼び出されません。
+        /// 呼び出し側で必要に応じて呼び出しを行ってください。
+        /// </summary>
+        /// <param name="self">レシーバ・オブジェクト</param>
+        /// <param name="writer">ライター・オブジェクト</param>
+        /// <param name="options">書式化オプション</param>
+        public static void WriteTo(this IUnit self, TextWriter writer, FormatOptions options)
+        {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
+            if (options == null) throw new ArgumentNullException(nameof(options));
+
             var depth = self.FullName.Fragments.Count;
             StringBuilder b = new StringBuilder();
 
-            writer.AppendTabs(depth - 1).Append("unit=")
+            writer.AppendTabs(depth - 1, options).Append("unit=")
                   .Append(self.Attributes.UnitName).Append(',')
                   .Append(self.Attributes.PermissionMode).Append(',')
                   .Append(self.Attributes.Jp1UserName).Append(',')
-                  .AppendLine(self.Attributes.ResourceGroupName).Append(';')
-                  .AppendTabs(depth - 1).AppendLine('{');
+                  .Append(self.Attributes.ResourceGroupName).Append(';').Append(options.NewLine)
+                  .AppendTabs(depth - 1, options).Append('{').Append(options.NewLine);
 
             foreach (IParameter p in self.Parameters)
             {
-                writer.AppendTabs(depth).AppendLine(p.ToString());
+                writer.AppendTabs(depth, options).Append(p.ToString()).Append(options.NewLine);
             }
 
             foreach (IUnit u in self.SubUnits)
             {
                 u.WriteTo(writer);
-                writer.AppendLine();
+                writer.Append(options.NewLine);
             }
 
-            writer.AppendTabs(depth - 1).Append('}');
+            writer.AppendTabs(depth - 1, options).Append('}');
             writer.Flush();
         }
 
         #region WriteToのためのprivateメソッド群
-        static TextWriter AppendTabs(this TextWriter self, int count)
+        static TextWriter AppendTabs(this TextWriter self, int count, FormatOptions options)
         {
             for (var i = 0; i < count; i++)
             {
-                self.Write('\t');
+                if (options.SoftTab)
+                {
+                    for (var j = 0; j < options.TabSize; j ++) self.Append(' ');
+                }
+                else 
+                {
+                    self.Write('\t');
+                }
             }
             return self;
         }
@@ -249,21 +270,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         static TextWriter Append(this TextWriter self, char value)
         {
             self.Write(value);
-            return self;
-        }
-        static TextWriter AppendLine(this TextWriter self, string value)
-        {
-            self.WriteLine(value);
-            return self;
-        }
-        static TextWriter AppendLine(this TextWriter self, char value)
-        {
-            self.WriteLine(value);
-            return self;
-        }
-        static TextWriter AppendLine(this TextWriter self)
-        {
-            self.WriteLine();
             return self;
         }
         #endregion

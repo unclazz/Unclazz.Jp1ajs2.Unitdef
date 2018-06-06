@@ -66,6 +66,7 @@
     <Compile Include="UnitExtensions.cs" />
     <Compile Include="ParameterExtensions.cs" />
     <Compile Include="NonNullCollection.cs" />
+    <Compile Include="FormatOptions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
