@@ -20,6 +20,15 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             return new FullName(fragments);
         }
+        /// <summary>
+        /// 指定されたフラグメントのリストを元に完全名を生成して返します。
+        /// </summary>
+        /// <param name="fragments">フラグメントのリスト</param>
+        /// <returns>完全名インスタンス</returns>
+        public static FullName FromFragments(IEnumerable<string> fragments)
+        {
+            return new FullName(fragments.ToArray());
+        }
 
         readonly string[] _fragments;
         string _stringValue = null;

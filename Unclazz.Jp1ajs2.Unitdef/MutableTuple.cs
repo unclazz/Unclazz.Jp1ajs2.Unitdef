@@ -53,7 +53,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public string this[int i]
         {
             get => _list[i].Value;
-            set => _list[i] = Immutable.TupleEntry.OfValue(value);
+            set => _list[i] = TupleEntry.OfValue(value);
         }
         /// <summary>
         /// キーで指定された要素にアクセスします。
@@ -68,11 +68,11 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 {
                     if (_list[i].Key == k)
                     {
-                        _list[i] = Immutable.TupleEntry.OfPair(k, value);
+                        _list[i] = TupleEntry.OfPair(k, value);
                         return;
                     }
                 }
-                _list.Add(Immutable.TupleEntry.OfPair(k, value));
+                _list.Add(TupleEntry.OfPair(k, value));
             }
         }
         /// <summary>
@@ -144,7 +144,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <exception cref="System.NotSupportedException">オブジェクトがイミュータブルな場合</exception>
         public void Add(string value)
         {
-            _list.Add(Immutable.TupleEntry.OfValue(value));
+            _list.Add(TupleEntry.OfValue(value));
         }
         /// <summary>
         /// タプルにキーと値を追加します。
@@ -155,7 +155,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public void Add(string key, string value)
         {
             if (ContainsKey(key)) throw new ArgumentException("duplicated key");
-            _list.Add(Immutable.TupleEntry.OfPair(key, value));
+            _list.Add(TupleEntry.OfPair(key, value));
         }
         /// <summary>
         /// タプルにキーと値を追加します。
@@ -212,7 +212,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <exception cref="System.ArgumentOutOfRangeException">添字が範囲外の場合</exception>
         public void Insert(int i, string value)
         {
-            _list.Insert(i, Immutable.TupleEntry.OfValue(value));
+            _list.Insert(i, TupleEntry.OfValue(value));
         }
         /// <summary>
         /// タプルの添字で指定された位置にキーと値を追加します。
@@ -225,7 +225,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public void Insert(int i, string key, string value)
         {
             if (ContainsKey(key)) throw new ArgumentException("duplicated key");
-            _list.Insert(i, Immutable.TupleEntry.OfPair(key, value));
+            _list.Insert(i, TupleEntry.OfPair(key, value));
         }
         /// <summary>
         /// タプルの添字で指定された位置にキーと値を追加します。

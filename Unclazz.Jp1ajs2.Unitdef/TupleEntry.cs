@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Unclazz.Jp1ajs2.Unitdef.Immutable
+namespace Unclazz.Jp1ajs2.Unitdef
 {
     /// <summary>
     /// <code>ITupleEntry</code>のデフォルト実装です。

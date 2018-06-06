@@ -15,38 +15,37 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         /// <param name="col">エントリーのコレクション</param>
         /// <returns>タプルのインスタンス</returns>
-        public static Tuple FromCollection(ICollection<ITupleEntry> col)
+        public static Tuple FromCollection(IEnumerable<ITupleEntry> col)
         {
-            if (col.Count == 0)
+            var rol = col.ToArray();
+            if (rol.Length == 0)
             {
                 return Empty;
             }
             else
             {
-                return new Tuple(col);
+                return new Tuple(rol);
             }
         }
         /// <summary>
         /// 空のタプルを返します。
         /// </summary>
         /// <value>空のタプル</value>
-        public static Tuple Empty { get; } = new Tuple(new List<ITupleEntry>());
+        public static Tuple Empty { get; } = new Tuple(new ITupleEntry[0]);
 
+        readonly ITupleEntry[] _list;
         readonly IDictionary<string, string> _dict = new Dictionary<string, string>();
-        readonly IList<ITupleEntry> _list = new List<ITupleEntry>();
 
-        Tuple(ICollection<ITupleEntry> col)
+        Tuple(ITupleEntry[] col)
         {
+            _list = col;
             foreach(ITupleEntry e in col)
             {
-                UnitdefUtil.ArgumentMustNotBeNull(e, "entry of tuple");
                 if (e.HasKey)
                 {
                     _dict.Add(e.Key, e.Value);
                 }
-                _list.Add(e);
             }
-
         }
         /// <summary>
         /// 指定されたキーを持つエントリーの値を返します。
@@ -79,7 +78,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             get
             {
-                return _list.Count;
+                return _list.Length;
             }
         }
         /// <summary>
