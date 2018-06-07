@@ -138,18 +138,18 @@ namespace Unclazz.Jp1ajs2.Unitdef
         }
 
         /// <summary>
-        /// 名前が一致する最初のユニット定義パラメータを返します。
+        /// 名前が一致するユニット定義パラメータが存在するかどうかを確認します。
         /// </summary>
-        /// <returns>条件にマッチした要素</returns>
+        /// <returns>存在する場合は<c>true</c></returns>
         /// <param name="self"></param>
         /// <param name="paramName">ユニット定義パラメータ名</param>
         /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="paramName"/>が<c>null</c>の場合</exception>
         /// <exception cref="InvalidOperationException">条件にマッチする要素が存在しない場合</exception>
         /// <exception cref="ArgumentException"><paramref name="paramName"/>が空文字列の場合</exception>
-        public static IParameter First(this NonNullCollection<IParameter> self, string paramName)
+        public static bool Any(this NonNullCollection<IParameter> self, string paramName)
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(paramName, nameof(paramName));
-            return self.First(a => a.Name == paramName);
+            return self.Any(a => a.Name == paramName);
         }
         /// <summary>
         /// 名前が一致する最初のユニット定義パラメータを返します。
@@ -176,7 +176,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public static int RemoveAll(this NonNullCollection<IParameter> self, Func<IParameter,bool> predicate)
         {
             var count = 0;
-            for (var i = self.Count - 1; 0 <= i; i++)
+            for (var i = self.Count - 1; 0 <= i; i--)
             {
                 if (predicate(self[i]))
                 {
@@ -199,7 +199,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(paramName, nameof(paramName));
             var count = 0;
-            for (var i = self.Count - 1; 0 <= i; i++)
+            for (var i = self.Count - 1; 0 <= i; i--)
             {
                 if (self[i].Name == paramName)
                 {
