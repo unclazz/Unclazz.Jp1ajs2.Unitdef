@@ -61,10 +61,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         public ParameterValueType Type { get; }
 
-        TupleParameterValue(ITuple t)
+        TupleParameterValue(ITuple tuple)
         {
-            UnitdefUtil.ArgumentMustNotBeNull(t, "tuple");
-            TupleValue = t;
+            UnitdefUtil.ArgumentMustNotBeNull(tuple, "tuple");
+            TupleValue = tuple;
             Type = ParameterValueType.Tuple;
         }
 
