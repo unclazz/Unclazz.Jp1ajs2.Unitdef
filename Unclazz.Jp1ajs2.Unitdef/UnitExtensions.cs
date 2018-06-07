@@ -379,6 +379,16 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         /// <returns>このユニットおよび子ユニットのシーケンス</returns>
         /// <param name="self"></param>
+        /// <param name="predicate">条件判定を行う関数</param>
+        public static IEnumerable<IUnit> ItSelfAndChildren(this IUnit self, Func<IUnit, bool> predicate)
+        {
+            return new[] { self }.Concat(self.SubUnits).Where(predicate);
+        }
+        /// <summary>
+        /// このユニットおよびこのユニットの子ユニットを探索して返します。
+        /// </summary>
+        /// <returns>このユニットおよび子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> ItSelfAndChildren(this IUnit self, UnitType type)
         {
@@ -418,14 +428,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="predicate">条件判定を行う関数</param>
         public static IEnumerable<IUnit> Descendants(this IUnit self, Func<IUnit,bool> predicate)
         {
-            var stack = new Stack<IUnit>(self.SubUnits);
-
-            while (stack.Any())
-            {
-                var elm = stack.Pop();
-                foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
-                if (predicate(elm)) yield return elm;
-            }
+            return self.Descendants().Where(predicate);
         }
         /// <summary>
         /// このユニットの子孫ユニットを探索して返します。
@@ -435,14 +438,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> Descendants(this IUnit self, UnitType type)
         {
-            var stack = new Stack<IUnit>(self.SubUnits);
-
-            while (stack.Any())
-            {
-                var elm = stack.Pop();
-                foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
-                if (elm.Type == type) yield return elm;
-            }
+            return self.Descendants().Where(x => x.Type == type);
         }
         /// <summary>
         /// このユニットの子孫ユニットを探索して返します。
@@ -452,7 +448,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> Descendants(this IUnit self, string type)
         {
-            return self.Descendants(UnitType.FromName(type));
+            var typeValue = UnitType.FromName(type);
+            return self.Descendants().Where(x => x.Type == typeValue);
         }
         /// <summary>
         /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
@@ -476,18 +473,20 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         /// <returns>子孫ユニットのシーケンス</returns>
         /// <param name="self"></param>
+        /// <param name="predicate">条件判定を行う関数</param>
+        public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self, Func<IUnit, bool> predicate)
+        {
+            return self.ItSelfAndDescendants().Where(predicate);
+        }
+        /// <summary>
+        /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self, UnitType type)
         {
-            var stack = new Stack<IUnit>();
-            stack.Push(self);
-
-            while (stack.Any())
-            {
-                var elm = stack.Pop();
-                foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
-                if (elm.Type == type) yield return elm;
-            }
+            return self.ItSelfAndDescendants().Where(x => x.Type == type);
         }
         /// <summary>
         /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
@@ -497,7 +496,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self, string type)
         {
-            return self.ItSelfAndDescendants(UnitType.FromName(type));
+            var typeValue = UnitType.FromName(type);
+            return self.ItSelfAndDescendants().Where(x => x.Type == typeValue);
         }
         /// <summary>
         /// ユニットのシーケンスに対してユニット名によるフィルタリングを行います。
