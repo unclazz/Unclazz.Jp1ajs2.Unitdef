@@ -340,6 +340,16 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         /// <returns>子ユニットのシーケンス</returns>
         /// <param name="self"></param>
+        /// <param name="predicate">条件判定を行う関数</param>
+        public static IEnumerable<IUnit> Children(this IUnit self, Func<IUnit, bool> predicate)
+        {
+            return self.SubUnits.Where(predicate);
+        }
+        /// <summary>
+        /// このユニットの子ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> Children(this IUnit self, UnitType type)
         {
@@ -398,6 +408,23 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 var elm = stack.Pop();
                 foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
                 yield return elm;
+            }
+        }
+        /// <summary>
+        /// このユニットの子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="predicate">条件判定を行う関数</param>
+        public static IEnumerable<IUnit> Descendants(this IUnit self, Func<IUnit,bool> predicate)
+        {
+            var stack = new Stack<IUnit>(self.SubUnits);
+
+            while (stack.Any())
+            {
+                var elm = stack.Pop();
+                foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
+                if (predicate(elm)) yield return elm;
             }
         }
         /// <summary>
