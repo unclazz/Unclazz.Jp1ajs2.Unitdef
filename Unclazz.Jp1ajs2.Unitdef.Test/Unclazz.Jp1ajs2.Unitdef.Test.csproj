@@ -49,6 +49,7 @@
     <Compile Include="MutableUnitTest.cs" />
     <Compile Include="UnitTest.cs" />
     <Compile Include="FormatOptions.cs" />
+    <Compile Include="NonNullCollectionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
