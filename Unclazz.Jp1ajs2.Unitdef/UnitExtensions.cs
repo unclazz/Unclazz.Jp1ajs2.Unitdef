@@ -62,6 +62,20 @@ namespace Unclazz.Jp1ajs2.Unitdef
         }
 
         /// <summary>
+        /// 名前が一致するユニットが存在するかどうかを確認します。
+        /// </summary>
+        /// <returns>存在する場合は<c>true</c></returns>
+        /// <param name="self"></param>
+        /// <param name="unitName">ユニット名</param>
+        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="unitName"/>が<c>null</c>の場合</exception>
+        /// <exception cref="InvalidOperationException">条件にマッチする要素が存在しない場合</exception>
+        /// <exception cref="ArgumentException"><paramref name="unitName"/>が空文字列の場合</exception>
+        public static bool Any(this NonNullCollection<IUnit> self, string unitName)
+        {
+            UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
+            return self.Any(a => a.Name == unitName);
+        }
+        /// <summary>
         /// 名前が一致する最初のユニットを返します。
         /// </summary>
         /// <returns>条件にマッチした要素</returns>
