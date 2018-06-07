@@ -100,7 +100,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public static int RemoveAll(this NonNullCollection<IUnit> self, Func<IUnit, bool> predicate)
         {
             var count = 0;
-            for (var i = self.Count - 1; 0 <= i; i++)
+            for (var i = self.Count - 1; 0 <= i; i--)
             {
                 if (predicate(self[i]))
                 {
@@ -123,7 +123,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
             var count = 0;
-            for (var i = self.Count - 1; 0 <= i; i++)
+            for (var i = self.Count - 1; 0 <= i; i--)
             {
                 if (self[i].Name == unitName)
                 {
