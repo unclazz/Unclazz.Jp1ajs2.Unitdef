@@ -77,6 +77,7 @@
     <Compile Include="Parser\UnitParser2.ParameterValueParser.cs" />
     <Compile Include="Parser\UnitParser2.TupleParser.cs" />
     <Compile Include="Parser\UnitParser2.ParameterParser.cs" />
+    <Compile Include="Parser\UnitParser2.SpacesParser.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
