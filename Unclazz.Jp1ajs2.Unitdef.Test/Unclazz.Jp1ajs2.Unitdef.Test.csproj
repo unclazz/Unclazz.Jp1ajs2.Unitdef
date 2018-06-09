@@ -54,6 +54,7 @@
     <Compile Include="FormatOptions.cs" />
     <Compile Include="NonNullCollectionTest.cs" />
     <Compile Include="Parser\UnitParser2.AttributesParserTest.cs" />
+    <Compile Include="Parser\UnitParser2.CommentParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

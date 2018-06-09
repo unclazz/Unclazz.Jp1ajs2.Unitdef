@@ -5,7 +5,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
 {
     public partial class UnitParser2
     {
-        class CommentParser : Parsec.Parser
+        internal class CommentParser : Parsec.Parser
         {
             internal CommentParser()
             {
