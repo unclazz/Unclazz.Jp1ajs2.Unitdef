@@ -6,13 +6,13 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
 {
     public partial class UnitParser2
     {
-        class ParameterParser : Parser<IParameter>
+        internal class ParameterParser : Parser<IParameter>
         {
             internal ParameterParser()
             {
                 _inner = CharsWhileIn(CharClass.Alphanumeric)
                     .Check(a => a != "unit", "not parameter but unit.")
-                    .Then('=').Then(new ParameterValueParser().Repeat()).Then(';')
+                    .Then('=').Then(new ParameterValueParser().Repeat(sep: ',')).Then(';')
                                                              .Map(ToParameter);
             }
 
