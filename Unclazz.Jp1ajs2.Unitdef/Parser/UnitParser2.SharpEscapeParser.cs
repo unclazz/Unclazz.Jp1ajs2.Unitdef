@@ -4,7 +4,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
 {
     public partial class UnitParser2
     {
-        class SharpEscapeParser : Parser<char>
+        internal class SharpEscapeParser : Parser<char>
         {
             protected override ResultCore<char> DoParse(Reader src)
             {
