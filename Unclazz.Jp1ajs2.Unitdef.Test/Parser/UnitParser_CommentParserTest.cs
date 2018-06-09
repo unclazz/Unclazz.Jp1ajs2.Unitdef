@@ -6,13 +6,13 @@ using Unclazz.Parsec;
 namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
 {
     [TestFixture]
-    public class UnitParser2_CommentParserTest
+    public class UnitParser_CommentParserTest
     {
         [Test]
         public void Parse_Case01()
         {
             // Arrange
-            var p = new UnitParser2.CommentParser();
+            var p = new UnitParser.CommentParser();
             var i = Reader.From("/**/...");
 
             // Act
@@ -26,7 +26,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_Case02()
         {
             // Arrange
-            var p = new UnitParser2.CommentParser();
+            var p = new UnitParser.CommentParser();
             var i = Reader.From("/*foo*/...");
 
             // Act
@@ -40,7 +40,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_Case03()
         {
             // Arrange
-            var p = new UnitParser2.CommentParser();
+            var p = new UnitParser.CommentParser();
             var i = Reader.From("/*\r\n*/...");
 
             // Act
@@ -56,7 +56,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_Case11()
         {
             // Arrange
-            var p = new UnitParser2.CommentParser();
+            var p = new UnitParser.CommentParser();
             var i = Reader.From("/**...");
 
             // Act

@@ -51,14 +51,14 @@
     <Compile Include="UnitTest.cs" />
     <Compile Include="FormatOptions.cs" />
     <Compile Include="NonNullCollectionTest.cs" />
-    <Compile Include="Parser\UnitParser2_AttributesParserTest.cs" />
-    <Compile Include="Parser\UnitParser2_CommentParserTest.cs" />
-    <Compile Include="Parser\UnitParser2_ParameterValueParserTest.cs" />
-    <Compile Include="Parser\UnitParser2_TupleParserTest.cs" />
-    <Compile Include="Parser\UnitParser2_SharpEscapeParserTest.cs" />
-    <Compile Include="Parser\UnitParser2_ParameterParserTest.cs" />
-    <Compile Include="Parser\UnitParser2_SpacesParserTest.cs" />
-    <Compile Include="Parser\UnitParser2Test.cs" />
+    <Compile Include="Parser\UnitParser_AttributesParserTest.cs" />
+    <Compile Include="Parser\UnitParser_CommentParserTest.cs" />
+    <Compile Include="Parser\UnitParser_ParameterValueParserTest.cs" />
+    <Compile Include="Parser\UnitParser_TupleParserTest.cs" />
+    <Compile Include="Parser\UnitParser_SharpEscapeParserTest.cs" />
+    <Compile Include="Parser\UnitParser_ParameterParserTest.cs" />
+    <Compile Include="Parser\UnitParser_SpacesParserTest.cs" />
+    <Compile Include="Parser\UnitParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

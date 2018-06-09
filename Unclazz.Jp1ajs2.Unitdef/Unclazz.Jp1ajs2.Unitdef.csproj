@@ -67,15 +67,15 @@
     <Compile Include="ParameterExtensions.cs" />
     <Compile Include="NonNullCollection.cs" />
     <Compile Include="FormatOptions.cs" />
-    <Compile Include="Parser\UnitParser2.cs" />
-    <Compile Include="Parser\UnitParser2.AttributesParser.cs" />
-    <Compile Include="Parser\UnitParser2.CommentParser.cs" />
-    <Compile Include="Parser\UnitParser2.SharpEscapeParser.cs" />
-    <Compile Include="Parser\UnitParser2.ParameterValueParser.cs" />
-    <Compile Include="Parser\UnitParser2.TupleParser.cs" />
-    <Compile Include="Parser\UnitParser2.ParameterParser.cs" />
-    <Compile Include="Parser\UnitParser2.SpacesParser.cs" />
-    <Compile Include="Parser\ParseException2.cs" />
+    <Compile Include="Parser\UnitParser.cs" />
+    <Compile Include="Parser\UnitParser.AttributesParser.cs" />
+    <Compile Include="Parser\UnitParser.CommentParser.cs" />
+    <Compile Include="Parser\UnitParser.SharpEscapeParser.cs" />
+    <Compile Include="Parser\UnitParser.ParameterValueParser.cs" />
+    <Compile Include="Parser\UnitParser.TupleParser.cs" />
+    <Compile Include="Parser\UnitParser.ParameterParser.cs" />
+    <Compile Include="Parser\UnitParser.SpacesParser.cs" />
+    <Compile Include="Parser\ParseException.cs" />
     <Compile Include="Unit.Builder.cs" />
     <Compile Include="Parameter.Builder.cs" />
   </ItemGroup>

@@ -7,9 +7,9 @@ using Unclazz.Parsec;
 namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
 {
     [TestFixture]
-    public class UnitParser2Test
+    public class UnitParserTest
     {
-        private readonly Parser<Seq<IUnit>> p = new UnitParser2().Repeat(min: 1);
+        private readonly Parser<Seq<IUnit>> p = new UnitParser().Repeat(min: 1);
 
         [Test]
         public void Parse_1Unit_NoAttrs_NoParams_NoSubUnits()

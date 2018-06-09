@@ -3,7 +3,7 @@ using Unclazz.Parsec;
 
 namespace Unclazz.Jp1ajs2.Unitdef.Parser
 {
-    public partial class UnitParser2
+    public partial class UnitParser
     {
         internal class CommentParser : Parsec.Parser
         {

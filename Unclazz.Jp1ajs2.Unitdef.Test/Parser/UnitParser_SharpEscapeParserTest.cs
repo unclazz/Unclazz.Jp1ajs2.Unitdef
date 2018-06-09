@@ -5,13 +5,13 @@ using Unclazz.Parsec;
 namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
 {
     [TestFixture]
-    public class UnitParser2_SharpEscapeParserTest
+    public class UnitParser_SharpEscapeParserTest
     {
         [Test]
         public void Parse_Case01()
         {
             // Arrange
-            var p = new UnitParser2.SharpEscapeParser();
+            var p = new UnitParser.SharpEscapeParser();
             var i = Reader.From("#\"...");
 
             // Act
@@ -26,7 +26,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_Case02()
         {
             // Arrange
-            var p = new UnitParser2.SharpEscapeParser();
+            var p = new UnitParser.SharpEscapeParser();
             var i = Reader.From("##...");
 
             // Act
@@ -41,7 +41,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_Case03()
         {
             // Arrange
-            var p = new UnitParser2.SharpEscapeParser();
+            var p = new UnitParser.SharpEscapeParser();
             var i = Reader.From("#x...");
 
             // Act

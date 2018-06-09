@@ -5,13 +5,13 @@ using Unclazz.Parsec;
 namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
 {
     [TestFixture]
-    public class UnitParser2_ParameterParserTest
+    public class UnitParser_ParameterParserTest
     {
         [Test]
         public void Parse_Case01()
         {
             // Arrange
-            var p = new UnitParser2.ParameterParser();
+            var p = new UnitParser.ParameterParser();
             var i = Reader.From("param=foo;...");
             //                   0123456789012
 
@@ -29,7 +29,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_Case02()
         {
             // Arrange
-            var p = new UnitParser2.ParameterParser();
+            var p = new UnitParser.ParameterParser();
             var i = Reader.From("param=foo,bar,baz;...");
             //                   012345678901234567890
 
@@ -49,7 +49,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_Case03()
         {
             // Arrange
-            var p = new UnitParser2.ParameterParser();
+            var p = new UnitParser.ParameterParser();
             var i = Reader.From("param=(f=foo,b=bar,123),\"bar\",baz;...");
 
             // Act
@@ -70,7 +70,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_Case04()
         {
             // Arrange
-            var p = new UnitParser2.ParameterParser();
+            var p = new UnitParser.ParameterParser();
             var i = Reader.From("param=baz,(f=foo,b=bar,123),\"bar\";...");
 
             // Act
@@ -91,7 +91,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_Case05()
         {
             // Arrange
-            var p = new UnitParser2.ParameterParser();
+            var p = new UnitParser.ParameterParser();
             var i = Reader.From("param=\"bar\",baz,(f=foo,b=bar,123);...");
 
             // Act
@@ -112,7 +112,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_Case11()
         {
             // Arrange
-            var p = new UnitParser2.ParameterParser();
+            var p = new UnitParser.ParameterParser();
             var i = Reader.From("param=;...");
             //                   0123456789012
 
@@ -129,7 +129,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_Case12()
         {
             // Arrange
-            var p = new UnitParser2.ParameterParser();
+            var p = new UnitParser.ParameterParser();
             var i = Reader.From("param=,,;...");
 
             // Act
@@ -147,7 +147,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_Case21()
         {
             // Arrange
-            var p = new UnitParser2.ParameterParser();
+            var p = new UnitParser.ParameterParser();
             var i = Reader.From("unit=foo,bar,baz;...");
 
             // Act
