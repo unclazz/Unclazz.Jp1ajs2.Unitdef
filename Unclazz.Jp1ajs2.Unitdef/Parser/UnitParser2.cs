@@ -7,13 +7,15 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
 {
     public partial class UnitParser2 : Parser<IUnit>
     {
+
         public UnitParser2()
         {
-            _attrs = new AttributesParser();
-            _rest = Char('{')
-                .Then(new ParameterParser().Repeat(min: 1))
-                .Then(this.Repeat())
-                .Then('}');
+            var sp = new SpacesParser();
+            _attrs = sp.Then(new AttributesParser());
+            _rest = sp.Then('{')
+                      .Then(sp).Then(new ParameterParser().Repeat(min: 1, sep: sp))
+                      .Then(sp).Then(this.Repeat(sep: sp))
+                      .Then(sp).Then('}');
         }
 
         readonly Parser<Attributes> _attrs;

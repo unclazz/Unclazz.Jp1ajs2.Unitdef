@@ -60,6 +60,7 @@
     <Compile Include="Parser\UnitParser2_SharpEscapeParserTest.cs" />
     <Compile Include="Parser\UnitParser2_ParameterParserTest.cs" />
     <Compile Include="Parser\UnitParser2_SpacesParserTest.cs" />
+    <Compile Include="Parser\UnitParser2Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
