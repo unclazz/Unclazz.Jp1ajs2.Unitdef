@@ -56,6 +56,7 @@
     <Compile Include="Parser\UnitParser2_AttributesParserTest.cs" />
     <Compile Include="Parser\UnitParser2_CommentParserTest.cs" />
     <Compile Include="Parser\UnitParser2_ParameterValueParserTest.cs" />
+    <Compile Include="Parser\UnitParser2_TupleParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

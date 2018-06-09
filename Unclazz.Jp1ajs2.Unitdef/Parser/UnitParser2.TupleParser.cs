@@ -4,7 +4,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
 {
     public partial class UnitParser2
     {
-        class TupleParser : Parser<ITuple>
+        internal class TupleParser : Parser<ITuple>
         {
             internal TupleParser()
             {
