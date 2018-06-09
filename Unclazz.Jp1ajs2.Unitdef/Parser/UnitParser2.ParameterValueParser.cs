@@ -6,7 +6,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
 {
     public partial class UnitParser2
     {
-        class ParameterValueParser : Parser<IParameterValue>
+        internal class ParameterValueParser : Parser<IParameterValue>
         {
             internal ParameterValueParser()
             {

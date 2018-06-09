@@ -34,12 +34,12 @@ namespace Unclazz.Jp1ajs2.Unitdef
                 if (_stringValue == null)
                 {
                     StringBuilder sb = new StringBuilder("(");
+                    bool first = true;
                     foreach (ITupleEntry e in TupleValue.Entries)
                     {
-                        if (sb.Length > 1)
-                        {
-                            sb.Append(",");
-                        }
+                        if (first) first = false;
+                        else sb.Append(",");
+
                         if (e.HasKey)
                         {
                             sb.Append(e.Key).Append("=");
