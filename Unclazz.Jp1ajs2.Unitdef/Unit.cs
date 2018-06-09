@@ -4,124 +4,41 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Unclazz.Jp1ajs2.Unitdef.Parser;
+using Unclazz.Parsec;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
     /// <summary>
     /// <code>IUnit</code>のイミュータブルなデフォルト実装です。
     /// </summary>
-    public sealed class Unit : IUnit
+    public sealed partial class Unit : IUnit
     {
+
+        static readonly Parser<IUnit> parser = new UnitParser2();
+
         /// <summary>
-        /// <code>Unit</code>オブジェクトを構築するためのビルダーです。
+        /// 文字列からユニット定義を読み取ります。
         /// </summary>
-        public sealed class Builder
+        /// <returns>ユニット定義</returns>
+        /// <param name="value">ユニット定義を含む文字列</param>
+        public static IUnit FromString(string value)
         {
-            /// <summary>
-            /// ビルダーのインスタンスを生成します。
-            /// </summary>
-            /// <returns>ビルダーのインスタンス</returns>
-            public static Builder Create()
-            {
-                return new Builder();
-            }
-
-            Builder() {}
-
-            private FullName fqn = null;
-            private IParameter ty = null;
-            private IParameter cm = null;
-            private Attributes attributes = null;
-            private List<IParameter> parameters = new List<IParameter>();
-            private List<IUnit> subUnits = new List<IUnit>();
-            /// <summary>
-            /// 完全名を設定します。
-            /// </summary>
-            /// <param name="f">完全名</param>
-            /// <returns>ビルダー</returns>
-            public Builder FullName(FullName f)
-            {
-                this.fqn = f;
-                return this;
-            }
-            /// <summary>
-            /// ユニット属性パラメータを設定します。
-            /// </summary>
-            /// <param name="a">ユニット属性パラメータ</param>
-            /// <returns>ビルダー</returns>
-            public Builder Attributes(Attributes a)
-            {
-                this.attributes = a;
-                return this;
-            }
-            /// <summary>
-            /// ユニット定義パラメータを追加します。
-            /// </summary>
-            /// <param name="p">ユニット定義パラメータ</param>
-            /// <returns>ビルダー</returns>
-            public Builder AddParameter(IParameter p)
-            {
-                if (p.Name.Equals("ty"))
-                {
-                    ty = p;
-                }
-                else if (p.Name.Equals("cm"))
-                {
-                    cm = p;
-                }
-                this.parameters.Add(p);
-                return this;
-            }
-            /// <summary>
-            /// 下位ユニットを追加します。
-            /// </summary>
-            /// <param name="u">下位ユニット</param>
-            /// <returns>ビルダー</returns>
-            public Builder AddSubUnit(IUnit u)
-            {
-                this.subUnits.Add(u);
-                return this;
-            }
-            /// <summary>
-            /// ジョブユニットを構築します。
-            /// 少なくともユニット属性パラメータとユニット完全名は設定されている必要があります。
-            /// ユニット定義パラメータは少なくとも<code>"ty"</code>が設定されている必要があります。
-            /// これらの条件を満たさない状態でこのメソッドを呼び出した場合例外がスローされます。
-            /// </summary>
-            /// <returns>ジョブユニット</returns>
-            /// <exception cref="ArgumentException">条件を満たさない状態でこのメソッドを呼び出した場合</exception>
-            public Unit Build()
-            {
-                if (ty == null)
-                {
-                    throw new ArgumentException("parameter \"ty\" is not found.");
-                }
-                UnitdefUtil.ArgumentMustNotBeNull(attributes, "attributes");
-                UnitdefUtil.ArgumentMustNotBeNull(fqn, "full qualified name");
-                return new Unit(fqn, attributes, ty, cm, parameters, subUnits);
-            }
+            var result = parser.Parse(value ?? throw new ArgumentNullException(nameof(value)));
+            if (result.Successful) return result.Capture;
+            throw new ParseException2(result);
         }
-
-        static readonly UnitParser parser = UnitParser.Instance;
-        
-		/// <summary>
-		/// 文字列からユニット定義を読み取ります。
-		/// </summary>
-		/// <returns>ユニット定義</returns>
-		/// <param name="s">ユニット定義を含む文字列</param>
-		public static IUnit FromString(string s)
-        {
-            return parser.Parse(Input.FromString(s))[0];
-        }
-		/// <summary>
-		/// ファイルからユニット定義を読み取ります。
-		/// </summary>
-		/// <returns>ユニット定義</returns>
-		/// <param name="path">ファイルパス</param>
-		/// <param name="enc">エンコーディング</param>
+        /// <summary>
+        /// ファイルからユニット定義を読み取ります。
+        /// </summary>
+        /// <returns>ユニット定義</returns>
+        /// <param name="path">ファイルパス</param>
+        /// <param name="enc">エンコーディング</param>
         public static IUnit FromFile(string path, Encoding enc)
         {
-            return parser.Parse(Input.FromFile(path, enc))[0];
+            var result = parser.Parse(Reader.From(path ?? throw new ArgumentNullException(nameof(path)),
+                                                  enc ?? throw new ArgumentNullException(nameof(enc))));
+            if (result.Successful) return result.Capture;
+            throw new ParseException2(result);
         }
 		/// <summary>
 		/// ストリームからユニット定義を読み取ります。
@@ -131,7 +48,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
 		/// <param name="enc">エンコーディング</param>
 		public static IUnit FromStream(Stream stream, Encoding enc)
 		{
-			return parser.Parse(Input.FromStream(stream, enc))[0];
+            var result = parser.Parse(Reader.From(stream ?? throw new ArgumentNullException(nameof(stream)),
+                                                  enc ?? throw new ArgumentNullException(nameof(enc))));
+            if (result.Successful) return result.Capture;
+            throw new ParseException2(result);
 		}
 
         Unit(FullName fqn, Attributes attributes, IParameter ty, IParameter cm, 

@@ -122,11 +122,15 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
                 "}");
 
             // Act
-            IList<IUnit> us = p.Parse(i).Capture.ToList()[0].SubUnits;
+            var u = p.Parse(i).Capture.ToList()[0];
+            IList<IUnit> us = u.SubUnits;
 
             // Assert
+            Assert.AreEqual("/XXXX0000", u.FullName.ToString());
+            Assert.AreEqual("/XXXX0000/XXXX1000", us[0].FullName.ToString());
             Assert.AreEqual("XXXX1000", us[0].Name);
             Assert.AreEqual(UnitType.PcJob, us[0].Type);
+            Assert.AreEqual("/XXXX0000/XXXX2000", us[1].FullName.ToString());
             Assert.AreEqual("XXXX2000", us[1].Name);
             Assert.AreEqual(UnitType.UnixJob, us[1].Type);
         }

@@ -66,6 +66,8 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
                 b.AddSubUnit(s);
             }
 
+            stack.Pop();
+
             return Success(b.Build());
         }
     }
