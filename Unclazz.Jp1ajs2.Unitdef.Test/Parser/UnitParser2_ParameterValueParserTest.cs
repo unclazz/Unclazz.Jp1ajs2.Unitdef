@@ -86,7 +86,9 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
             var r = p.Parse(i);
 
             // Assert
-            Assert.That(r.Successful, Is.False);
+            Assert.That(r.Successful, Is.True);
+            Assert.That(r.Capture.Type, Is.EqualTo(ParameterValueType.RawString));
+            Assert.That(r.Capture.StringValue, Is.EqualTo(string.Empty));
         }
         [Test]
         public void Parse_Case21()

@@ -11,7 +11,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             internal ParameterValueParser()
             {
                 var clazz = CharClass.Not(CharClass.AnyOf(",;"));
-                var rawStringParam = CharsWhileIn(clazz).Map(RawStringParameterValue.OfValue);
+                var rawStringParam = CharsWhileIn(clazz, min: 0).Map(RawStringParameterValue.OfValue);
                 var quotedStringParam = QuotedString(escape: new SharpEscapeParser()).Map(QuotedStringParameterValue.OfValue);
                 var tupleParam = new TupleParser().Map(TupleParameterValue.OfValue);
                 _inner = tupleParam | quotedStringParam | rawStringParam;
