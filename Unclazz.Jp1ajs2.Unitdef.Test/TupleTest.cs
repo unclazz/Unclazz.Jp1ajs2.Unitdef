@@ -108,7 +108,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             // Act
 
             // Assert
-            Assert.Throws<ArgumentNullException>(() =>
+            Assert.Throws<NullReferenceException>(() =>
             {
                 Tuple.FromCollection(new ITupleEntry[] { TupleEntry.OfValue("v0"), null }.ToList());
             });

@@ -62,6 +62,20 @@ namespace Unclazz.Jp1ajs2.Unitdef
         }
 
         /// <summary>
+        /// 名前が一致するユニットが存在するかどうかを確認します。
+        /// </summary>
+        /// <returns>存在する場合は<c>true</c></returns>
+        /// <param name="self"></param>
+        /// <param name="unitName">ユニット名</param>
+        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="unitName"/>が<c>null</c>の場合</exception>
+        /// <exception cref="InvalidOperationException">条件にマッチする要素が存在しない場合</exception>
+        /// <exception cref="ArgumentException"><paramref name="unitName"/>が空文字列の場合</exception>
+        public static bool Any(this NonNullCollection<IUnit> self, string unitName)
+        {
+            UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
+            return self.Any(a => a.Name == unitName);
+        }
+        /// <summary>
         /// 名前が一致する最初のユニットを返します。
         /// </summary>
         /// <returns>条件にマッチした要素</returns>
@@ -100,7 +114,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public static int RemoveAll(this NonNullCollection<IUnit> self, Func<IUnit, bool> predicate)
         {
             var count = 0;
-            for (var i = self.Count - 1; 0 <= i; i++)
+            for (var i = self.Count - 1; 0 <= i; i--)
             {
                 if (predicate(self[i]))
                 {
@@ -123,7 +137,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
             var count = 0;
-            for (var i = self.Count - 1; 0 <= i; i++)
+            for (var i = self.Count - 1; 0 <= i; i--)
             {
                 if (self[i].Name == unitName)
                 {
@@ -182,7 +196,20 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="stream">出力ストリーム</param>
         public static void WriteTo(this IUnit self, Stream stream)
         {
-            WriteTo(self, stream, null);
+            WriteTo(self, stream, null, new FormatOptions());
+        }
+        /// <summary>
+        /// ユニット定義情報を<see cref="Stream"/>に書き出します。
+        /// システムのデフォルトのエンコーディングが使用されます。
+        /// メソッド内で<see cref="IDisposable.Dispose"/>は呼び出されません。
+        /// 呼び出し側で必要に応じて呼び出しを行ってください。
+        /// </summary>
+        /// <param name="self">レシーバ・オブジェクト</param>
+        /// <param name="stream">出力ストリーム</param>
+        /// <param name="options">書式化オプション</param>
+        public static void WriteTo(this IUnit self, Stream stream, FormatOptions options)
+        {
+            WriteTo(self, stream, null, options);
         }
         /// <summary>
         /// ユニット定義情報を<see cref="Stream"/>に書き出します。
@@ -195,7 +222,22 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public static void WriteTo(this IUnit self, Stream stream, Encoding encoding)
         {
             if (encoding == null) encoding = Encoding.Default;
-            WriteTo(self, new StreamWriter(stream, encoding));
+            WriteTo(self, new StreamWriter(stream, encoding), new FormatOptions());
+        }
+        /// <summary>
+        /// ユニット定義情報を<see cref="Stream"/>に書き出します。
+        /// メソッド内で<see cref="IDisposable.Dispose"/>は呼び出されません。
+        /// 呼び出し側で必要に応じて呼び出しを行ってください。
+        /// </summary>
+        /// <param name="self">レシーバ・オブジェクト</param>
+        /// <param name="stream">出力ストリーム</param>
+        /// <param name="encoding">エンコーディング</param>
+        /// <param name="options">書式化オプション</param>
+        public static void WriteTo(this IUnit self, Stream stream, Encoding encoding, FormatOptions options)
+        {
+            if (encoding == null) encoding = Encoding.Default;
+            if (options == null) throw new ArgumentNullException(nameof(options));
+            WriteTo(self, new StreamWriter(stream, encoding), options);
         }
         /// <summary>
         /// ユニット定義情報を<see cref="TextWriter"/>に書き出します。
@@ -206,38 +248,59 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="writer">ライター・オブジェクト</param>
         public static void WriteTo(this IUnit self, TextWriter writer)
         {
+            WriteTo(self, writer, new FormatOptions());
+        }
+        /// <summary>
+        /// ユニット定義情報を<see cref="TextWriter"/>に書き出します。
+        /// メソッド内で<see cref="IDisposable.Dispose"/>は呼び出されません。
+        /// 呼び出し側で必要に応じて呼び出しを行ってください。
+        /// </summary>
+        /// <param name="self">レシーバ・オブジェクト</param>
+        /// <param name="writer">ライター・オブジェクト</param>
+        /// <param name="options">書式化オプション</param>
+        public static void WriteTo(this IUnit self, TextWriter writer, FormatOptions options)
+        {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
+            if (options == null) throw new ArgumentNullException(nameof(options));
+
             var depth = self.FullName.Fragments.Count;
             StringBuilder b = new StringBuilder();
 
-            writer.AppendTabs(depth - 1).Append("unit=")
+            writer.AppendTabs(depth - 1, options).Append("unit=")
                   .Append(self.Attributes.UnitName).Append(',')
                   .Append(self.Attributes.PermissionMode).Append(',')
                   .Append(self.Attributes.Jp1UserName).Append(',')
-                  .AppendLine(self.Attributes.ResourceGroupName).Append(';')
-                  .AppendTabs(depth - 1).AppendLine('{');
+                  .Append(self.Attributes.ResourceGroupName).Append(';').Append(options.NewLine)
+                  .AppendTabs(depth - 1, options).Append('{').Append(options.NewLine);
 
             foreach (IParameter p in self.Parameters)
             {
-                writer.AppendTabs(depth).AppendLine(p.ToString());
+                writer.AppendTabs(depth, options).Append(p.ToString()).Append(options.NewLine);
             }
 
             foreach (IUnit u in self.SubUnits)
             {
-                u.WriteTo(writer);
-                writer.AppendLine();
+                u.WriteTo(writer, options);
+                writer.Append(options.NewLine);
             }
 
-            writer.AppendTabs(depth - 1).Append('}');
+            writer.AppendTabs(depth - 1, options).Append('}');
             writer.Flush();
         }
 
         #region WriteToのためのprivateメソッド群
-        static TextWriter AppendTabs(this TextWriter self, int count)
+        static TextWriter AppendTabs(this TextWriter self, int count, FormatOptions options)
         {
             for (var i = 0; i < count; i++)
             {
-                self.Write('\t');
+                if (options.SoftTab)
+                {
+                    for (var j = 0; j < options.TabSize; j ++) self.Append(' ');
+                }
+                else 
+                {
+                    self.Write('\t');
+                }
             }
             return self;
         }
@@ -249,21 +312,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         static TextWriter Append(this TextWriter self, char value)
         {
             self.Write(value);
-            return self;
-        }
-        static TextWriter AppendLine(this TextWriter self, string value)
-        {
-            self.WriteLine(value);
-            return self;
-        }
-        static TextWriter AppendLine(this TextWriter self, char value)
-        {
-            self.WriteLine(value);
-            return self;
-        }
-        static TextWriter AppendLine(this TextWriter self)
-        {
-            self.WriteLine();
             return self;
         }
         #endregion
@@ -286,6 +334,16 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public static IEnumerable<IUnit> Children(this IUnit self)
         {
             return self.SubUnits;
+        }
+        /// <summary>
+        /// このユニットの子ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="predicate">条件判定を行う関数</param>
+        public static IEnumerable<IUnit> Children(this IUnit self, Func<IUnit, bool> predicate)
+        {
+            return self.SubUnits.Where(predicate);
         }
         /// <summary>
         /// このユニットの子ユニットを探索して返します。
@@ -315,6 +373,16 @@ namespace Unclazz.Jp1ajs2.Unitdef
         public static IEnumerable<IUnit> ItSelfAndChildren(this IUnit self)
         {
             return new[] { self }.Concat(self.SubUnits);
+        }
+        /// <summary>
+        /// このユニットおよびこのユニットの子ユニットを探索して返します。
+        /// </summary>
+        /// <returns>このユニットおよび子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="predicate">条件判定を行う関数</param>
+        public static IEnumerable<IUnit> ItSelfAndChildren(this IUnit self, Func<IUnit, bool> predicate)
+        {
+            return new[] { self }.Concat(self.SubUnits).Where(predicate);
         }
         /// <summary>
         /// このユニットおよびこのユニットの子ユニットを探索して返します。
@@ -357,17 +425,20 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         /// <returns>子孫ユニットのシーケンス</returns>
         /// <param name="self"></param>
+        /// <param name="predicate">条件判定を行う関数</param>
+        public static IEnumerable<IUnit> Descendants(this IUnit self, Func<IUnit,bool> predicate)
+        {
+            return self.Descendants().Where(predicate);
+        }
+        /// <summary>
+        /// このユニットの子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> Descendants(this IUnit self, UnitType type)
         {
-            var stack = new Stack<IUnit>(self.SubUnits);
-
-            while (stack.Any())
-            {
-                var elm = stack.Pop();
-                foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
-                if (elm.Type == type) yield return elm;
-            }
+            return self.Descendants().Where(x => x.Type == type);
         }
         /// <summary>
         /// このユニットの子孫ユニットを探索して返します。
@@ -377,7 +448,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> Descendants(this IUnit self, string type)
         {
-            return self.Descendants(UnitType.FromName(type));
+            var typeValue = UnitType.FromName(type);
+            return self.Descendants().Where(x => x.Type == typeValue);
         }
         /// <summary>
         /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
@@ -401,18 +473,20 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         /// <returns>子孫ユニットのシーケンス</returns>
         /// <param name="self"></param>
+        /// <param name="predicate">条件判定を行う関数</param>
+        public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self, Func<IUnit, bool> predicate)
+        {
+            return self.ItSelfAndDescendants().Where(predicate);
+        }
+        /// <summary>
+        /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self, UnitType type)
         {
-            var stack = new Stack<IUnit>();
-            stack.Push(self);
-
-            while (stack.Any())
-            {
-                var elm = stack.Pop();
-                foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
-                if (elm.Type == type) yield return elm;
-            }
+            return self.ItSelfAndDescendants().Where(x => x.Type == type);
         }
         /// <summary>
         /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
@@ -422,7 +496,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self, string type)
         {
-            return self.ItSelfAndDescendants(UnitType.FromName(type));
+            var typeValue = UnitType.FromName(type);
+            return self.ItSelfAndDescendants().Where(x => x.Type == typeValue);
         }
         /// <summary>
         /// ユニットのシーケンスに対してユニット名によるフィルタリングを行います。
