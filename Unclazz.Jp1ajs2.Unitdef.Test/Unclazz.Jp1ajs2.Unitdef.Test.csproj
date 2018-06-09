@@ -53,8 +53,8 @@
     <Compile Include="UnitTest.cs" />
     <Compile Include="FormatOptions.cs" />
     <Compile Include="NonNullCollectionTest.cs" />
-    <Compile Include="Parser\UnitParser2.AttributesParserTest.cs" />
-    <Compile Include="Parser\UnitParser2.CommentParserTest.cs" />
+    <Compile Include="Parser\UnitParser2_AttributesParserTest.cs" />
+    <Compile Include="Parser\UnitParser2_CommentParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

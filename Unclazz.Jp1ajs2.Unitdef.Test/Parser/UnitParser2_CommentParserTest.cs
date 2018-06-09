@@ -6,8 +6,8 @@ using Unclazz.Parsec;
 namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
 {
     [TestFixture]
-	public class UnitParser2_CommentParserTest
-	{
+    public class UnitParser2_CommentParserTest
+    {
         [Test]
         public void Parse_Case01()
         {
@@ -65,5 +65,5 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
             // Assert
             Assert.That(r.Successful, Is.False);
         }
-	}
+    }
 }
