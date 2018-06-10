@@ -143,12 +143,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <returns>存在する場合は<c>true</c></returns>
         /// <param name="self"></param>
         /// <param name="paramName">ユニット定義パラメータ名</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="paramName"/>が<c>null</c>の場合</exception>
-        /// <exception cref="InvalidOperationException">条件にマッチする要素が存在しない場合</exception>
-        /// <exception cref="ArgumentException"><paramref name="paramName"/>が空文字列の場合</exception>
         public static bool Any(this NonNullCollection<IParameter> self, string paramName)
         {
-            UnitdefUtil.ArgumentMustNotBeEmpty(paramName, nameof(paramName));
             return self.Any(a => a.Name == paramName);
         }
         /// <summary>
@@ -158,11 +154,8 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <returns>条件にマッチした要素</returns>
         /// <param name="self"></param>
         /// <param name="paramName">ユニット定義パラメータ名</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="paramName"/>が<c>null</c>の場合</exception>
-        /// <exception cref="ArgumentException"><paramref name="paramName"/>が空文字列の場合</exception>
         public static IParameter FirstOrDefault(this NonNullCollection<IParameter> self, string paramName)
         {
-            UnitdefUtil.ArgumentMustNotBeEmpty(paramName, nameof(paramName));
             return self.FirstOrDefault(a => a.Name == paramName);
         }
         /// <summary>
@@ -171,7 +164,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <returns>削除した要素の数</returns>
         /// <param name="self"></param>
         /// <param name="predicate">削除をする条件</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="predicate"/>が<c>null</c>の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
         public static int RemoveAll(this NonNullCollection<IParameter> self, Func<IParameter,bool> predicate)
         {
@@ -192,22 +184,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <returns>削除した要素の数</returns>
         /// <param name="self"></param>
         /// <param name="paramName">削除をする要素の名前</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="paramName"/>が<c>null</c>の場合</exception>
-        /// <exception cref="ArgumentException"><paramref name="paramName"/>が空文字列の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
         public static int RemoveAll(this NonNullCollection<IParameter> self, string paramName)
         {
-            UnitdefUtil.ArgumentMustNotBeEmpty(paramName, nameof(paramName));
-            var count = 0;
-            for (var i = self.Count - 1; 0 <= i; i--)
-            {
-                if (self[i].Name == paramName)
-                {
-                    self.RemoveAt(i);
-                    count++;
-                }
-            }
-            return count;
+            return self.RemoveAll(x => x.Name == paramName);
         }
         /// <summary>
         /// 指定されたユニット定義パラメータで同名の既存のパラメータを置き換え、影響を被った既存の要素数を返します。
@@ -215,18 +195,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <returns>置き換えされた既存の要素の数</returns>
         /// <param name="self"></param>
         /// <param name="newParams">新しいパラメータ</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="newParams"/>が<c>null</c>の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
         public static int ReplaceAll(this NonNullCollection<IParameter> self, params IParameter[] newParams)
         {
-            var paramNames = newParams.Select(p => p.Name).Distinct().ToArray();
-            Func<IParameter, bool> predicate = p => paramNames.Contains(p.Name);
-            var removed = self.RemoveAll(predicate);
-            foreach (var newParam in newParams)
-            {
-                self.Add(newParam);
-            }
-            return removed;
+            return self.ReplaceAll((IEnumerable<IParameter>)newParams);
         }
         /// <summary>
         /// 指定されたユニット定義パラメータで同名の既存のパラメータを置き換え、影響を被った既存の要素数を返します。
@@ -234,7 +206,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <returns>置き換えされた既存の要素の数</returns>
         /// <param name="self"></param>
         /// <param name="newParams">新しいパラメータ</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="newParams"/>が<c>null</c>の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
         public static int ReplaceAll(this NonNullCollection<IParameter> self, IEnumerable<IParameter> newParams)
         {
