@@ -124,7 +124,7 @@ namespace Test.Unclazz.Jp1ajs2.Unitdef
             // Act
             // Assert
             Assert.That(() => {
-                c0.RemoveAll("foo");
+                c0.RemoveAll("g");
 
             }, Throws.InstanceOf<NotSupportedException>());
             Assert.That(() => {
@@ -215,8 +215,8 @@ namespace Test.Unclazz.Jp1ajs2.Unitdef
             }.ToList());
 
             // Act
-            c0.RemoveAll("foo");
             c0.RemoveAll(x => x.Name == "bar");
+            c0.RemoveAll("g");
 
             // Assert
             Assert.That(c0.Count, Is.EqualTo(0));
