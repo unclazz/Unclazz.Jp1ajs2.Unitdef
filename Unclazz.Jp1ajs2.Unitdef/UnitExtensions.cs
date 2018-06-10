@@ -129,7 +129,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <returns>削除した要素の数</returns>
         /// <param name="self"></param>
         /// <param name="predicate">削除をする条件</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="predicate"/>が<c>null</c>の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
         public static int RemoveAll(this NonNullCollection<IUnit> self, Func<IUnit, bool> predicate)
         {
@@ -172,7 +171,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <returns>置き換えされた既存の要素の数</returns>
         /// <param name="self"></param>
         /// <param name="newUnits">新しいユニット</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="newUnits"/>が<c>null</c>の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
         public static int ReplaceAll(this NonNullCollection<IUnit> self, params IUnit[] newUnits)
         {
@@ -184,7 +182,6 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <returns>置き換えされた既存の要素の数</returns>
         /// <param name="self"></param>
         /// <param name="newUnits">新しいユニット</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="newUnits"/>が<c>null</c>の場合</exception>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
         public static int ReplaceAll(this NonNullCollection<IUnit> self, IEnumerable<IUnit> newUnits)
         {
