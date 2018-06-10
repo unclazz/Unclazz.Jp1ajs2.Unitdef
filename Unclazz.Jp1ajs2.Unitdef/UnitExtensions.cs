@@ -62,46 +62,66 @@ namespace Unclazz.Jp1ajs2.Unitdef
         }
 
         /// <summary>
-        /// 名前が一致するユニットが存在するかどうかを確認します。
+        /// 条件にマッチするユニットが存在するかどうかを確認します。
         /// </summary>
         /// <returns>存在する場合は<c>true</c></returns>
         /// <param name="self"></param>
-        /// <param name="unitName">ユニット名</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="unitName"/>が<c>null</c>の場合</exception>
-        /// <exception cref="InvalidOperationException">条件にマッチする要素が存在しない場合</exception>
-        /// <exception cref="ArgumentException"><paramref name="unitName"/>が空文字列の場合</exception>
-        public static bool Any(this NonNullCollection<IUnit> self, string unitName)
+        /// <param name="type">ユニット種別</param>
+        public static bool Any(this NonNullCollection<IUnit> self, UnitType type)
         {
-            UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
-            return self.Any(a => a.Name == unitName);
+            return self.Any(x => x.Type == type);
         }
         /// <summary>
-        /// 名前が一致する最初のユニットを返します。
+        /// 条件にマッチするユニットが存在するかどうかを確認します。
+        /// </summary>
+        /// <returns>存在する場合は<c>true</c></returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static bool Any(this NonNullCollection<IUnit> self, string type)
+        {
+            return self.Any(UnitType.FromName(type));
+        }
+        /// <summary>
+        /// 条件にマッチする最初のユニットを返します。
         /// </summary>
         /// <returns>条件にマッチした要素</returns>
         /// <param name="self"></param>
-        /// <param name="unitName">ユニット名</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="unitName"/>が<c>null</c>の場合</exception>
-        /// <exception cref="InvalidOperationException">条件にマッチする要素が存在しない場合</exception>
-        /// <exception cref="ArgumentException"><paramref name="unitName"/>が空文字列の場合</exception>
-        public static IUnit First(this NonNullCollection<IUnit> self, string unitName)
+        /// <param name="type">ユニット種別</param>
+        public static IUnit First(this NonNullCollection<IUnit> self, UnitType type)
         {
-            UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
-            return self.First(a => a.Name == unitName);
+            return self.First(a => a.Type == type);
         }
         /// <summary>
-        /// 名前が一致する最初のユニットを返します。
+        /// 条件にマッチする最初のユニットを返します。
+        /// </summary>
+        /// <returns>条件にマッチした要素</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IUnit First(this NonNullCollection<IUnit> self, string type)
+        {
+            return self.First(UnitType.FromName(type));
+        }
+        /// <summary>
+        /// 条件にマッチする最初のユニットを返します。
         /// 条件にマッチする要素がない場合は<c>null</c>を返します。
         /// </summary>
         /// <returns>条件にマッチした要素</returns>
         /// <param name="self"></param>
-        /// <param name="unitName">ユニット名</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="unitName"/>が<c>null</c>の場合</exception>
-        /// <exception cref="ArgumentException"><paramref name="unitName"/>が空文字列の場合</exception>
-        public static IUnit FirstOrDefault(this NonNullCollection<IUnit> self, string unitName)
+        /// <param name="type">ユニット種別</param>
+        public static IUnit FirstOrDefault(this NonNullCollection<IUnit> self, UnitType type)
         {
-            UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
-            return self.FirstOrDefault(a => a.Name == unitName);
+            return self.FirstOrDefault(a => a.Type == type);
+        }
+        /// <summary>
+        /// 条件にマッチする最初のユニットを返します。
+        /// 条件にマッチする要素がない場合は<c>null</c>を返します。
+        /// </summary>
+        /// <returns>条件にマッチした要素</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IUnit FirstOrDefault(this NonNullCollection<IUnit> self, string type)
+        {
+            return self.FirstOrDefault(UnitType.FromName(type));
         }
         /// <summary>
         /// <see cref="Func{T, TResult}"/>で示された条件にマッチする要素をすべて削除しその要素数を返します。
@@ -125,27 +145,26 @@ namespace Unclazz.Jp1ajs2.Unitdef
             return count;
         }
         /// <summary>
-        /// 名前が一致する要素をすべて削除しその要素数を返します。
+        /// 条件にマッチする要素をすべて削除しその要素数を返します。
         /// </summary>
         /// <returns>削除した要素の数</returns>
         /// <param name="self"></param>
-        /// <param name="unitName">削除をする要素の名前</param>
-        /// <exception cref="ArgumentNullException"><paramref name="self"/>もしくは<paramref name="unitName"/>が<c>null</c>の場合</exception>
-        /// <exception cref="ArgumentException"><paramref name="unitName"/>が空文字列の場合</exception>
+        /// <param name="type">ユニット種別</param>
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
-        public static int RemoveAll(this NonNullCollection<IUnit> self, string unitName)
+        public static int RemoveAll(this NonNullCollection<IUnit> self, UnitType type)
         {
-            UnitdefUtil.ArgumentMustNotBeEmpty(unitName, nameof(unitName));
-            var count = 0;
-            for (var i = self.Count - 1; 0 <= i; i--)
-            {
-                if (self[i].Name == unitName)
-                {
-                    self.RemoveAt(i);
-                    count++;
-                }
-            }
-            return count;
+            return self.RemoveAll(x => x.Type == type);
+        }
+        /// <summary>
+        /// 条件にマッチする要素をすべて削除しその要素数を返します。
+        /// </summary>
+        /// <returns>削除した要素の数</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
+        public static int RemoveAll(this NonNullCollection<IUnit> self, string type)
+        {
+            return self.RemoveAll(UnitType.FromName(type));
         }
         /// <summary>
         /// 指定されたユニットで同名の既存のユニットを置き換え、影響を被った既存の要素数を返します。
@@ -157,14 +176,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <exception cref="NotSupportedException">コレクションがイミュータブルな場合</exception>
         public static int ReplaceAll(this NonNullCollection<IUnit> self, params IUnit[] newUnits)
         {
-            var unitNames = newUnits.Select(p => p.Name).Distinct().ToArray();
-            Func<IUnit, bool> predicate = p => unitNames.Contains(p.Name);
-            var removed = self.RemoveAll(predicate);
-            foreach (var newParam in newUnits)
-            {
-                self.Add(newParam);
-            }
-            return removed;
+            return self.ReplaceAll((IEnumerable<IUnit>)newUnits);
         }
         /// <summary>
         /// 指定されたユニットで同名の既存のユニットを置き換え、影響を被った既存の要素数を返します。
@@ -353,7 +365,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> Children(this IUnit self, UnitType type)
         {
-            return self.SubUnits.Where(u => u.Type == type);
+            return self.Children(u => u.Type == type);
         }
         /// <summary>
         /// このユニットの子ユニットを探索して返します。
@@ -382,7 +394,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="predicate">条件判定を行う関数</param>
         public static IEnumerable<IUnit> ItSelfAndChildren(this IUnit self, Func<IUnit, bool> predicate)
         {
-            return new[] { self }.Concat(self.SubUnits).Where(predicate);
+            return new[] { self }.Concat(self.SubUnits.Where(predicate));
         }
         /// <summary>
         /// このユニットおよびこのユニットの子ユニットを探索して返します。
@@ -392,7 +404,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> ItSelfAndChildren(this IUnit self, UnitType type)
         {
-            return new[] { self }.Concat(self.SubUnits).Where(u => u.Type == type);
+            return self.ItSelfAndChildren(u => u.Type == type);
         }
         /// <summary>
         /// このユニットおよびこのユニットの子ユニットを探索して返します。
@@ -428,7 +440,14 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="predicate">条件判定を行う関数</param>
         public static IEnumerable<IUnit> Descendants(this IUnit self, Func<IUnit,bool> predicate)
         {
-            return self.Descendants().Where(predicate);
+            var stack = new Stack<IUnit>(self.SubUnits);
+
+            while (stack.Any())
+            {
+                var elm = stack.Pop();
+                foreach (var sub in elm.SubUnits.Where(predicate).Reverse()) stack.Push(sub);
+                yield return elm;
+            }
         }
         /// <summary>
         /// このユニットの子孫ユニットを探索して返します。
@@ -438,7 +457,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> Descendants(this IUnit self, UnitType type)
         {
-            return self.Descendants().Where(x => x.Type == type);
+            return self.Descendants(x => x.Type == type);
         }
         /// <summary>
         /// このユニットの子孫ユニットを探索して返します。
@@ -448,8 +467,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> Descendants(this IUnit self, string type)
         {
-            var typeValue = UnitType.FromName(type);
-            return self.Descendants().Where(x => x.Type == typeValue);
+            return self.Descendants(UnitType.FromName(type));
         }
         /// <summary>
         /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
@@ -476,7 +494,15 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="predicate">条件判定を行う関数</param>
         public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self, Func<IUnit, bool> predicate)
         {
-            return self.ItSelfAndDescendants().Where(predicate);
+            var stack = new Stack<IUnit>();
+            stack.Push(self);
+
+            while (stack.Any())
+            {
+                var elm = stack.Pop();
+                foreach (var sub in elm.SubUnits.Where(predicate).Reverse()) stack.Push(sub);
+                yield return elm;
+            }
         }
         /// <summary>
         /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
@@ -486,7 +512,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self, UnitType type)
         {
-            return self.ItSelfAndDescendants().Where(x => x.Type == type);
+            return self.ItSelfAndDescendants(x => x.Type == type);
         }
         /// <summary>
         /// このユニットおよびこのユニットの子孫ユニットを探索して返します。
@@ -496,8 +522,85 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="type">ユニット種別</param>
         public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self, string type)
         {
-            var typeValue = UnitType.FromName(type);
-            return self.ItSelfAndDescendants().Where(x => x.Type == typeValue);
+            return self.ItSelfAndDescendants(UnitType.FromName(type));
+        }
+        /// <summary>
+        /// このユニット群の子ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        public static IEnumerable<IUnit> TheirChildren(this IEnumerable<IUnit> self)
+        {
+            return self.SelectMany(x => x.SubUnits);
+        }
+        /// <summary>
+        /// このユニット群の子ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="predicate">条件判定を行う関数</param>
+        public static IEnumerable<IUnit> TheirChildren(this IEnumerable<IUnit> self, Func<IUnit, bool> predicate)
+        {
+            return self.SelectMany(x => x.SubUnits.Where(predicate));
+        }
+        /// <summary>
+        /// このユニット群の子ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IEnumerable<IUnit> TheirChildren(this IEnumerable<IUnit> self, UnitType type)
+        {
+            return self.TheirChildren(x => x.Type == type);
+        }
+        /// <summary>
+        /// このユニット群の子ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IEnumerable<IUnit> TheirChildren(this IEnumerable<IUnit> self, string type)
+        {
+            return self.TheirChildren(UnitType.FromName(type));
+        }
+        /// <summary>
+        /// このユニット群の子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        public static IEnumerable<IUnit> TheirDescendants(this IEnumerable<IUnit> self)
+        {
+            return self.SelectMany(x => x.Descendants());
+        }
+        /// <summary>
+        /// このユニット群の子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="predicate">条件判定を行う関数</param>
+        public static IEnumerable<IUnit> TheirDescendants(this IEnumerable<IUnit> self, Func<IUnit, bool> predicate)
+        {
+            return self.SelectMany(x => x.Descendants(predicate));
+        }
+        /// <summary>
+        /// このユニット群の子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IEnumerable<IUnit> TheirDescendants(this IEnumerable<IUnit> self, UnitType type)
+        {
+            return self.TheirDescendants(x => x.Type == type);
+        }
+        /// <summary>
+        /// このユニット群の子孫ユニットを探索して返します。
+        /// </summary>
+        /// <returns>子孫ユニットのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="type">ユニット種別</param>
+        public static IEnumerable<IUnit> TheirDescendants(this IEnumerable<IUnit> self, string type)
+        {
+            return self.TheirDescendants(UnitType.FromName(type));
         }
         /// <summary>
         /// ユニットのシーケンスに対してユニット名によるフィルタリングを行います。
