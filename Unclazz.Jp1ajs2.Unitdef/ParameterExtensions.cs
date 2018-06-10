@@ -247,5 +247,34 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
             return removed;
         }
+        /// <summary>
+        /// このユニット群のユニット定義パラメータを検索して返します。
+        /// </summary>
+        /// <returns>ユニット定義パラメータのシーケンス</returns>
+        /// <param name="self"></param>
+        public static IEnumerable<IParameter> TheirParameters(this IEnumerable<IUnit> self)
+        {
+            return self.SelectMany(x => x.Parameters);
+        }
+        /// <summary>
+        /// このユニット群のユニット定義パラメータを検索して返します。
+        /// </summary>
+        /// <returns>ユニット定義パラメータのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="predicate">条件判定を行う関数</param>
+        public static IEnumerable<IParameter> TheirParameters(this IEnumerable<IUnit> self, Func<IParameter, bool> predicate)
+        {
+            return self.SelectMany(x => x.Parameters.Where(predicate));
+        }
+        /// <summary>
+        /// このユニット群のユニット定義パラメータを検索して返します。
+        /// </summary>
+        /// <returns>ユニット定義パラメータのシーケンス</returns>
+        /// <param name="self"></param>
+        /// <param name="paramName">ユニット定義パラメータ名</param>
+        public static IEnumerable<IParameter> TheirParameters(this IEnumerable<IUnit> self, string paramName)
+        {
+            return self.TheirParameters(x => x.Name == paramName);
+        }
     }
 }
