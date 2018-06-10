@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
+using Unclazz.Jp1ajs2.Unitdef;
 
-namespace Unclazz.Jp1ajs2.Unitdef.Test
+namespace Test.Unclazz.Jp1ajs2.Unitdef
 {
     [TestFixture]
     public class MutableUnitTest

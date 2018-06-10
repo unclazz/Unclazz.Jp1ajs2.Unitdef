@@ -1,7 +1,7 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using Unclazz.Jp1ajs2.Unitdef;
 
-namespace Unclazz.Jp1ajs2.Unitdef.Test
+namespace Test.Unclazz.Jp1ajs2.Unitdef
 {
     [TestFixture]
     public class MutableTupleTest
@@ -17,7 +17,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
 
             // Act
             // Assert
-            Assert.That(() => immutable2.Add("bar"), Throws.InstanceOf<NotSupportedException>());
+            Assert.That(() => immutable2.Add("bar"), Throws.InstanceOf<System.NotSupportedException>());
             mutable1.Add("baz");
             Assert.That(mutable1.Count, Is.EqualTo(2));
         }
@@ -50,7 +50,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             Assert.That(mutable1.Count, Is.EqualTo(1));
             Assert.That(mutable1.Values[0], Is.EqualTo("hello"));
             Assert.That(mutable2.Count, Is.EqualTo(0));
-            Assert.That(() => mutable2.Values[0], Throws.InstanceOf<ArgumentOutOfRangeException>());
+            Assert.That(() => mutable2.Values[0], Throws.InstanceOf<System.ArgumentOutOfRangeException>());
         }
         [Test]
         public void Add_AddsNewEntryOnTuple()

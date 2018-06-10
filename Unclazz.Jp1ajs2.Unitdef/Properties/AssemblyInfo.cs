@@ -35,4 +35,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.7.0.0")]
 [assembly: AssemblyFileVersion("1.7.0.0")]
 
-[assembly: InternalsVisibleTo("Unclazz.Jp1ajs2.Unitdef.Test")]
+[assembly: InternalsVisibleTo("Test.Unclazz.Jp1ajs2.Unitdef")]

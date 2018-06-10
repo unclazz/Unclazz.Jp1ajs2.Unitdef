@@ -1,12 +1,9 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Unclazz.Jp1ajs2.Unitdef;
 
-namespace Unclazz.Jp1ajs2.Unitdef.Test
+namespace Test.Unclazz.Jp1ajs2.Unitdef
 {
     [TestFixture]
     public class TupleTest
@@ -108,7 +105,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             // Act
 
             // Assert
-            Assert.Throws<NullReferenceException>(() =>
+            Assert.Throws<System.NullReferenceException>(() =>
             {
                 Tuple.FromCollection(new ITupleEntry[] { TupleEntry.OfValue("v0"), null }.ToList());
             });

@@ -1,12 +1,8 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Unclazz.Jp1ajs2.Unitdef;
 
-namespace Unclazz.Jp1ajs2.Unitdef.Test
+namespace Test.Unclazz.Jp1ajs2.Unitdef
 {
     [TestFixture]
     public class TupleParameterValueTest
@@ -35,7 +31,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test
             // Act
 
             // Assert
-            Assert.Throws<ArgumentNullException>(() => {
+            Assert.Throws<System.ArgumentNullException>(() => {
                 TupleParameterValue.OfValue(null);
             });
         }

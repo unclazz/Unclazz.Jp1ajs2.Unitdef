@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Unclazz.Jp1ajs2.Unitdef;
 using Unclazz.Jp1ajs2.Unitdef.Parser;
 
-namespace Unclazz.Jp1ajs2.Unitdef.Sample
+namespace Sample.Unclazz.Jp1ajs2.Unitdef
 {
     class Program
     {
