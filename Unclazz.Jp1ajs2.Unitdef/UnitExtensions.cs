@@ -391,7 +391,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="predicate">条件判定を行う関数</param>
         public static IEnumerable<IUnit> ItSelfAndChildren(this IUnit self, Func<IUnit, bool> predicate)
         {
-            return new[] { self }.Concat(self.SubUnits.Where(predicate));
+            return self.ItSelfAndChildren().Where(predicate);
         }
         /// <summary>
         /// このユニットおよびこのユニットの子ユニットを探索して返します。
@@ -420,12 +420,12 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="self"></param>
         public static IEnumerable<IUnit> Descendants(this IUnit self)
         {
-            var stack = new Stack<IUnit>(self.SubUnits);
+            var queue = new Queue<IUnit>(self.SubUnits);
 
-            while (stack.Any())
+            while (queue.Any())
             {
-                var elm = stack.Pop();
-                foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
+                var elm = queue.Dequeue();
+                foreach (var sub in elm.SubUnits) queue.Enqueue(sub);
                 yield return elm;
             }
         }
@@ -437,14 +437,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="predicate">条件判定を行う関数</param>
         public static IEnumerable<IUnit> Descendants(this IUnit self, Func<IUnit,bool> predicate)
         {
-            var stack = new Stack<IUnit>(self.SubUnits);
-
-            while (stack.Any())
-            {
-                var elm = stack.Pop();
-                foreach (var sub in elm.SubUnits.Where(predicate).Reverse()) stack.Push(sub);
-                yield return elm;
-            }
+            return self.Descendants().Where(predicate);
         }
         /// <summary>
         /// このユニットの子孫ユニットを探索して返します。
@@ -473,13 +466,13 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="self"></param>
         public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self)
         {
-            var stack = new Stack<IUnit>();
-            stack.Push(self);
+            var queue = new Queue<IUnit>();
+            queue.Enqueue(self);
 
-            while (stack.Any())
+            while (queue.Any())
             {
-                var elm = stack.Pop();
-                foreach (var sub in elm.SubUnits.Reverse()) stack.Push(sub);
+                var elm = queue.Dequeue();
+                foreach (var sub in elm.SubUnits) queue.Enqueue(sub);
                 yield return elm;
             }
         }
@@ -491,15 +484,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <param name="predicate">条件判定を行う関数</param>
         public static IEnumerable<IUnit> ItSelfAndDescendants(this IUnit self, Func<IUnit, bool> predicate)
         {
-            var stack = new Stack<IUnit>();
-            stack.Push(self);
-
-            while (stack.Any())
-            {
-                var elm = stack.Pop();
-                foreach (var sub in elm.SubUnits.Where(predicate).Reverse()) stack.Push(sub);
-                yield return elm;
-            }
+            return self.ItSelfAndDescendants().Where(predicate);
         }
         /// <summary>
         /// このユニットおよびこのユニットの子孫ユニットを探索して返します。

@@ -1,0 +1,84 @@
+﻿unit=XXXX0000,,,;
+{
+    ty=g;
+    cm="root unit";
+    test=foo0000,bar0000,baz0000;
+    unit=XXXX1000,,,;
+    {
+        ty=g;
+        cm="sub unit";
+        test=foo1000,bar1000,baz1000;
+        unit=XXXX1100,,,;
+        {
+            ty=g;
+            cm="sub sub unit";
+            test=foo1100,bar1100,baz1100;
+            unit=XXXX1110,,,;
+            {
+                ty=pj;
+                cm="sub sub sub unit";
+                test=foo1110,bar1110,baz1110;
+            }
+            unit=XXXX1120,,,;
+            {
+                ty=mlsj;
+                cm="sub sub sub unit";
+                test=foo1120,bar1120,baz1120;
+            }
+        }
+        unit=XXXX1200,,,;
+        {
+            ty=pj;
+            cm="sub sub unit";
+            test=foo1200,bar1200,baz1200;
+            sc="foo.exe bar baz";
+        }
+        unit=XXXX1300,,,;
+        {
+            ty=pj;
+            cm="sub sub unit";
+            test=foo1300,bar1300,baz1300;
+            sc="foo.exe";
+            prm="bar baz";
+        }
+    }
+    unit=XXXX2000,,,;
+    {
+        ty=n;
+        cm="sub unit";
+        test=foo2000,bar2000,baz2000;
+        unit=XXXX2100,,,;
+        {
+            ty=n;
+            cm="sub sub unit";
+            test=foo2100,bar2100,baz2100;
+            unit=XXXX2110,,,;
+            {
+                ty=pj;
+                cm="sub sub sub unit";
+                test=foo2110,bar2110,baz2110;
+            }
+            unit=XXXX2120,,,;
+            {
+                ty=mlsj;
+                cm="sub sub sub unit";
+                test=foo2120,bar2120,baz2120;
+            }
+        }
+        unit=XXXX2200,,,;
+        {
+            ty=pj;
+            cm="sub sub unit";
+            test=foo2200,bar2200,baz2200;
+            sc="foo.exe bar baz";
+        }
+        unit=XXXX2300,,,;
+        {
+            ty=pj;
+            cm="sub sub unit";
+            test=foo2300,bar2300,baz2300;
+            sc="foo.exe";
+            prm="bar baz";
+        }
+    }
+}

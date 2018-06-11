@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using NUnit.Framework;
 using Unclazz.Jp1ajs2.Unitdef;
 
@@ -33,6 +34,19 @@ namespace Test.Unclazz.Jp1ajs2.Unitdef
                 "unit=XXXX1000,,,;{ty=pj;sc=xxx;}" +
                 "unit=XXXX2000,,,;{ty=j;sc=xxx;}" +
                 "}");
+
+        static IUnit immutableUnit1;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            var path = Path.Combine(NUnit.Framework.TestContext.
+                       CurrentContext.TestDirectory, "TestUnits.txt");
+            using (var s = new FileStream(path, FileMode.Open))
+            {
+                immutableUnit1 = Unit.FromStream(s, Encoding.UTF8);
+            }
+        }
 
         [Test]
         public void AsMutable_ReturnsMutableUnit()
@@ -167,6 +181,190 @@ namespace Test.Unclazz.Jp1ajs2.Unitdef
             u.WriteTo(w, new FormatOptions { SoftTab = true, TabSize = 2 });
 
             Assert.That(w.ToString(), Is.EqualTo(unitdef0.Replace("\t", "  ")));
+        }
+
+        [Test]
+        public void Children_Case01_Matched2()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.Children().Select(x => x.Name).ToArray();
+
+            Assert.That(childrenNames.Length, Is.EqualTo(2));
+            Assert.That(childrenNames[0], Is.EqualTo("XXXX1000"));
+            Assert.That(childrenNames[1], Is.EqualTo("XXXX2000"));
+        }
+        [Test]
+        public void Children_Case02_Matched1()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.Children(UnitType.Jobnet).Select(x => x.Name).ToArray();
+
+            Assert.That(childrenNames.Length, Is.EqualTo(1));
+            Assert.That(childrenNames[0], Is.EqualTo("XXXX2000"));
+        }
+        [Test]
+        public void Children_Case03_Matched0()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.Children(UnitType.PcJob).Select(x => x.Name).ToArray();
+
+            Assert.That(childrenNames.Length, Is.EqualTo(0));
+        }
+        [Test]
+        public void ItSelfAndChildren_Case01_Matched3()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.ItSelfAndChildren().Select(x => x.Name).ToArray();
+
+            var i = 0;
+
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX0000"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1000"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2000"));
+
+            Assert.That(childrenNames.Length, Is.EqualTo(i));
+        }
+        [Test]
+        public void ItSelfAndChildren_Case02_Matched1()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.ItSelfAndChildren(UnitType.Jobnet).Select(x => x.Name).ToArray();
+
+            Assert.That(childrenNames.Length, Is.EqualTo(1));
+            Assert.That(childrenNames[0], Is.EqualTo("XXXX2000"));
+        }
+        [Test]
+        public void ItSelfAndChildren_Case03_Matched0()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.ItSelfAndChildren(UnitType.MailSendJob).Select(x => x.Name).ToArray();
+
+            Assert.That(childrenNames.Length, Is.EqualTo(0));
+        }
+        [Test]
+        public void Descendants_Case01_Matched2()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.Descendants().Select(x => x.Name).ToArray();
+
+            var i = 0;
+
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1000"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2000"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1100"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1200"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1300"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2100"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2200"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2300"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1110"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1120"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2110"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2120"));
+
+            Assert.That(childrenNames.Length, Is.EqualTo(i));
+        }
+        [Test]
+        public void Descendants_Case02_Matched6()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.Descendants(UnitType.PcJob).Select(x => x.Name).ToArray();
+
+            var i = 0;
+
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1200"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1300"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2200"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2300"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1110"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2110"));
+
+            Assert.That(childrenNames.Length, Is.EqualTo(i));
+        }
+        [Test]
+        public void Descendants_Case03_Matched0()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.Descendants(UnitType.FileWatchJob).Select(x => x.Name).ToArray();
+
+            Assert.That(childrenNames.Length, Is.EqualTo(0));
+        }
+        [Test]
+        public void TheirChildren_Case01_Matched6()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.Children().TheirChildren().Select(x => x.Name).ToArray();
+
+            var i = 0;
+
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1100"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1200"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1300"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2100"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2200"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2300"));
+
+            Assert.That(childrenNames.Length, Is.EqualTo(i));
+        }
+        [Test]
+        public void TheirChildren_Case02_Matched3()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.Children(UnitType.Jobnet).TheirChildren().Select(x => x.Name).ToArray();
+
+            var i = 0;
+
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2100"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2200"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2300"));
+
+            Assert.That(childrenNames.Length, Is.EqualTo(i));
+        }
+        [Test]
+        public void TheirChildren_Case03_Matched0()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.Children(UnitType.PcJob).TheirChildren().Select(x => x.Name).ToArray();
+
+            Assert.That(childrenNames.Length, Is.EqualTo(0));
+        }
+        [Test]
+        public void TheirDescendants_Case01_Matched2()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.Children().TheirDescendants().Select(x => x.Name).ToArray();
+
+            var i = 0;
+
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1100"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1200"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1300"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1110"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1120"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2100"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2200"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2300"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2110"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2120"));
+
+            Assert.That(childrenNames.Length, Is.EqualTo(i));
+        }
+        [Test]
+        public void TheirDescendants_Case02_Matched6()
+        {
+            var root = immutableUnit1;
+            var childrenNames = root.Children().TheirDescendants(UnitType.PcJob).Select(x => x.Name).ToArray();
+
+            var i = 0;
+
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1200"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1300"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX1110"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2200"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2300"));
+            Assert.That(childrenNames[i++], Is.EqualTo("XXXX2110"));
+
+            Assert.That(childrenNames.Length, Is.EqualTo(i));
         }
     }
 }
