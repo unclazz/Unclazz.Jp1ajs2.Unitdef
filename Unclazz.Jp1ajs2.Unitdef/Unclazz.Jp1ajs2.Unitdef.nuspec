@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Unclazz.Jp1ajs2.Unitdef</id><!--id>$id$</id-->
-    <version>1.7.3.0</version><!--version>$version$</version-->
+    <version>1.7.4.0</version><!--version>$version$</version-->
     <!--title>$title$</title-->
     <authors>unclazz.org</authors><!--authors>$author$</authors-->
     <!--owners>$author$</owners-->
@@ -15,7 +15,7 @@
     <copyright>Copyright 2018</copyright>
     <!--tags>Tag1 Tag2</tags-->
     <dependencies>
-      <dependency id="Unclazz.Parsec" version="1.4.0.0" />
+      <dependency id="Unclazz.Parsec" version="1.4.1.0" />
     </dependencies>
   </metadata>
   <files>
@@ -25,5 +25,7 @@
     <file src="lib/net45/Unclazz.Jp1ajs2.Unitdef.xml" target="lib/net45"/>
     <file src="lib/net46/Unclazz.Jp1ajs2.Unitdef.dll" target="lib/net46"/>
     <file src="lib/net46/Unclazz.Jp1ajs2.Unitdef.xml" target="lib/net46"/>
+    <file src="lib/net47/Unclazz.Jp1ajs2.Unitdef.dll" target="lib/net47"/>
+    <file src="lib/net47/Unclazz.Jp1ajs2.Unitdef.xml" target="lib/net47"/>
   </files>
 </package>
