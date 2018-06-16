@@ -11,7 +11,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
     /// </summary>
     public sealed class Tuple : ITuple
     {
-        static readonly UnitParser unitParser = new UnitParser();
+        static readonly TupleParser tupleParser = new TupleParser();
 
         /// <summary>
         /// 与えられたエントリーのコレクションからタプルのインスタンスを生成して返します。
@@ -44,7 +44,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// <exception cref="ArgumentException">パースに失敗した場合</exception>
         public static Tuple Parse(string src)
         {
-            return unitParser.ParseTuple(Input.FromString(src)).AsImmutable();
+            return tupleParser.Parse(Input.FromString(src)).AsImmutable();
         }
 
         readonly ITupleEntry[] _list;

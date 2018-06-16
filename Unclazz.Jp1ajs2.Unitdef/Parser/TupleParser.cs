@@ -5,10 +5,6 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
 {
     sealed class TupleParser
     {
-        private static readonly char WhiteSpace = ' ';
-        private static readonly string BlockCommentStart = "/*";
-        private static readonly string BlockCommentEnd = "*/";
-
         private void Check(Input input, char expected)
         {
             char actual = input.Current;

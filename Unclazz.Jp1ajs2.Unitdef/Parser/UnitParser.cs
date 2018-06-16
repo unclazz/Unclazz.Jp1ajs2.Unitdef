@@ -12,6 +12,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
         private static readonly char WhiteSpace = ' ';
         private static readonly string BlockCommentStart = "/*";
         private static readonly string BlockCommentEnd = "*/";
+        static readonly TupleParser tupleParser = new TupleParser();
 
         /// <summary>
         /// ユニット定義をパースします。
@@ -48,7 +49,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
                 }
             }
 
-            Attributes attributes = Attributes.OfValues(attrArray[0], 
+            Attributes attributes = Attributes.OfValues(attrArray[0],
                 attrArray[1], attrArray[2], attrArray[3]);
             FullName fqn = parent == null ? FullName.
                 FromFragments(attrArray[0]) : parent.GetSubUnitName(attrArray[0]);
@@ -73,31 +74,36 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             Unit.Builder builder = Unit.Builder.Create().FullName(fqn).Attributes(attributes);
 
             // "unit"で始まらないならそれはパラメータ
-			if (!input.RestOfLine.StartsWith("unit", StringComparison.Ordinal))
+            if (!input.RestOfLine.StartsWith("unit", StringComparison.Ordinal))
             {
-                while (!input.EndOfFile) {
-					// パラメータを読み取る
-					builder.AddParameter(ParseParameter(input));
+                while (!input.EndOfFile)
+                {
+                    // パラメータを読み取る
+                    builder.AddParameter(ParseParameter(input));
 
                     // パラメータ読み取り後にもかかわらず現在文字が';'でないなら構文エラー
                     Check(input, ';');
-					input.GoNext();
+                    input.GoNext();
                     SkipWhitespace(input);
 
                     // '}'が登場したらそこでユニット定義は終わり
-                    if (input.Current == '}') {
+                    if (input.Current == '}')
+                    {
                         input.GoNext();
                         return builder.Build();
 
                         // "unit"と続くならパラメータの定義は終わりサブユニットの定義に移る
-					}else if (input.RestOfLine.StartsWith("unit", StringComparison.Ordinal)){
+                    }
+                    else if (input.RestOfLine.StartsWith("unit", StringComparison.Ordinal))
+                    {
                         break;
                     }
                 }
             }
 
             // "unit"で始まるならそれはサブユニット
-            while (input.RestOfLine.StartsWith("unit", StringComparison.Ordinal)) {
+            while (input.RestOfLine.StartsWith("unit", StringComparison.Ordinal))
+            {
                 builder.AddSubUnit(ParseUnit(input, fqn));
                 SkipWhitespace(input);
             }
@@ -110,7 +116,8 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
         private void Check(Input input, char expected)
         {
             char actual = input.Current;
-            if (actual != expected) {
+            if (actual != expected)
+            {
                 throw new ParseException(input, string.Format
                     ("Syntax error. \"{0}\" expected but \"{1}\" found.", expected, actual));
             }
@@ -119,20 +126,26 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
         private void SkipWhitespace(Input input)
         {
             SkipComment(input);
-            while (!input.EndOfFile) {
-                if (input.Current <= WhiteSpace) {
+            while (!input.EndOfFile)
+            {
+                if (input.Current <= WhiteSpace)
+                {
                     input.GoNext();
-                } else {
+                }
+                else
+                {
                     string rest = input.RestOfLine;
                     if (rest.StartsWith(BlockCommentStart, StringComparison.Ordinal))
                     {
                         Next(input, BlockCommentStart.Length);
-                        while (!input.EndOfLine) {
-                            if (input.RestOfLine.StartsWith(BlockCommentEnd, StringComparison.Ordinal)) {
+                        while (!input.EndOfLine)
+                        {
+                            if (input.RestOfLine.StartsWith(BlockCommentEnd, StringComparison.Ordinal))
+                            {
                                 Next(input, BlockCommentEnd.Length);
                                 break;
                             }
-						input.GoNext();
+                            input.GoNext();
                         }
                     }
                     else
@@ -149,8 +162,10 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             if (rest.StartsWith(BlockCommentStart, StringComparison.Ordinal))
             {
                 Next(input, BlockCommentStart.Length);
-                while (!input.EndOfFile) {
-                    if (input.RestOfLine.StartsWith(BlockCommentEnd, StringComparison.Ordinal)) {
+                while (!input.EndOfFile)
+                {
+                    if (input.RestOfLine.StartsWith(BlockCommentEnd, StringComparison.Ordinal))
+                    {
                         Next(input, BlockCommentEnd.Length);
                         break;
                     }
@@ -164,34 +179,39 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             if (input.RestOfLine.StartsWith(word, StringComparison.Ordinal))
             {
                 Next(input, word.Length);
-            } else {
+            }
+            else
+            {
                 throw new ParseException(input, string.Format("\"{0}\" not found.", word));
             }
         }
         private void Next(Input input, int times)
         {
-            for (int i = 0; i < times; i++) {
+            for (int i = 0; i < times; i++)
+            {
                 input.GoNext();
             }
         }
         private string ParseAttribute(Input input)
         {
             StringBuilder sb = new StringBuilder();
-            while (!input.EndOfFile) {
+            while (!input.EndOfFile)
+            {
                 char c = input.Current;
                 if (c == ',' || c == ';')
                 {
                     return sb.Length == 0 ? string.Empty : sb.ToString();
                 }
                 sb.Append(c);
-				input.GoNext();
+                input.GoNext();
             }
             throw new ParseException(input, "Syntax error. EOF has been reached while parsing attributes.");
         }
-        private string ParseUntil(Input input, char c0) 
+        private string ParseUntil(Input input, char c0)
         {
             StringBuilder buff = new StringBuilder();
-            while (!input.EndOfFile) {
+            while (!input.EndOfFile)
+            {
                 char current = input.Current;
                 if (c0 == current)
                 {
@@ -215,13 +235,15 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             // ビルダーを初期化
             var builder = Parameter.Builder.Create().Name(name);
             // パラメータの終端文字';'が登場するまで繰り返し
-            while (input.Current != ';') {
+            while (input.Current != ';')
+            {
                 // '='や','を読み飛ばして前進
                 input.GoNext();
                 // パラメータ値を読み取っていったんリストに格納
                 builder.AddValue(ParseParamValue(input));
                 // パラメータ値読取り後にもかかわらず現在文字が区切り文字以外であれば構文エラー
-                if (input.Current != ',' && input.Current != ';') {
+                if (input.Current != ',' && input.Current != ';')
+                {
                     throw new ParseException(input, string.Format
                         ("Syntax error. \",\" or \";\" expected but \"{0}\" found.", input.Current));
                 }
@@ -232,22 +254,24 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
         }
         private IParameterValue ParseParamValue(Input input)
         {
-            switch (input.Current) {
+            switch (input.Current)
+            {
                 case '(':
-        			    ITuple t = ParseTuple(input);
+                    ITuple t = tupleParser.Parse(input);
                     return TupleParameterValue.OfValue(t);
-        		    case '"':
-			        string q = ParseQuotedString(input);
+                case '"':
+                    string q = ParseQuotedString(input);
                     return QuotedStringParameterValue.OfValue(q);
                 default:
-			        string s = ParseRawString(input);
+                    string s = ParseRawString(input);
                     return RawStringParameterValue.OfValue(s);
             }
         }
         private string ParseRawString(Input input)
         {
             StringBuilder sb = new StringBuilder();
-            while (!input.EndOfFile) {
+            while (!input.EndOfFile)
+            {
                 char c = input.Current;
                 if (c == ',' || c == ';')
                 {
@@ -261,7 +285,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
                 else
                 {
                     sb.Append(c);
-					input.GoNext();
+                    input.GoNext();
                 }
             }
             return sb.ToString();
@@ -271,51 +295,17 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             StringBuilder buff = new StringBuilder();
             Check(input, '"');
 
-            while (!input.EndOfFile) {
+            while (!input.EndOfFile)
+            {
                 char c1 = input.GoNext();
                 if (c1 == '"')
                 {
-					input.GoNext();
+                    input.GoNext();
                     return buff.ToString();
                 }
                 buff.Append(c1 != '#' ? c1 : input.GoNext());
             }
             throw new ParseException(input, "Syntax error. Unclosed quoted string.");
-        }
-        public ITuple ParseTuple(Input input)
-        {
-            Check(input, '(');
-            input.GoNext();
-            List<ITupleEntry> entries = new List<ITupleEntry>();
-            while (!input.EndOfFile && input.Current != ')') {
-                StringBuilder sb0 = new StringBuilder();
-                StringBuilder sb1 = new StringBuilder();
-                bool hasKey = false;
-
-                while (!input.EndOfFile && (input.Current != ')' && input.Current != ',')) {
-                    if (input.Current == '=') {
-                        hasKey = true;
-						input.GoNext();
-                    }
-                    (hasKey ? sb1 : sb0).Append(input.Current);
-					input.GoNext();
-                }
-                if (hasKey)
-                {
-                    entries.Add(TupleEntry.OfPair(sb0.ToString(), sb1.ToString()));
-                }
-                else
-                {
-                    entries.Add(TupleEntry.OfValue(sb0.ToString()));
-                }
-                if (input.Current == ')') {
-                    break;
-                }
-				input.GoNext();
-            }
-            Check(input, ')');
-			input.GoNext();
-            return Tuple.FromCollection(entries);
         }
     }
 }

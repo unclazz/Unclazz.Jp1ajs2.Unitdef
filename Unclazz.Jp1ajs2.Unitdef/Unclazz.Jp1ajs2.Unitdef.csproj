@@ -72,6 +72,7 @@
     <Compile Include="FormatOptions.cs" />
     <Compile Include="Parameter.Builder.cs" />
     <Compile Include="Unit.Builder.cs" />
+    <Compile Include="Parser\TupleParser.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
