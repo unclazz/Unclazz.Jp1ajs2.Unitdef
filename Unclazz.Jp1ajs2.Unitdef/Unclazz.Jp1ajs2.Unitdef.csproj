@@ -70,6 +70,8 @@
     <Compile Include="ParameterExtensions.cs" />
     <Compile Include="NonNullCollection.cs" />
     <Compile Include="FormatOptions.cs" />
+    <Compile Include="Parameter.Builder.cs" />
+    <Compile Include="Unit.Builder.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

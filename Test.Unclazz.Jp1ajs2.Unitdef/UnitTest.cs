@@ -28,7 +28,7 @@ namespace Test.Unclazz.Jp1ajs2.Unitdef
             "\t}" + crlf +
             "}";
 
-        static readonly IUnit immutableUnit0 = Unit.FromString
+        static readonly IUnit immutableUnit0 = Unit.Parse
                ("unit=XXXX0000,,,;" +
                 "{ty=g;" +
                 "unit=XXXX1000,,,;{ty=pj;sc=xxx;}" +
@@ -44,7 +44,7 @@ namespace Test.Unclazz.Jp1ajs2.Unitdef
                        CurrentContext.TestDirectory, "TestUnits.txt");
             using (var s = new FileStream(path, FileMode.Open))
             {
-                immutableUnit1 = Unit.FromStream(s, Encoding.UTF8);
+                immutableUnit1 = Unit.Parse(s, Encoding.UTF8);
             }
         }
 

@@ -7,7 +7,7 @@ namespace Test.Unclazz.Jp1ajs2.Unitdef
     [TestFixture]
     public class MutableUnitTest
     {
-        static readonly IUnit immutableUnit0 = Unit.FromString
+        static readonly IUnit immutableUnit0 = Unit.Parse
                ("unit=XXXX0000,,,;" +
                 "{ty=g;cm=\"foo\";" +
                 "unit=XXXX1000,,,;{ty=pj;sc=xxx;}" +
