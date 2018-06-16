@@ -5,15 +5,10 @@ using Unclazz.Parsec;
 
 namespace Unclazz.Jp1ajs2.Unitdef.Parser
 {
-    /// <summary>
-    /// 各種データソースから<see cref="IUnit"/>を読み取るパーサークラスです。
-    /// </summary>
-    public partial class UnitParser : Parser<IUnit>
+    public partial class UnitParser2 : Parser<IUnit>
     {
-        /// <summary>
-        /// コンストラクターです。
-        /// </summary>
-        public UnitParser()
+
+        public UnitParser2()
         {
             var sp = new SpacesParser();
             _attrs = sp.Then(new AttributesParser());
@@ -40,11 +35,6 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             }
             return b;
         }
-        /// <summary>
-        /// データソースから<see cref="IUnit"/>を読み取ります。
-        /// </summary>
-        /// <returns>パース結果</returns>
-        /// <param name="src">データソース</param>
         protected override ResultCore<IUnit> DoParse(Reader src)
         {
             if (!src.Context.Data.ContainsKey("nameStack"))

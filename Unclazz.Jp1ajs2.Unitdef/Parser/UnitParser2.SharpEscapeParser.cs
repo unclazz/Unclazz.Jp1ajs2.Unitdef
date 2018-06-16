@@ -2,7 +2,7 @@
 
 namespace Unclazz.Jp1ajs2.Unitdef.Parser
 {
-    public partial class UnitParser
+    public partial class UnitParser2
     {
         internal class SharpEscapeParser : Parser<char>
         {

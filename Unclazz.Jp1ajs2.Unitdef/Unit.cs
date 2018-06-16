@@ -14,7 +14,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
     public sealed partial class Unit : IUnit
     {
 
-        static readonly Parser<IUnit> parser = new UnitParser();
+        static readonly Parser<IUnit> parser = new UnitParser2();
 
         /// <summary>
         /// 文字列からユニット定義を読み取ります。
@@ -25,7 +25,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
         {
             var result = parser.Parse(value ?? throw new ArgumentNullException(nameof(value)));
             if (result.Successful) return result.Capture;
-            throw new ParseException(result);
+            throw new ParseException2(result);
         }
         /// <summary>
         /// ファイルからユニット定義を読み取ります。
@@ -38,7 +38,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             var result = parser.Parse(Reader.From(path ?? throw new ArgumentNullException(nameof(path)),
                                                   enc ?? throw new ArgumentNullException(nameof(enc))));
             if (result.Successful) return result.Capture;
-            throw new ParseException(result);
+            throw new ParseException2(result);
         }
 		/// <summary>
 		/// ストリームからユニット定義を読み取ります。
@@ -51,7 +51,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             var result = parser.Parse(Reader.From(stream ?? throw new ArgumentNullException(nameof(stream)),
                                                   enc ?? throw new ArgumentNullException(nameof(enc))));
             if (result.Successful) return result.Capture;
-            throw new ParseException(result);
+            throw new ParseException2(result);
 		}
 
         Unit(FullName fqn, Attributes attributes, IParameter ty, IParameter cm, 
