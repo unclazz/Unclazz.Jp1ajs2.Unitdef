@@ -70,14 +70,6 @@
     <Compile Include="ParameterExtensions.cs" />
     <Compile Include="NonNullCollection.cs" />
     <Compile Include="FormatOptions.cs" />
-    <Compile Include="Parser\UnitParser2.cs" />
-    <Compile Include="Parser\UnitParser2.AttributesParser.cs" />
-    <Compile Include="Parser\UnitParser2.CommentParser.cs" />
-    <Compile Include="Parser\UnitParser2.SharpEscapeParser.cs" />
-    <Compile Include="Parser\UnitParser2.ParameterValueParser.cs" />
-    <Compile Include="Parser\UnitParser2.TupleParser.cs" />
-    <Compile Include="Parser\UnitParser2.ParameterParser.cs" />
-    <Compile Include="Parser\UnitParser2.SpacesParser.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

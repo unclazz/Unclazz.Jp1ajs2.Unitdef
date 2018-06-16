@@ -111,7 +111,7 @@ namespace Test.Unclazz.Jp1ajs2.Unitdef
             });
         }
 
-        [TestCase("()", 1, "")]
+        [TestCase("()", 0, "")]
         [TestCase("(a)", 1, "a")]
         [TestCase("(a=1)", 1, "1")]
         [TestCase("(a,b,c)", 3, "a")]

@@ -5,7 +5,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
     /// <summary>
     /// パース処理中に発生したエラーを表す例外オブジェクトです。
     /// </summary>
-    public class ParseException : Exception
+    sealed class ParseException : Exception
     {
         /// <summary>
         /// パース処理の入力オブジェクト

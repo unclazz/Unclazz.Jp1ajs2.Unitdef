@@ -53,20 +53,13 @@
     <Compile Include="UnitTest.cs" />
     <Compile Include="FormatOptions.cs" />
     <Compile Include="NonNullCollectionTest.cs" />
-    <Compile Include="Parser\UnitParser2_AttributesParserTest.cs" />
-    <Compile Include="Parser\UnitParser2_CommentParserTest.cs" />
-    <Compile Include="Parser\UnitParser2_ParameterValueParserTest.cs" />
-    <Compile Include="Parser\UnitParser2_TupleParserTest.cs" />
-    <Compile Include="Parser\UnitParser2_SharpEscapeParserTest.cs" />
-    <Compile Include="Parser\UnitParser2_ParameterParserTest.cs" />
-    <Compile Include="Parser\UnitParser2_SpacesParserTest.cs" />
-    <Compile Include="Parser\UnitParser2Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="TestUnits.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="InputTest.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Unclazz.Jp1ajs2.Unitdef\Unclazz.Jp1ajs2.Unitdef.csproj">

@@ -9,7 +9,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
     /// 文字列やファイル入力ストリームをラップします。
     /// EOFに到達するか処理中にIOエラーが発生した場合は自動でリソースを解放します。
     /// </summary>
-    public sealed class Input : IDisposable
+    sealed class Input : IDisposable
     {
         /// <summary>
         /// 文字列から入力オブジェクトのインスタンスを生成します。

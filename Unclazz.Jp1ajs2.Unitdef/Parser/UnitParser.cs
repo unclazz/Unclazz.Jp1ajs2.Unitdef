@@ -7,48 +7,27 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
     /// <summary>
     /// ユニット定義のパーサーです。
     /// </summary>
-    public sealed class UnitParser
+    sealed class UnitParser
     {
-        /// <summary>
-        /// パーサーのインスタンス
-        /// </summary>
-        public static readonly UnitParser Instance = new UnitParser();
         private static readonly char WhiteSpace = ' ';
         private static readonly string BlockCommentStart = "/*";
         private static readonly string BlockCommentEnd = "*/";
-
-        private UnitParser()
-        {
-        }
 
         /// <summary>
         /// ユニット定義をパースします。
         /// </summary>
         /// <param name="input">入力オブジェクト</param>
         /// <returns>パース結果のリスト</returns>
-        public IList<IUnit> Parse(Input input)
+        public IEnumerable<IUnit> Parse(Input input)
         {
-            try
+            while (!input.EndOfFile)
             {
-                List<IUnit> rs = new List<IUnit>();
-                while (!input.EndOfFile)
-                {
-                    SkipWhitespace(input);
-                    rs.Add(ParseUnit(input, null));
-                    SkipWhitespace(input);
-                }
-                return rs;
-            }
-            catch(Exception e)
-            {
-                throw new ParseException(input, "Unexpected error has occurred.", e);
-            }
-            finally
-            {
-                input.Dispose();
+                SkipWhitespace(input);
+                yield return ParseUnit(input, null);
+                SkipWhitespace(input);
             }
         }
-        private IUnit ParseUnit(Input input, FullName parent)
+        public IUnit ParseUnit(Input input, FullName parent)
         {
             // ユニット定義の開始キーワードを読み取る
             SkipWord(input, "unit");
@@ -303,7 +282,7 @@ namespace Unclazz.Jp1ajs2.Unitdef.Parser
             }
             throw new ParseException(input, "Syntax error. Unclosed quoted string.");
         }
-        private ITuple ParseTuple(Input input)
+        public ITuple ParseTuple(Input input)
         {
             Check(input, '(');
             input.GoNext();

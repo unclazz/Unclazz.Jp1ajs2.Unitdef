@@ -102,7 +102,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
             }
         }
 
-        static readonly UnitParser parser = UnitParser.Instance;
+        static readonly UnitParser parser = new UnitParser();
         
 		/// <summary>
 		/// 文字列からユニット定義を読み取ります。
@@ -111,7 +111,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
 		/// <param name="s">ユニット定義を含む文字列</param>
 		public static IUnit FromString(string s)
         {
-            return parser.Parse(Input.FromString(s))[0];
+            using (var src = Input.FromString(s))
+            {
+                return parser.Parse(src).First();
+            }
         }
 		/// <summary>
 		/// ファイルからユニット定義を読み取ります。
@@ -121,7 +124,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
 		/// <param name="enc">エンコーディング</param>
         public static IUnit FromFile(string path, Encoding enc)
         {
-            return parser.Parse(Input.FromFile(path, enc))[0];
+            using (var src = Input.FromFile(path, enc))
+            {
+                return parser.Parse(src).First();
+            }
         }
 		/// <summary>
 		/// ストリームからユニット定義を読み取ります。
@@ -131,7 +137,10 @@ namespace Unclazz.Jp1ajs2.Unitdef
 		/// <param name="enc">エンコーディング</param>
 		public static IUnit FromStream(Stream stream, Encoding enc)
 		{
-			return parser.Parse(Input.FromStream(stream, enc))[0];
+            using (var src = Input.FromStream(stream, enc))
+            {
+                return parser.Parse(src).First();
+            }
 		}
 
         Unit(FullName fqn, Attributes attributes, IParameter ty, IParameter cm, 
