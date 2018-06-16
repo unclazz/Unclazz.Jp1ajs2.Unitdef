@@ -110,5 +110,21 @@ namespace Test.Unclazz.Jp1ajs2.Unitdef
                 Tuple.FromCollection(new ITupleEntry[] { TupleEntry.OfValue("v0"), null }.ToList());
             });
         }
+
+        [TestCase("()", 1, "")]
+        [TestCase("(a)", 1, "a")]
+        [TestCase("(a=1)", 1, "1")]
+        [TestCase("(a,b,c)", 3, "a")]
+        [TestCase("(a=1,b,c)", 3, "1")]
+        public void Parse_ReturnsTupleInstance(string src, int count, string elm0)
+        {
+            // Arrange
+            // Act
+            var t = Tuple.Parse(src);
+
+            // Assert
+            Assert.That(t.Count, Is.EqualTo(count));
+            if (count > 0) Assert.That(t[0], Is.EqualTo(elm0));
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Unclazz.Jp1ajs2.Unitdef.Parser;
 
 namespace Unclazz.Jp1ajs2.Unitdef
 {
@@ -10,6 +11,7 @@ namespace Unclazz.Jp1ajs2.Unitdef
     /// </summary>
     public sealed class MutableTuple : ITuple
     {
+        static readonly UnitParser.TupleParser _tupleParser = new UnitParser.TupleParser();
         /// <summary>
         /// 与えられたエントリーのコレクションからタプルのインスタンスを生成して返します。
         /// </summary>
@@ -31,6 +33,18 @@ namespace Unclazz.Jp1ajs2.Unitdef
         /// </summary>
         /// <value>空のタプル</value>
         public static MutableTuple Empty => new MutableTuple();
+        /// <summary>
+        /// 文字列からタプルをパースします。
+        /// </summary>
+        /// <returns>タプル</returns>
+        /// <param name="src">パース対象の文字列</param>
+        /// <exception cref="ArgumentException">パースに失敗した場合</exception>
+        public static MutableTuple Parse(string src)
+        {
+            var res = _tupleParser.Parse(src);
+            if (res.Successful) return res.Capture.AsMutable();
+            throw new ArgumentException(res.Message);
+        }
 
         readonly IList<ITupleEntry> _list = new List<ITupleEntry>();
         
