@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FullNameTest.cs" />
+    <Compile Include="Parser\InputTest.cs" />
+    <Compile Include="Parser\ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TupleEntryTest.cs" />
     <Compile Include="TupleParameterValueTest.cs" />

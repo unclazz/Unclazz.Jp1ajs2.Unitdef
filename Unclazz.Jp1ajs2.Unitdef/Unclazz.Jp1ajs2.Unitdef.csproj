@@ -44,7 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes.cs" />
+    <Compile Include="Parser\ParseException.cs" />
+    <Compile Include="Parser\UnitParser.cs" />
     <Compile Include="FullName.cs" />
+    <Compile Include="Parser\Input.cs" />
     <Compile Include="IParameter.cs" />
     <Compile Include="IParameterValue.cs" />
     <Compile Include="ITuple.cs" />
@@ -75,9 +78,6 @@
     <Compile Include="Parser\UnitParser2.TupleParser.cs" />
     <Compile Include="Parser\UnitParser2.ParameterParser.cs" />
     <Compile Include="Parser\UnitParser2.SpacesParser.cs" />
-    <Compile Include="Parser\ParseException2.cs" />
-    <Compile Include="Unit.Builder.cs" />
-    <Compile Include="Parameter.Builder.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

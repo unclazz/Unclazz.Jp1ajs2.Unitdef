@@ -1,24 +1,26 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Unclazz.Jp1ajs2.Unitdef.Parser;
-using Unclazz.Parsec;
 
 namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
 {
     [TestFixture]
-    public class UnitParser2Test
+    public class ParserTest
     {
-        private readonly Parser<Seq<IUnit>> p = new UnitParser2().Repeat(min: 1);
+        private readonly UnitParser p = UnitParser.Instance;
 
         [Test]
         public void Parse_1Unit_NoAttrs_NoParams_NoSubUnits()
         {
             // Arrange
-            Reader i = Reader.From("unit=XXXX0000,,,;{ty=g;}");
+            Input i = Input.FromString("unit=XXXX0000,,,;{ty=g;}");
 
             // Act
-            IList<IUnit> us = p.Parse(i).Capture.ToList();
+            IList<IUnit> us = p.Parse(i);
 
             // Assert
             Assert.AreEqual(1, us.Count);
@@ -34,12 +36,12 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_1Unit_WithComment()
         {
             // Arrange
-            Reader i = Reader.From("/* xxx */" +
+            Input i = Input.FromString("/* xxx */" +
                 "unit=XXXX0000,,,;/* xxx */{/* xxx */" +
                 "ty=g;/* xxx */}/* xxx */");
 
             // Act
-            IList<IUnit> us = p.Parse(i).Capture.ToList();
+            IList<IUnit> us = p.Parse(i);
 
             // Assert
             Assert.AreEqual(1, us.Count);
@@ -55,12 +57,12 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_1Unit_WithSpaceAndComment()
         {
             // Arrange
-            Reader i = Reader.From(" /* xxx */ " +
+            Input i = Input.FromString(" /* xxx */ " +
                 "unit=XXXX0000,,,; /* xxx */ { /* xxx */ " +
                 "ty=g; /* xxx */ }  /* xxx */ ");
 
             // Act
-            IList<IUnit> us = p.Parse(i).Capture.ToList();
+            IList<IUnit> us = p.Parse(i);
 
             // Assert
             Assert.AreEqual(1, us.Count);
@@ -76,12 +78,12 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_2Unit_NoAttrs_NoParams_NoSubUnits()
         {
             // Arrange
-            Reader i = Reader.From(
+            Input i = Input.FromString(
                 "unit=XXXX0000,,,;{ty=g;}" +
                 "unit=XXXX1000,,,;{ty=pj;}");
 
             // Act
-            IList<IUnit> us = p.Parse(i).Capture.ToList();
+            IList<IUnit> us = p.Parse(i);
 
             // Assert
             Assert.AreEqual(2, us.Count);
@@ -95,12 +97,12 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_1Unit_Attrs_Params_NoSubUnits()
         {
             // Arrange
-            Reader i = Reader.From("unit=XXXX0000,a1,a2,a3;" +
+            Input i = Input.FromString("unit=XXXX0000,a1,a2,a3;" +
                 "{ty=g;cm=\"this is comment. ###\"\";" +
                 "}");
 
             // Act
-            IList<IUnit> us = p.Parse(i).Capture.ToList();
+            IList<IUnit> us = p.Parse(i);
 
             // Assert
             Assert.AreEqual("XXXX0000", us[0].Attributes.UnitName);
@@ -115,14 +117,14 @@ namespace Unclazz.Jp1ajs2.Unitdef.Test.Parser
         public void Parse_1Unit_NoAttrs_NoParams_SubUnits()
         {
             // Arrange
-            Reader i = Reader.From("unit=XXXX0000,,,;" +
+            Input i = Input.FromString("unit=XXXX0000,,,;" +
                 "{ty=g;" +
                 "unit=XXXX1000,,,;{ty=pj;sc=xxx;}" +
                 "unit=XXXX2000,,,;{ty=j;sc=xxx;}" +
                 "}");
 
             // Act
-            IList<IUnit> us = p.Parse(i).Capture.ToList()[0].SubUnits;
+            IList<IUnit> us = p.Parse(i)[0].SubUnits;
 
             // Assert
             Assert.AreEqual("XXXX1000", us[0].Name);
